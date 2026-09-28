@@ -36,7 +36,9 @@ rem 解析相对路径，用相对路径会报 "Unable to find ...\spec\zh"。
   --add-data "%~dp0zh;zh" ^
   --add-data "%~dp0app_icon.ico;." ^
   --add-data "%~dp0translate_core.py;." ^
+  --add-data "%~dp0zhsync.py;." ^
   --hidden-import translate_core ^
+  --hidden-import zhsync ^
   --workpath "%WORK%\build" --specpath "%WORK%\spec" --distpath "%WORK%\dist" ^
   "%~dp0patch_tool.py"
 if errorlevel 1 (

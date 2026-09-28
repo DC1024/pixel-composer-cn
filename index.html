@@ -107,8 +107,8 @@
     <img class="logo" src="assets/logo.png" alt="logo" onerror="this.style.display='none'"/>
     <h1><span class="zh">Pixel Composer <span class="accent">中文汉化包</span></span>
         <span class="en">Pixel Composer <span class="accent">Chinese Localization</span></span></h1>
-    <p class="zh">离线 · 自包含 · 一键汉化 —— 自带翻译引擎与预翻译语言包，无需联网，可一键回滚。提供免安装 EXE，下载双击即用。</p>
-    <p class="en">Offline, self-contained, one-click. Ships with a translation engine and pre-translated pack — no network, with one-click rollback. A standalone EXE is included: download and double-click.</p>
+    <p class="zh">一键汉化 · 装好即离线可用 —— 随附完整预翻译语言包，联网时可一键同步最新汉化，可一键回滚。提供免安装 EXE，下载双击即用。</p>
+    <p class="en">One-click localization, offline-ready. Ships with a complete pre-translated pack, one-click online sync for updates, and one-click rollback. A standalone EXE is included: download and double-click.</p>
     <div class="cta">
       <a class="btn primary" href="https://github.com/DC1024/pixel-composer-cn/releases/latest/download/PixelComposer-CN-Patcher.exe">
         ⬇ <span class="zh">下载一键汉化 EXE</span><span class="en">Download EXE</span></a>
@@ -124,7 +124,7 @@
     <div class="stat"><b>98.5%</b><span class="zh">词条覆盖</span><span class="en">Words coverage</span></div>
     <div class="stat"><b>2096</b><span class="zh">词条总数</span><span class="en">Total entries</span></div>
     <div class="stat"><b>~93%</b><span class="zh">节点名称覆盖</span><span class="en">Node coverage</span></div>
-    <div class="stat"><b>0</b><span class="zh">联网需求</span><span class="en">Network needed</span></div>
+    <div class="stat"><b>3</b><span class="zh">同步源容错</span><span class="en">Fallback sources</span></div>
   </div>
 
   <!-- QUICK START -->
@@ -161,7 +161,7 @@ python patch_tool.py --install  # 命令行安装 / CLI</pre>
         <table>
           <tr><th class="zh">按钮</th><th class="zh">作用</th><th class="en">Button</th><th class="en">Action</th></tr>
           <tr><td class="zh">① 一键汉化</td><td class="zh">安装并启用中文</td><td class="en">① Install & enable</td><td class="en">Install + enable Chinese</td></tr>
-          <tr><td class="zh">② 更新汉化</td><td class="zh">离线增量补全（取自游戏自带 locale.zip，不联网）</td><td class="en">② Update</td><td class="en">Offline incremental fill (from the game's own locale.zip)</td></tr>
+          <tr><td class="zh">② 同步最新汉化</td><td class="zh">联网从 GitHub 拉取最新成品包（断网回退随附包）</td><td class="en">② Sync latest</td><td class="en">Download latest pack from GitHub (falls back offline)</td></tr>
           <tr><td class="zh">③ 恢复英文</td><td class="zh">切回英文（保留备份）</td><td class="en">③ Restore EN</td><td class="en">Back to English (backup kept)</td></tr>
           <tr><td class="zh">④ 还原上一版</td><td class="zh">回滚到上次汉化</td><td class="en">④ Rollback</td><td class="en">Roll back to previous pack</td></tr>
           <tr><td class="zh">⑤ 查看状态</td><td class="zh">显示目录与语言</td><td class="en">⑤ Status</td><td class="en">Show paths & language</td></tr>
@@ -169,21 +169,51 @@ python patch_tool.py --install  # 命令行安装 / CLI</pre>
           <tr><td class="zh">⑦ 还原布局名</td><td class="zh">把布局文件名还原成英文</td><td class="en">⑦ Restore layout names</td><td class="en">Restore original layout file names</td></tr>
         </table>
         <div class="note">
-          <p class="zh"><b>②「更新汉化」不联网、也不会从 GitHub 下载任何东西。</b>它从你本机游戏自带的 <code>pack/locale.zip</code> 解出官方 <code>en</code> 基准，用内置翻译引擎把其中新增/尚未收录的字符串补翻进 <code>zh</code>，再重新写入两个数据目录。游戏更新后点一次 ② 即可跟上新词条；只有<b>工具本身</b>升级才需要重新下载 EXE。</p>
-          <p class="en"><b>② "Update" is fully offline — it never downloads from GitHub.</b> It extracts the official <code>en</code> baseline from the game's own <code>pack/locale.zip</code>, fills new or uncovered strings via the built-in engine, and rewrites both data roots. Only the <b>tool itself</b> needs a fresh download.</p>
+          <p class="zh"><b>②「同步最新汉化」不在本地做翻译</b>，而是从 GitHub 下载一份<b>已经翻好的成品包</b>：先拉清单 <code>zh/manifest.json</code>（依次尝试 GitHub Pages → jsDelivr CDN → GitHub Raw 三个源），再用 sha256 比对本地，<b>只下载有变化的文件</b>（11 MB 中文字体通常只在首次下载，之后每次一般只有几十 KB 的 json），备份现有 <code>zh</code> 后整包写入两个数据目录。断网或源都不可达时自动回退随附汉化包；已是最新则直接提示「无需更新」。</p>
+          <p class="en"><b>② "Sync latest" does not translate anything locally.</b> It downloads an <b>already-translated pack</b> from GitHub: it fetches <code>zh/manifest.json</code> (trying GitHub Pages → jsDelivr CDN → GitHub Raw in order), compares sha256 against your install, and <b>downloads only changed files</b> (the 11 MB CJK font is normally a one-time download; later syncs are usually a few dozen KB of JSON). The current <code>zh</code> is backed up, then the whole pack is written to both data roots. If offline, it falls back to the bundled pack; if already current, it says so.</p>
         </div>
       </div>
       <div class="card">
         <h2><span class="zh">命令行参数</span><span class="en">CLI Flags</span></h2>
         <pre>--install           安装并启用中文
---update            离线增量更新汉化
+--update / --sync   从 GitHub 同步最新汉化包
 --restore           恢复英文
 --rollback          还原上一版汉化
---status            查看当前状态
+--status            查看状态（含包版本）
 --layouts           汉化工作区标签
 --layouts-restore   还原布局文件名
 --no-gui            无界面直接安装
 --cli               交互式命令行</pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- UPDATE FLOW -->
+  <section>
+    <div class="card">
+      <h2><span class="zh">更新机制</span><span class="en">How Updates Work</span></h2>
+      <p class="lead zh">翻译只在<b>维护者侧做一次</b>，客户端只下载成品包 —— 结果统一、质量可控，也不必在每台机器上各跑一遍翻译引擎。</p>
+      <p class="lead en">Translation happens <b>once on the maintainer side</b>; clients only download the finished pack — consistent results, controllable quality, and no engine running on every machine.</p>
+      <div class="steps">
+        <div class="step"><div class="body">
+          <strong class="zh">① 维护者同步上游</strong><strong class="en">① Maintainer syncs upstream</strong>
+          <p class="zh">运行 <code>python build/sync_upstream.py</code>：抽取游戏自带官方 <code>en</code> 基准 → 补翻新增/残留词条 → 写 <code>zh/</code> 与 <code>zh/manifest.json</code>。加 <code>--push</code> 可直接提交推送。</p>
+          <p class="en">Runs <code>python build/sync_upstream.py</code>: extracts the official <code>en</code> baseline, retranslates new/leftover entries, writes <code>zh/</code> + <code>zh/manifest.json</code>. Add <code>--push</code> to commit and push.</p>
+        </div></div>
+        <div class="step"><div class="body">
+          <strong class="zh">② 发布到 GitHub</strong><strong class="en">② Publish to GitHub</strong>
+          <p class="zh">推送后 <code>zh/</code> 可从 GitHub Raw、GitHub Pages、jsDelivr CDN 三处下载，任一可用即可。</p>
+          <p class="en">After pushing, <code>zh/</code> is reachable via GitHub Raw, GitHub Pages and jsDelivr CDN — any one is enough.</p>
+        </div></div>
+        <div class="step"><div class="body">
+          <strong class="zh">③ 客户端一键同步</strong><strong class="en">③ Client syncs in one click</strong>
+          <p class="zh">点「② 同步最新汉化」（或 <code>--sync</code>）：拉清单 → 比对哈希 → 只下载变化的文件 → 备份后安装。<b>本地不跑翻译引擎。</b></p>
+          <p class="en">Clicks "② Sync latest" (or <code>--sync</code>): fetch manifest → compare hashes → download only changed files → back up and install. <b>No engine runs locally.</b></p>
+        </div></div>
+      </div>
+      <div class="note">
+        <p class="zh">汉化包版本记录在 <code>zh/manifest.json</code> 的 <code>version</code> 字段，随包一起下发；「⑤ 查看状态」会显示当前安装的包版本。某个源不可用时会自动换下一个源；也可用环境变量 <code>PCCN_SOURCE</code> 指定镜像。</p>
+        <p class="en">The pack version lives in <code>zh/manifest.json</code> and travels with the pack; "⑤ Status" shows the installed version. If a source fails, the next one is tried automatically; set <code>PCCN_SOURCE</code> to use a mirror.</p>
       </div>
     </div>
   </section>
@@ -220,6 +250,12 @@ python patch_tool.py --install  # 命令行安装 / CLI</pre>
           <td class="en">Tabs show <code>layouts/*.json</code> file names. Renaming files alone gets reverted from <code>pack/layouts.zip</code> (duplicate tabs observed). <b>⑥</b> also patches the zip entries; <b>⑦</b> reverts.</td>
         </tr>
         <tr>
+          <td class="zh"><code>notes/</code> 内置参考文档<br>（混合模式 / L 系统 / MK 面板）</td>
+          <td class="zh">带专用排版标记（<code>{g}</code>、<code>&lt;x20&gt;</code> 等）的 Markdown 文档，官方语言包只有英文版，当前<b>未翻译</b>，游戏会回退显示英文原文。</td>
+          <td class="en">Built-in <code>notes/</code> reference docs</td>
+          <td class="en">Markdown docs using a custom layout markup; English-only upstream and <b>not translated yet</b> — the game falls back to English.</td>
+        </tr>
+        <tr>
           <td class="zh"><code>2d</code> · <code>3d</code> · <code>CMYK</code> · <code>OKLAB</code> · <code>PXC</code></td>
           <td class="zh">品牌名 / 格式名 / 专有名词，按约定保留英文以免歧义。</td>
           <td class="en">Brands / formats / proper nouns</td>
@@ -236,12 +272,12 @@ python patch_tool.py --install  # 命令行安装 / CLI</pre>
       <table>
         <tr><th class="zh">对比项</th><th class="zh">旧社区包</th><th class="zh">本方案</th>
             <th class="en">Aspect</th><th class="en">Old pack</th><th class="en">This project</th></tr>
-        <tr><td class="zh">更新速度</td><td class="zh">慢，手动发布</td><td class="zh kicker">内置引擎，增量更新</td>
-            <td class="en">Updates</td><td class="en">Slow, manual</td><td class="en">Built-in engine, incremental</td></tr>
+        <tr><td class="zh">更新速度</td><td class="zh">慢，手动发布</td><td class="zh kicker">维护者定期同步上游，客户端一键取最新</td>
+            <td class="en">Updates</td><td class="en">Slow, manual</td><td class="en">Maintainer syncs upstream; clients pull in one click</td></tr>
         <tr><td class="zh">覆盖率</td><td class="zh">较低</td><td class="zh kicker">词条 98.5%（1888/1916）· 节点 ~93%</td>
             <td class="en">Coverage</td><td class="en">Lower</td><td class="en">words 98.5% (1888/1916) · nodes ~93%</td></tr>
-        <tr><td class="zh">联网需求</td><td class="zh">常需联网</td><td class="zh kicker">完全离线</td>
-            <td class="en">Network</td><td class="en">Often online</td><td class="en">Fully offline</td></tr>
+        <tr><td class="zh">联网需求</td><td class="zh">常需联网</td><td class="zh kicker">装好后离线可用；② 联网只取更新</td>
+            <td class="en">Network</td><td class="en">Often online</td><td class="en">Offline-ready; ② only fetches updates</td></tr>
         <tr><td class="zh">可回滚</td><td class="zh">通常不支持</td><td class="zh kicker">备份 + 一键回滚</td>
             <td class="en">Rollback</td><td class="en">Usually no</td><td class="en">Backup + one-click rollback</td></tr>
       </table>

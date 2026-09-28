@@ -1,0 +1,47 @@
+{
+ "schema": 1,
+ "pack": "pixel-composer-cn",
+ "version": "1.0.3",
+ "game_version": 122000,
+ "built_at": "2026-09-28 21:20:45 +0800",
+ "counts": {
+  "words": 2096,
+  "UI": 560,
+  "nodes": 942,
+  "junctions": 3
+ },
+ "files": {
+  "config.json": {
+   "size": 39,
+   "sha256": "ece4e728bdd7a0647e088a71428d71bd2e77cb7158efd76c4b92f0864700e5e5"
+  },
+  "junctions.json": {
+   "size": 349,
+   "sha256": "f1d30908e64e63aad4c38da0d81924179a3ea7d095915c2619037d326c5439b7"
+  },
+  "nodes.json": {
+   "size": 630865,
+   "sha256": "90dd2c0a56ab5c9424757887588e38ddab56bb08cc5e0954e308f9b294d40cf0"
+  },
+  "UI.json": {
+   "size": 25532,
+   "sha256": "11593c9aecbaf6e530b0a18cb02104c468f070b3d51e2a41d3341e8ca0e13ba1"
+  },
+  "words.json": {
+   "size": 78266,
+   "sha256": "8cc1933c0a5a92d4a3869833cea763e534375bdba3e8cc499a6a4a1cede2c1fb"
+  },
+  "fonts/fonts.json": {
+   "size": 1374,
+   "sha256": "0d52a804ab1e7903633e6ee43c0faf5872389a73d7d3271b19bfe0352faddacb"
+  },
+  "fonts/JetBrainsMono-Medium.ttf": {
+   "size": 273860,
+   "sha256": "31c92d01a8a08528b718a43addf0ad3df0af2ca4b7b3290a452f70f358e14d3d"
+  },
+  "fonts/LXGWWenKaiMonoLite-Bold.ttf": {
+   "size": 11047984,
+   "sha256": "730f6f0fc2b0c83271a25af00520d2f44fcf40b1b3615f7851a56dc70c5f3907"
+  }
+ }
+}

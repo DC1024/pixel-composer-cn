@@ -837,7 +837,6 @@
  "new_custom_panel": "新建自定义面板",
  "new_file_placeholder": "新建文件",
  "new_file": "新文件",
- "new_floating_workspace": "新建浮动工作区",
  "new_folder_from_selection": "从选择新建文件夹",
  "new_folder": "新建文件夹",
  "new_globalvar": "新建全局变量",
@@ -1994,7 +1993,6 @@
  "panel_notification": "通知",
  "panel_file_explorer": "文件浏览器",
  "panel_nodes": "节点",
- "panel_toolbar": "工具栏",
  "panel_toolbar_icon": "工具栏图标",
  "panel_dialog_manager": "对话框管理器",
  "panel_steam_workshop": "Steam 创意工坊",
@@ -2094,5 +2092,7 @@
  "workspace_drawing": "绘画",
  "workspace_preview": "预览",
  "workspace_side_menu": "侧边菜单",
- "workspace_vertical": "垂直"
+ "workspace_vertical": "垂直",
+ "new_floating_workspace": "新建浮动工作区",
+ "panel_toolbar": "工具栏"
 }

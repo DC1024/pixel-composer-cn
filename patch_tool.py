@@ -4,8 +4,8 @@ Pixel Composer 一键汉化工具（离线版 / 标准库 only）
 作者：DC1024  <https://github.com/DC1024/pixel-composer-cn>
 功能：
   1) 安装汉化   : 把自带 zh 汉化包复制到 PixelComposer 运行时 Locale 目录，并启用中文
-  2) 更新汉化   : 从游戏自带 pack/locale.zip 抽取最新官方 en 基准，用内置翻译引擎补全
-                  新增词条后重新生成 zh（完全离线，不依赖任何网络/社区仓库）
+  2) 同步最新汉化: 从 GitHub 拉取「维护者定期同步上游、已经翻好」的最新汉化包并安装
+                  （只下载成品，本地不再跑翻译引擎）；断网/仓库不可达时自动回退随附包
   3) 恢复英文   : 切回 en
   4) 还原上一版 : 回滚到最近一次安装前的汉化包（zh.bak_*）
   5) 查看状态   : 显示当前语言与目录
@@ -217,134 +217,87 @@ def ensure_en(runtime, install, logbox=None):
         os.makedirs(en_dst, exist_ok=True)
         log("警告：未找到 en 基准，已创建空目录（如界面异常请运行一次官方英文版）", logbox)
 
-def extract_en_base(install, logbox=None):
-    """从 pack/locale.zip 抽取 en 基准到临时目录，返回临时 en 目录或 None"""
-    zp = os.path.join(install, "pack", "locale.zip")
-    if not os.path.isfile(zp):
-        log("未找到 pack/locale.zip，无法增量更新，将使用内置汉化包", logbox)
-        return None
-    tmp = os.path.join(scratch_dir(), "_en_tmp")
-    if os.path.isdir(tmp): shutil.rmtree(tmp)
-    os.makedirs(tmp, exist_ok=True)
-    try:
-        with zipfile.ZipFile(zp) as z:
-            for n in z.namelist():
-                if n.startswith("en/") and not n.endswith("/"):
-                    z.extract(n, tmp)
-        log("已从游戏抽取最新官方 en 基准", logbox)
-        return os.path.join(tmp, "en")
-    except Exception as e:
-        log(f"抽取 en 失败: {e}", logbox)
-        return None
+def _unused_legacy_note():
+    """（已移除）早期「客户端本地翻译引擎」的 extract_en_base / regenerate_from_en。
 
-def regenerate_from_en(en_dir, zh_src, logbox=None):
-    """用内置引擎把 en 基准 + 内置 zh 合并，生成最新 zh 到 out_dir"""
-    out = os.path.join(scratch_dir(), "_zh_gen")
-    if os.path.isdir(out): shutil.rmtree(out)
-    shutil.copytree(zh_src, out)
-    try:
-        from translate_core import translate
-    except Exception:
-        log("内置翻译引擎不可用，跳过增量补全（仍安装内置汉化包）", logbox)
-        return out
-    def tr_node(en_node):
-        o = {}
-        if "name" in en_node: o["name"] = translate(en_node["name"])
-        if "tooltip" in en_node and en_node["tooltip"]:
-            o["tooltip"] = translate(en_node["tooltip"])
-        for arr in ("inputs", "outputs"):
-            if arr in en_node:
-                o[arr] = []
-                for p in en_node[arr]:
-                    pp = {}
-                    if "name" in p: pp["name"] = translate(p["name"])
-                    if "tooltip" in p and p["tooltip"]: pp["tooltip"] = translate(p["tooltip"])
-                    if "display_data" in p:
-                        pp["display_data"] = [translate(x) if isinstance(x, str) else x for x in p["display_data"]]
-                    o[arr].append(pp)
-        return o
-    # words
-    wp = os.path.join(out, "words.json")
-    if os.path.isfile(wp) and en_dir:
-        try:
-            zw = json.load(open(wp, encoding="utf-8"))
-            ew = json.load(open(os.path.join(en_dir, "words.json"), encoding="utf-8"))
-            for k, ev in ew.items():
-                if k not in zw: zw[k] = translate(ev)
-            json.dump(zw, open(wp, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
-        except Exception as e:
-            log(f"words 增量补全跳过: {e}", logbox)
-    # nodes
-    np = os.path.join(out, "nodes.json")
-    if os.path.isfile(np) and en_dir:
-        try:
-            zn = json.load(open(np, encoding="utf-8"))
-            en = json.load(open(os.path.join(en_dir, "nodes.json"), encoding="utf-8"))
-            added = 0
-            for nid, en_node in en.items():
-                if nid not in zn:
-                    zn[nid] = tr_node(en_node); added += 1
-                else:
-                    seed = zn[nid]
-                    for arr in ("inputs", "outputs"):
-                        if arr in en_node:
-                            sa = seed.get(arr, [])
-                            new = []
-                            for i, ep in enumerate(en_node[arr]):
-                                if i < len(sa) and isinstance(sa[i], dict) and sa[i].get("name"):
-                                    new.append(sa[i])
-                                else:
-                                    pp = {}
-                                    if "name" in ep: pp["name"] = translate(ep["name"])
-                                    if "tooltip" in ep and ep["tooltip"]: pp["tooltip"] = translate(ep["tooltip"])
-                                    if "display_data" in ep:
-                                        pp["display_data"] = [translate(x) if isinstance(x, str) else x for x in ep["display_data"]]
-                                    new.append(pp)
-                            seed[arr] = new
-                    zn[nid] = seed
-            json.dump(zn, open(np, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
-            if added: log(f"增量补全新节点 {added} 个", logbox)
-        except Exception as e:
-            log(f"nodes 增量补全跳过: {e}", logbox)
-    # UI
-    up = os.path.join(out, "UI.json")
-    if not os.path.isfile(up) and en_dir and os.path.isfile(os.path.join(en_dir, "UI.json")):
-        try:
-            eu = json.load(open(os.path.join(en_dir, "UI.json"), encoding="utf-8"))
-            uo = {k: translate(v) for k, v in eu.items() if k}
-            json.dump(uo, open(up, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
-            log("已生成 UI.json", logbox)
-        except Exception as e:
-            log(f"UI 生成跳过: {e}", logbox)
-    return out
+    它们原先负责在用户机器上从 pack/locale.zip 抽 en 基准再用内置引擎补翻。
+    现在改为一句话分工：**翻译只在维护者侧做一次**（见 build/sync_upstream.py），
+    客户端只从 GitHub 下载翻好的成品包（见 sync_from_github）。
+    保留本注释是为了让后来者知道这两条路径是「有意去掉」的，而不是丢了。
+    """
+    return None
 
 # ------------------------- 主操作 -------------------------
-def do_install(update=False, logbox=None):
-    install = find_install_dir()
-    roots = find_all_data_roots(install)
-    zh_src = os.path.join(resource_dir(), "zh")
-    if not os.path.isdir(zh_src):
-        log("错误：未找到随附的 zh 汉化包目录", logbox); return False
-    log(f"安装目录: {install or '(未自动探测)'}", logbox)
-    log(f"检测到 {len(roots)} 个数据目录: {', '.join(roots)}", logbox)
-
-    src = zh_src
-    if update:
-        en_dir = extract_en_base(install, logbox) if install else None
-        if en_dir:
-            src = regenerate_from_en(en_dir, zh_src, logbox)
-        else:
-            log("回退：直接安装内置汉化包", logbox)
-
-    ok = True
+def _install_pack(src, roots, install, logbox=None):
+    """把 src 汉化包装进所有数据目录，并启用中文。返回是否全部成功。"""
     for root in roots:
         t = os.path.join(root, "Locale", "zh")
         if not backup_and_copy(src, t, logbox):
-            ok = False
-            break
+            return False
         apply_extras(root, logbox)
         ensure_en(root, install, logbox)
         set_language("zh", root, logbox)
+    return True
+
+def sync_from_github(roots, logbox=None):
+    """从 GitHub 同步「已经翻好」的汉化包（本地不再跑翻译引擎）。
+
+    汉化流程改为：维护者定期同步上游官方语言包 → 补翻 → 推送 GitHub；
+    用户侧只负责把成品包拉下来。返回 (status, src)：
+
+      "uptodate" —— 各数据目录都与线上一致，无需安装
+      "ready"    —— src = 已同步好的完整包目录，可直接安装
+      "offline"  —— 清单/下载不可用（断网、仓库不可达等），调用方回退随附包
+    """
+    try:
+        import zhsync
+    except Exception as e:
+        log(f"同步模块不可用（{e}）", logbox)
+        return "offline", None
+
+    log("正在检查线上最新汉化包…", logbox)
+    man, src_name, base = zhsync.fetch_manifest(lambda m: log(m, logbox))
+    if not man:
+        log("无法获取线上清单（网络不可用或仓库暂不可达）", logbox)
+        return "offline", None
+
+    local = [os.path.join(r, "Locale", "zh") for r in roots]
+    local = [d for d in local if os.path.isdir(d)]
+    dest = os.path.join(scratch_dir(), "_zh_sync")
+    try:
+        status, n = zhsync.sync_pack(man, base, local, dest, lambda m: log(m, logbox))
+    except Exception as e:
+        log(f"同步失败：{e}", logbox)
+        return "offline", None
+    if status == "uptodate":
+        log(f"已是最新汉化包 v{man.get('version')}，无需更新。", logbox)
+        return "uptodate", None
+    log(f"已获取汉化包 v{man.get('version')}（本次更新 {n} 个文件）", logbox)
+    return "ready", dest
+
+def do_install(update=False, logbox=None):
+    install = find_install_dir()
+    roots = find_all_data_roots(install)
+    bundled = os.path.join(resource_dir(), "zh")
+    if not os.path.isdir(bundled):
+        log("错误：未找到随附的 zh 汉化包目录", logbox); return False
+    log(f"安装目录: {install or '(未自动探测)'}", logbox)
+    log(f"检测到 {len(roots)} 个数据目录: {', '.join(roots) or '(无)'}", logbox)
+    if not roots:
+        log("错误：没有可写入的数据目录", logbox); return False
+
+    src = bundled
+    if update:
+        status, synced = sync_from_github(roots, logbox)
+        if status == "uptodate":
+            log("完成：本地汉化已是最新，未做任何改动。", logbox)
+            return True
+        if status == "ready":
+            src = synced
+        else:
+            log("回退：改用随附汉化包安装（联网后重试可获取最新汉化）。", logbox)
+
+    ok = _install_pack(src, roots, install, logbox)
     if ok:
         log("完成！请重启 Pixel Composer 查看中文界面。", logbox)
     else:
@@ -530,6 +483,7 @@ def do_status(logbox=None):
     log(f"安装目录 : {install or '(未探测到)'}", logbox)
     if not roots:
         log("未检测到任何数据目录", logbox); return
+    pv = None
     for i, root in enumerate(roots, 1):
         zh = os.path.join(root, "Locale", "zh")
         kp = find_keys_json(root)
@@ -537,8 +491,25 @@ def do_status(logbox=None):
         if os.path.exists(kp):
             try: cur = json.load(open(kp, encoding="utf-8")).get("local", "未知")
             except Exception: pass
+        ver = None
+        try:
+            import zhsync
+            ver = zhsync.installed_version(root)
+        except Exception:
+            pass
+        if ver and pv is None:
+            pv = ver
+        tag = f"v{ver}" if ver else "版本未知（旧版工具/社区包）"
         log(f"[{i}] 数据目录 : {root}", logbox)
-        log(f"    zh 汉化包 : {'已安装' if os.path.isdir(zh) else '未安装'} | 当前语言 : {cur}", logbox)
+        log(f"    zh 汉化包 : {'已安装' if os.path.isdir(zh) else '未安装'}（{tag}） | 当前语言 : {cur}", logbox)
+    if pv:
+        try:
+            import zhsync
+            _v, summary = zhsync.installed_summary(roots)
+            if "不一致" in summary:
+                log(f"注意：{summary}（点「② 同步最新汉化」可统一到最新）", logbox)
+        except Exception:
+            pass
 
 # ==================== 界面（配色 = Pixel Composer 官方 default 主题）====================
 PC_BG      = "#1c1c23"   # main_bg
@@ -602,10 +573,10 @@ def gui():
     from tkinter import scrolledtext
 
     root = tk.Tk()
-    root.title("Pixel Composer 汉化工具 v1.0.2  ·  离线版")
+    root.title("Pixel Composer 汉化工具 v1.0.3  ·  在线同步 / 离线可用")
     root.configure(bg=PC_BG)
-    root.geometry("620x688")
-    root.minsize(560, 620)
+    root.geometry("620x724")
+    root.minsize(560, 660)
     try:
         root.iconbitmap(os.path.join(resource_dir(), "app_icon.ico"))
     except Exception:
@@ -619,8 +590,8 @@ def gui():
     # 顶栏
     header = tk.Frame(root, bg=PC_BG)
     header.pack(fill="x", padx=22, pady=(18, 6))
-    tk.Label(header, text="Pixel Composer 汉化工具  v1.0.2", font=F_TITLE, bg=PC_BG, fg=PC_WHITE).pack(anchor="w")
-    tk.Label(header, text="离线 · 自带汉化包与翻译引擎 · 不依赖网络 · 可一键回滚",
+    tk.Label(header, text="Pixel Composer 汉化工具  v1.0.3", font=F_TITLE, bg=PC_BG, fg=PC_WHITE).pack(anchor="w")
+    tk.Label(header, text="一键安装随附汉化包 · 联网同步最新汉化 · 可一键回滚",
              font=F_SUB, bg=PC_BG, fg=PC_MDWHITE).pack(anchor="w", pady=(3, 0))
     tk.Frame(root, bg=PC_DKGREY, height=1).pack(fill="x", padx=22, pady=(12, 0))
 
@@ -632,7 +603,7 @@ def gui():
 
     # 次按钮 2x2
     row1 = tk.Frame(root, bg=PC_BG); row1.pack(padx=22, pady=(0, 8))
-    PCButton(row1, "②  更新汉化", lambda: do_install(True, box),
+    PCButton(row1, "②  同步最新汉化（联网）", lambda: do_install(True, box),
              width=282, height=42, font=F_BTN).pack(side="left")
     tk.Frame(row1, bg=PC_BG, width=12).pack(side="left")
     PCButton(row1, "③  恢复英文", lambda: do_restore(box),
@@ -649,8 +620,10 @@ def gui():
     tk.Frame(row3, bg=PC_BG, width=12).pack(side="left")
     PCButton(row3, "⑦  还原布局名", lambda: do_layouts(True, box),
              width=282, height=42, font=F_BTN).pack(side="left")
-    tk.Label(root, text="⑥ 汉化工作区标签：同时改写 layouts 文件名与 pack/layouts.zip 的条目名"
-                      "（只改文件名会被游戏解回英文）；⑦ 可随时还原。",
+    tk.Label(root, text="② 「同步最新汉化」从 GitHub 下载维护者已更新好的成品包（本地不再跑翻译引擎），"
+                      "断网时自动回退随附汉化包；\n"
+                      "⑥ 汉化工作区标签：同时改写 layouts 文件名与 pack/layouts.zip 条目名"
+                      "（只改文件名会被游戏解回英文），⑦ 可随时还原。",
              font=F_SUB, bg=PC_BG, fg=PC_GREY, wraplength=572, justify="left").pack(padx=22, pady=(0, 8), anchor="w")
 
     # 日志区
@@ -677,12 +650,12 @@ def main():
     args = sys.argv[1:]
     mode = None
     for a in args:
-        if a in ("--install", "--update", "--restore", "--rollback", "--status",
+        if a in ("--install", "--update", "--sync", "--restore", "--rollback", "--status",
                  "--layouts", "--layouts-restore", "--no-gui", "--cli"):
             mode = a.lstrip("-")
     if mode and mode != "cli":
         if mode in ("install", "no-gui"): do_install(False)
-        elif mode == "update": do_install(True)
+        elif mode in ("update", "sync"): do_install(True)
         elif mode == "restore": do_restore()
         elif mode == "rollback": do_rollback()
         elif mode == "status": do_status()
@@ -701,7 +674,7 @@ def cli_loop():
     _bootstrap_paths()
     print("Pixel Composer 一键汉化工具（CLI）")
     while True:
-        print("\n1) 一键汉化  2) 更新汉化  3) 恢复英文  4) 还原上一版汉化  5) 查看状态")
+        print("\n1) 一键汉化  2) 同步最新汉化(联网)  3) 恢复英文  4) 还原上一版汉化  5) 查看状态")
         print("6) 汉化工作区标签  7) 还原布局名  0) 退出")
         try:
             c = input("选择> ").strip()
