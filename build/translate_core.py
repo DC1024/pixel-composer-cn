@@ -754,42 +754,6 @@ WORD = {
     "open": "打开", "close": "关闭", "new": "新建", "delete": "删除",
     "copy": "复制", "paste": "粘贴", "cut": "剪切", "undo": "撤销",
     "redo": "重做", "search": "搜索", "filter": "筛选", "sort": "排序",
-    # 第五批：参数热词 + 菜单单例词
-    "armature": "骨架", "chance": "概率", "subdivision": "细分", "blast": "爆发",
-    "end": "末端", "strands": "丝束", "anti": "抗", "aliasing": "锯齿",
-    "overflow": "溢出", "slope": "斜率", "segments": "段", "branches": "分支",
-    "subtract": "减去", "shines": "光泽", "sides": "侧", "widths": "宽度",
-    "positions": "位置", "modify": "修改", "smoothness": "平滑度", "order": "顺序",
-    "algorithm": "算法", "bounciness": "弹性", "blending": "混合", "caps": "端盖",
-    "cap": "端盖", "duration": "时长", "ground": "地面", "tolerance": "容差",
-    "randomness": "随机度", "normalize": "归一化", "shading": "着色",
-    "stiffness": "刚度", "factor": "系数", "attempt": "尝试", "trim": "修剪",
-    "tileset": "瓦片集", "libraries": "库", "orphan": "孤立", "subscribe": "订阅",
-    "subscribed": "已订阅", "sync": "同步", "tag": "标签", "textured": "带纹理",
-    "today": "今天", "tooltip": "提示", "trail": "拖尾", "unassigned": "未分配",
-    "uninstance": "取消实例化", "vignette": "暗角", "volumetric": "体积",
-    "wiggle": "摆动", "wireframe": "线框", "subtractive": "相减",
-    "start": "起始", "middle": "中间", "top": "顶部", "bottom": "底部",
-    "left": "左", "right": "右", "inner": "内部", "outer": "外部",
-    "leading": "起始", "trailing": "结尾", "custom": "自定义", "default": "默认",
-    "normal": "法线", "tangent": "切线", "vertex": "顶点", "edge": "边",
-    "face": "面", "bone": "骨骼", "mesh": "网格", "rig": "绑定",
-    # 第六批：节点参数热词
-    "midpoint": "中点", "force": "力", "leaves": "叶", "trigger": "触发",
-    "rotations": "旋转", "scales": "缩放", "steps": "步", "heightmap": "高度图",
-    "timestep": "时间步", "segment": "段", "execution": "执行", "thread": "线程",
-    "tension": "张力", "tilemap": "瓦片地图", "attenuation": "衰减", "taper": "渐细",
-    "profile": "剖面", "buffer": "缓冲", "cross": "交叉", "section": "截面",
-    "display": "显示", "angles": "角度", "do": "执行", "decay": "衰减",
-    "trunk": "树干", "life": "生命", "roll": "滚动", "paths": "路径",
-    "sharpness": "锐度", "extension": "扩展", "quad": "四边形", "spokes": "辐条",
-    "environment": "环境", "arrow": "箭头", "teeth": "齿", "coord": "坐标",
-    "banding": "条带", "exponent": "指数", "slices": "切片", "turning": "转向",
-    "kernel": "内核", "boundary": "边界", "method": "方法", "colored": "着色",
-    "aspect": "纵横比", "truchet": "特鲁谢", "cage": "笼", "emitter": "发射器",
-    "emission": "发射", "particles": "粒子", "particle": "粒子", "velocity": "速度",
-    "gravity": "重力", "spring": "弹簧", "follow": "跟随", "follower": "跟随者",
-    "offset": "偏移", "spacing": "间距", "count": "数量", "spacingx": "间距X",
 }
 
 # 缩写/专有名词：保持原样
@@ -804,9 +768,6 @@ KEEP = {
     "x", "y", "z", "w", "h", "min", "max", "avg", "std", "r", "g", "b", "a",
     "pxc", "cmyk", "oklab", "hlsl", "lospec", "krita", "mastodon", "ora",
     "pbbox", "io", "mkfx", "sca", "oklch", "lab", "hsv",
-    "pcx", "twitter", "youtube", "reddit", "github", "bluesky",
-    "gui", "sdk", "ide", "xml", "yaml", "toml", "ini", "cfg",
-    "shadertoy", "true", "false",
 }
 
 # 文件扩展名（带点）

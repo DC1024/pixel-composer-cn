@@ -5,67 +5,94 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Pixel Composer 中文汉化包 · Pixel Composer CN</title>
 <style>
+  /* 配色取自 Pixel Composer 官方 default 主题 Themes/default/values.json */
   :root{
-    --bg:#f5f8ff; --bg2:#eaf1ff; --card:#ffffff; --ink:#0f172a; --sub:#475569;
-    --brand:#2563eb; --brand2:#1e40af; --accent:#38bdf8; --line:#dbe6ff; --ok:#16a34a;
+    --bg:#1c1c23;        /* main_bg */
+    --deep:#191925;      /* main_dkblack */
+    --panel:#23232f;     /* 卡片 */
+    --panel2:#272736;    /* main_black */
+    --dkgrey:#3b3b4e;    /* main_dkgrey */
+    --dark:#505066;      /* main_dark */
+    --grey:#6d6d81;      /* main_grey */
+    --mdwhite:#9f9fb5;   /* main_mdwhite */
+    --white:#d6d6e8;     /* main_white */
+    --orange:#ff9166;    /* 主强调色 */
+    --cyan:#88ffe9;
+    --lime:#8fde5d;
+    --ink:#272736;       /* 橙底深色文字 */
   }
   *{box-sizing:border-box;margin:0;padding:0}
   body{font-family:"Microsoft YaHei","PingFang SC","Segoe UI",system-ui,sans-serif;
-    background:linear-gradient(180deg,var(--bg),var(--bg2));color:var(--ink);line-height:1.65}
-  a{color:var(--brand);text-decoration:none}
-  .wrap{max-width:960px;margin:0 auto;padding:0 20px}
-  /* lang toggle */
+    background:var(--bg);color:var(--white);line-height:1.65;
+    background-image:radial-gradient(1100px 340px at 50% -120px,rgba(255,145,102,.10),transparent);}
+  a{color:var(--cyan);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
   .topbar{display:flex;justify-content:space-between;align-items:center;padding:18px 0}
-  .brand{font-weight:800;letter-spacing:.5px;color:var(--brand2)}
-  .lang{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:#fff}
-  .lang button{border:0;background:transparent;padding:6px 14px;cursor:pointer;font-size:13px;color:var(--sub)}
-  .lang button.active{background:var(--brand);color:#fff;font-weight:700}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.5px}
+  .brand img{width:30px;height:30px;border-radius:8px;display:block}
+  .brand .cn{color:var(--orange)}
+  .lang{display:inline-flex;border:1px solid var(--dkgrey);border-radius:999px;overflow:hidden;background:var(--panel)}
+  .lang button{border:0;background:transparent;padding:6px 14px;cursor:pointer;font-size:13px;color:var(--mdwhite)}
+  .lang button.active{background:var(--orange);color:var(--ink);font-weight:700}
   /* hero */
-  .hero{text-align:center;padding:54px 20px 40px;background:radial-gradient(1200px 300px at 50% -40px,#cfe0ff,transparent)}
-  .hero h1{font-size:38px;line-height:1.2;margin-bottom:12px}
-  .hero h1 .cn{color:var(--brand2)}
-  .hero p{color:var(--sub);font-size:17px;max-width:640px;margin:0 auto 26px}
+  .hero{text-align:center;padding:46px 20px 30px}
+  .hero .logo{width:88px;height:88px;border-radius:22px;margin:0 auto 18px;display:block;
+    box-shadow:0 10px 30px rgba(0,0,0,.45)}
+  .hero h1{font-size:36px;line-height:1.22;margin-bottom:12px;color:var(--white)}
+  .hero h1 .accent{color:var(--orange)}
+  .hero p{color:var(--mdwhite);font-size:16px;max-width:660px;margin:0 auto 24px}
   .cta{display:inline-flex;gap:12px;flex-wrap:wrap;justify-content:center}
-  .btn{padding:12px 22px;border-radius:12px;font-weight:700;font-size:15px;border:1px solid transparent}
-  .btn.primary{background:var(--brand);color:#fff}
-  .btn.ghost{background:#fff;color:var(--brand);border-color:var(--line)}
+  .btn{padding:13px 24px;border-radius:10px;font-weight:700;font-size:15px;border:1px solid transparent;transition:.15s}
+  .btn.primary{background:var(--orange);color:var(--ink)}
+  .btn.primary:hover{background:#ffab8c;text-decoration:none}
+  .btn.ghost{background:var(--dkgrey);color:var(--white)}
+  .btn.ghost:hover{background:var(--dark);text-decoration:none}
+  .ver{font-size:12px;color:var(--grey);margin-top:10px}
   /* stats */
-  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:30px 0}
-  .stat{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;text-align:center;box-shadow:0 6px 18px rgba(37,99,235,.06)}
-  .stat b{display:block;font-size:28px;color:var(--brand)}
-  .stat span{font-size:13px;color:var(--sub)}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:26px 0}
+  .stat{background:var(--panel);border:1px solid var(--dkgrey);border-radius:12px;padding:18px;text-align:center}
+  .stat b{display:block;font-size:26px;color:var(--orange)}
+  .stat span{font-size:13px;color:var(--mdwhite)}
   /* sections */
-  section{padding:30px 0}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px;box-shadow:0 6px 18px rgba(37,99,235,.05)}
-  h2{font-size:24px;margin-bottom:6px}
-  h2 .en{display:block;font-size:14px;color:var(--sub);font-weight:500;margin-top:2px}
-  .lead{color:var(--sub);margin-bottom:18px}
+  section{padding:22px 0}
+  .card{background:var(--panel);border:1px solid var(--dkgrey);border-radius:14px;padding:24px}
+  h2{font-size:22px;margin-bottom:14px;color:var(--white);
+    border-left:3px solid var(--orange);padding-left:12px}
+  .lead{color:var(--mdwhite);margin-bottom:16px}
   /* steps */
-  .steps{counter-reset:s;display:grid;gap:14px}
+  .steps{counter-reset:s;display:grid;gap:12px}
   .step{display:flex;gap:14px;align-items:flex-start}
-  .step::before{counter-increment:s;content:counter(s);flex:0 0 34px;height:34px;border-radius:50%;
-    background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800}
-  .step .body{background:#f8fbff;border:1px solid var(--line);border-radius:12px;padding:12px 16px;flex:1}
-  code{background:#eef4ff;color:var(--brand2);padding:2px 7px;border-radius:6px;font-family:Consolas,monospace;font-size:13px}
-  pre{background:#0f172a;color:#e2e8f0;padding:14px 16px;border-radius:12px;overflow:auto;font-family:Consolas,monospace;font-size:13px}
+  .step::before{counter-increment:s;content:counter(s);flex:0 0 32px;height:32px;border-radius:50%;
+    background:var(--orange);color:var(--ink);display:flex;align-items:center;justify-content:center;font-weight:800}
+  .step .body{background:var(--deep);border:1px solid var(--dkgrey);border-radius:10px;padding:12px 16px;flex:1}
+  .step .body.dl{border-color:var(--orange)}
+  code{background:var(--deep);color:var(--cyan);padding:2px 7px;border-radius:6px;font-family:Consolas,monospace;font-size:13px}
+  pre{background:#0e0e14;color:var(--white);border:1px solid var(--dkgrey);
+    padding:14px 16px;border-radius:10px;overflow:auto;font-family:Consolas,monospace;font-size:13px}
   /* table */
   table{width:100%;border-collapse:collapse;margin-top:6px;font-size:14px}
-  th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line)}
-  th{background:#f1f6ff;color:var(--brand2)}
-  /* bilingual toggle: .zh shown by default, .en hidden; EN swaps to natural display */
+  th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--dkgrey)}
+  th{background:var(--panel2);color:var(--orange)}
+  td{color:var(--white)}
+  .twocol{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .kicker{color:var(--lime);font-weight:700}
+  /* bilingual toggle */
   .en{display:none}
   html[data-lang="en"] .zh{display:none}
   html[data-lang="en"] .en{display:revert}
-  .twocol{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-  .pill{display:inline-block;background:#e7f0ff;color:var(--brand2);border-radius:999px;padding:2px 10px;font-size:12px;margin-left:6px}
-  footer{text-align:center;color:var(--sub);font-size:13px;padding:40px 20px;border-top:1px solid var(--line);margin-top:20px}
-  @media(max-width:720px){.stats{grid-template-columns:repeat(2,1fr)}.twocol{grid-template-columns:1fr}.hero h1{font-size:30px}}
+  footer{text-align:center;color:var(--grey);font-size:13px;padding:38px 20px;
+    border-top:1px solid var(--dkgrey);margin-top:22px}
+  @media(max-width:720px){.stats{grid-template-columns:repeat(2,1fr)}.twocol{grid-template-columns:1fr}.hero h1{font-size:28px}}
 </style>
 </head>
 <body>
 <div class="wrap">
   <div class="topbar">
-    <div class="brand">Pixel Composer <span style="color:var(--brand)">CN</span></div>
+    <div class="brand">
+      <img src="assets/logo.png" alt="logo" onerror="this.style.display='none'"/>
+      <span>Pixel Composer <span class="cn">CN</span></span>
+    </div>
     <div class="lang">
       <button id="btnZh" class="active" onclick="setLang('zh')">中文</button>
       <button id="btnEn" onclick="setLang('en')">EN</button>
@@ -74,13 +101,19 @@
 
   <!-- HERO -->
   <div class="hero">
-    <h1><span class="cn zh">Pixel Composer 中文汉化包</span><span class="en">Pixel Composer Chinese Localization</span></h1>
-    <p class="zh">离线 · 自包含 · 一键汉化 —— 自带翻译引擎与预翻译语言包，无需联网，可一键回滚。</p>
-    <p class="en">Offline, self-contained, one-click. Ships with a translation engine and pre-translated pack — no network needed, with one-click rollback.</p>
+    <img class="logo" src="assets/logo.png" alt="logo" onerror="this.style.display='none'"/>
+    <h1><span class="zh">Pixel Composer <span class="accent">中文汉化包</span></span>
+        <span class="en">Pixel Composer <span class="accent">Chinese Localization</span></span></h1>
+    <p class="zh">离线 · 自包含 · 一键汉化 —— 自带翻译引擎与预翻译语言包，无需联网，可一键回滚。提供免安装 EXE，下载双击即用。</p>
+    <p class="en">Offline, self-contained, one-click. Ships with a translation engine and pre-translated pack — no network, with one-click rollback. A standalone EXE is included: download and double-click.</p>
     <div class="cta">
-      <a class="btn primary" href="https://github.com/DC1024/pixel-composer-cn">⬇ <span class="zh">下载 / 查看仓库</span><span class="en">Download / Repo</span></a>
-      <a class="btn ghost" href="https://pixel-composer.com/" target="_blank" rel="noopener">Pixel Composer 官网</a>
+      <a class="btn primary" href="https://github.com/DC1024/pixel-composer-cn/raw/main/PixelComposer%E4%B8%80%E9%94%AE%E6%B1%89%E5%8C%96.exe">
+        ⬇ <span class="zh">下载一键汉化 EXE</span><span class="en">Download EXE</span></a>
+      <a class="btn ghost" href="https://github.com/DC1024/pixel-composer-cn">
+        <span class="zh">查看源码 / 仓库</span><span class="en">View source / repo</span></a>
     </div>
+    <div class="ver zh">免安装 · 需 Windows 64 位 · MIT 许可</div>
+    <div class="ver en">Portable · Windows 64-bit · MIT License</div>
   </div>
 
   <!-- STATS -->
@@ -95,25 +128,23 @@
   <section>
     <div class="card">
       <h2><span class="zh">快速开始</span><span class="en">Quick Start</span></h2>
-      <p class="lead zh">三种方式任选其一，完成后重启 Pixel Composer 即可看到中文界面。</p>
-      <p class="lead en">Pick any of the three methods, then restart Pixel Composer to see the Chinese UI.</p>
+      <p class="lead zh">任选一种方式，完成后重启 Pixel Composer 即可看到中文界面。</p>
+      <p class="lead en">Pick either method, then restart Pixel Composer to see the Chinese UI.</p>
       <div class="steps">
-        <div class="step"><div class="body">
-          <strong class="zh">① 一键批处理（推荐）</strong><strong class="en">① One-click .bat (recommended)</strong>
-          <p class="zh">双击仓库内的 <code>一键汉化.bat</code> 并按提示操作。</p>
-          <p class="en">Double-click <code>一键汉化.bat</code> in the repo and follow prompts.</p>
+        <div class="step"><div class="body dl">
+          <strong class="zh">下载 EXE，双击运行（推荐）</strong><strong class="en">Download the EXE and double-click (recommended)</strong>
+          <p class="zh">下载上方 <code>PixelComposer一键汉化.exe</code>，双击打开，点击「① 一键汉化」即可。免安装、无需 Python。</p>
+          <p class="en">Download <code>PixelComposer一键汉化.exe</code> above, double-click, then click "① 一键汉化". Portable, no Python required.</p>
         </div></div>
         <div class="step"><div class="body">
-          <strong class="zh">② 图形界面</strong><strong class="en">② GUI</strong>
-          <pre>python patch_tool.py</pre>
-          <p class="zh">弹出窗口后点击「① 一键汉化」。</p>
-          <p class="en">In the window, click "① 一键汉化（安装/启用）".</p>
+          <strong class="zh">源码方式一：一键批处理</strong><strong class="en">From source: one-click .bat</strong>
+          <p class="zh">双击仓库内的 <code>一键汉化.bat</code> 并按提示操作（需 Python 3.7+）。</p>
+          <p class="en">Double-click <code>一键汉化.bat</code> (requires Python 3.7+).</p>
         </div></div>
         <div class="step"><div class="body">
-          <strong class="zh">③ 命令行</strong><strong class="en">③ Command line</strong>
-          <pre>python patch_tool.py --install</pre>
-          <p class="zh">需要 Python 3.7+；若 <code>python</code> 不是 3.x，请改用 <code>py</code> 或 <code>python3</code>。</p>
-          <p class="en">Requires Python 3.7+. If <code>python</code> isn't 3.x, use <code>py</code> or <code>python3</code>.</p>
+          <strong class="zh">源码方式二：命令行 / 图形界面</strong><strong class="en">From source: CLI / GUI</strong>
+          <pre>python patch_tool.py            # 图形界面 / GUI
+python patch_tool.py --install  # 命令行安装 / CLI</pre>
         </div></div>
       </div>
     </div>
@@ -165,22 +196,22 @@
       <table>
         <tr><th class="zh">对比项</th><th class="zh">旧社区包</th><th class="zh">本方案</th>
             <th class="en">Aspect</th><th class="en">Old pack</th><th class="en">This project</th></tr>
-        <tr><td class="zh">更新速度</td><td class="zh">慢，手动发布</td><td class="zh">内置引擎，增量更新</td>
+        <tr><td class="zh">更新速度</td><td class="zh">慢，手动发布</td><td class="zh kicker">内置引擎，增量更新</td>
             <td class="en">Updates</td><td class="en">Slow, manual</td><td class="en">Built-in engine, incremental</td></tr>
-        <tr><td class="zh">覆盖率</td><td class="zh">较低</td><td class="zh">UI 100% · 词条 99.1% · 节点 ~93%</td>
+        <tr><td class="zh">覆盖率</td><td class="zh">较低</td><td class="zh kicker">UI 100% · 词条 99.1% · 节点 ~93%</td>
             <td class="en">Coverage</td><td class="en">Lower</td><td class="en">UI 100% · words 99.1% · nodes ~93%</td></tr>
-        <tr><td class="zh">联网需求</td><td class="zh">常需联网</td><td class="zh">完全离线</td>
+        <tr><td class="zh">联网需求</td><td class="zh">常需联网</td><td class="zh kicker">完全离线</td>
             <td class="en">Network</td><td class="en">Often online</td><td class="en">Fully offline</td></tr>
-        <tr><td class="zh">可回滚</td><td class="zh">通常不支持</td><td class="zh">备份 + 一键回滚</td>
+        <tr><td class="zh">可回滚</td><td class="zh">通常不支持</td><td class="zh kicker">备份 + 一键回滚</td>
             <td class="en">Rollback</td><td class="en">Usually no</td><td class="en">Backup + one-click rollback</td></tr>
       </table>
     </div>
   </section>
 
   <footer>
-    <p class="zh">MIT 许可证 © DC1024 · Pixel Composer 本身 © 其原作者，请遵守其许可。</p>
-    <p class="en">MIT License © DC1024 · Pixel Composer itself © its original author — respect its license.</p>
-    <p><a href="https://github.com/DC1024/pixel-composer-cn">GitHub: DC1024/pixel-composer-cn</a></p>
+    <p class="zh">MIT 许可证 © DC1024 · 配色与 Pixel Composer 官方主题一致 · Pixel Composer 本身 © 其原作者，请遵守其许可。</p>
+    <p class="en">MIT License © DC1024 · Palette matches Pixel Composer's official theme · Pixel Composer itself © its original author.</p>
+    <p style="margin-top:8px"><a href="https://github.com/DC1024/pixel-composer-cn">GitHub · DC1024/pixel-composer-cn</a></p>
   </footer>
 </div>
 
