@@ -31,6 +31,12 @@ zh/fonts/*.ttf        binary
 # Linux/macOS 一键脚本：必须 LF，带 CR 的 shebang 会让 bash 直接报错
 *.sh                  text eol=lf
 
+# 无扩展名的仓库文件也要显式声明。否则 core.autocrlf=true 时 git 认为工作区
+# "应该"是 CRLF，于是每次 add 都打印 "LF will be replaced by CRLF" 警告，
+# 且 `git ls-files --eol` 会显示 w/crlf —— 排查同步类问题时很容易误判成内容被改了。
+/.gitignore           text eol=lf
+/LICENSE              text eol=lf
+
 # Windows 批处理必须 CRLF
 *.bat                 text eol=crlf
 
