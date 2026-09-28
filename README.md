@@ -166,9 +166,13 @@ python patch_tool.py --list-modules                    # 列出可选区域
 >
 > 两个实现细节，第一次同步时会体会到：**① 每一段路径都做百分号编码** —— `welcome/**` 的路径里带空格（`Getting started/000 UI/…`），不编码三个源都取不到；**② 大文件（>2 MB，也就是那 11 MB 中文字体）优先走 CDN 而不是 Pages** —— 实测 Pages 对静态大文件限速明显（同一台机器 25 KB/s，而 jsDelivr 71 KB/s），且某个源失败时单个文件会自动换下一个源。整包 41 个文件首次同步实测约 5 分钟（11 MB 字体占大头），之后每次一般只有几十 KB。
 >
+> 另外还会**拒收版本低于本地已装的清单**：jsDelivr 对 `@main` 有较长缓存（实测推送后它还在返回上一版的清单），万一 Pages 临时不可达，这道闸能防止把已经装好的包降级。
+>
 > It does **not translate anything on your machine** — it downloads an **already-translated pack** (`zh/`) from GitHub. It fetches the manifest `zh/manifest.json` from three sources in order (GitHub Pages → jsDelivr CDN → GitHub Raw), compares sha256 against your installed pack, and **downloads only changed files** (the 11 MB CJK font is normally fetched once; later syncs are usually a few dozen KB of JSON). The existing `zh` is backed up before the whole pack is written to both data roots. If the network is unavailable, it falls back to the bundled pack instead of leaving you with nothing. If you're already current, it simply reports "nothing to update".
 >
 > Two details you'll notice on the first sync: **paths are percent-encoded** (the `welcome/**` paths contain spaces such as `Getting started/000 UI/…`, which no source serves unencoded), and **files over 2 MB — i.e. the 11 MB CJK font — prefer the CDN over Pages** (measured on one machine: 25 KB/s from Pages vs 71 KB/s from jsDelivr). Individual files also fail over to the next source automatically. A full 41-file first sync measured about 5 minutes (the 11 MB font dominates); later syncs are usually a few dozen KB.
+>
+> It also **refuses any manifest older than what you already have installed**: jsDelivr caches `@main` for a long time (measured still serving the previous version after a push), so this guard prevents a downgrade if Pages happens to be unreachable.
 
 > **为什么这样设计 / Why it works this way**：翻译只在**维护者侧做一次**（同步上游官方语言包 → 补翻 → 统一校正 → 推送），而不是在每台用户机器上各跑一遍。好处是：结果统一、质量可控（可持续人工校对）、客户端不再需要携带翻译引擎、也避免了"每个用户翻出来的版本都不一样"。
 >
