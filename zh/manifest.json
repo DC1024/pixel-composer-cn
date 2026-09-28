@@ -3,7 +3,7 @@
  "pack": "pixel-composer-cn",
  "version": "1.0.3",
  "game_version": 122000,
- "built_at": "2026-09-28 21:20:45 +0800",
+ "built_at": "2026-09-28 21:31:39 +0800",
  "counts": {
   "words": 2096,
   "UI": 560,
@@ -12,28 +12,28 @@
  },
  "files": {
   "config.json": {
-   "size": 39,
-   "sha256": "ece4e728bdd7a0647e088a71428d71bd2e77cb7158efd76c4b92f0864700e5e5"
+   "size": 37,
+   "sha256": "5e52d187b98c6a82e0dc1f740c76a173272f12f0973eee51f8e3430d35c410e8"
   },
   "junctions.json": {
-   "size": 349,
-   "sha256": "f1d30908e64e63aad4c38da0d81924179a3ea7d095915c2619037d326c5439b7"
+   "size": 330,
+   "sha256": "683b7f070bbd7900cf1cd124ecb0471502dd080331487564f255eb7875277e46"
   },
   "nodes.json": {
-   "size": 630865,
-   "sha256": "90dd2c0a56ab5c9424757887588e38ddab56bb08cc5e0954e308f9b294d40cf0"
+   "size": 585901,
+   "sha256": "97f79edd5e7a37218b3c4a319510613df24676a2ea90268a931f5e853c958ab7"
   },
   "UI.json": {
-   "size": 25532,
-   "sha256": "11593c9aecbaf6e530b0a18cb02104c468f070b3d51e2a41d3341e8ca0e13ba1"
+   "size": 24971,
+   "sha256": "e71971d1e8e20df2c0096f6f5b1e57561eab3ece15a2a6bf715d754f2a53e721"
   },
   "words.json": {
-   "size": 78266,
-   "sha256": "8cc1933c0a5a92d4a3869833cea763e534375bdba3e8cc499a6a4a1cede2c1fb"
+   "size": 76170,
+   "sha256": "66c7882b6296b1c1f391e72aa99299cfa98b294119c279af8f2f2f9d9583dfb0"
   },
   "fonts/fonts.json": {
-   "size": 1374,
-   "sha256": "0d52a804ab1e7903633e6ee43c0faf5872389a73d7d3271b19bfe0352faddacb"
+   "size": 1357,
+   "sha256": "b3f2208e1bb1a120c95f1c0c5e8f54a2efb0e99a56a3f554284ad64f7dac6be1"
   },
   "fonts/JetBrainsMono-Medium.ttf": {
    "size": 273860,

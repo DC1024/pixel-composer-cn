@@ -1,11 +1,13 @@
 # 换行策略 —— 与「汉化包在线同步」的正确性直接相关
 # ---------------------------------------------------------------
-# 客户端同步靠 sha256 比对本地包与 GitHub 上的文件。若 Windows 上
-# core.autocrlf=true，工作区会被检出成 CRLF，而 Git 仓库/GitHub 上是 LF，
-# 两侧字节不同 → 每次同步都误判"文件变了"而整包重下（实测 junctions.json
-# 本地 349B / 线上 330B，nodes.json 差 45KB）。详见 zhsync.normalize_bytes()。
+# 客户端同步靠 sha256（原始字节）比对本地包与 GitHub 上的文件，因此同一份文件
+# 在「仓库 blob / 工作区 / 各下载源」上必须完全一致。若 Windows 上
+# core.autocrlf=true 而这里不做约定，工作区会被检出成 CRLF、仓库里是 LF，
+# 同一个 junctions.json 本地 349B / 线上 330B → 哈希永远对不上，
+# 每次同步都误判"文件变了"而重下整包（含 11MB 字体）。详见 zhsync.sha256_bytes()。
 #
-# 规范：包内文本一律 LF；字体是二进制，禁止任何换行处理。
+# 规范：包内文本一律 LF；字体是二进制，禁止任何换行处理
+# （LXGW 字体本身含 4926 处 0x0D0A 字节对，若被当文本做 CRLF 归一会被改坏）。
 
 # 汉化包内文本：LF
 zh/*.json             text eol=lf
