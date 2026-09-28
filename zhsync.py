@@ -18,6 +18,10 @@
 2. jsDelivr CDN   —— 国内一般可直连（有缓存，最长约 12 小时）
 3. GitHub Raw     —— 最快，但部分网络环境不可达
 
+**大文件（>2 MB，实际就是 11 MB 中文字体）会改用「CDN 优先」的顺序** ——
+实测 Pages 对静态大文件限速明显（同一机器上 25 KB/s vs jsDelivr 71 KB/s），
+详见 `_download_order()`。小文件仍保持 Pages 优先。
+
 可用环境变量 `PCCN_SOURCE` 覆盖为自定义镜像的 base url（仓库地址或 zh 目录地址都可）。
 
 清单协议（`zh/manifest.json`）
@@ -49,6 +53,11 @@
 ⚠️ 哈希按**原始字节**计算，因此包内文件在「仓库 / 工作区 / 各下载源」上必须是
 同一份字节 —— 这靠仓库根的 `.gitattributes` 保证（文本统一 LF、字体按 binary）。
 详见 `sha256_bytes()` 里记录的踩坑说明（不要把 CRLF 归一加回来，会误伤字体）。
+
+⚠️ 拼下载 URL 必须过 `_url()` 做百分号编码。`zh/welcome/**` 的路径里带空格
+（``Getting started/000 UI/000 Introduction.pxc``），直接 `base + rel` 拼出来的
+URL 三个源都取不到（实测 Pages 返回 000），而本地文件路径**不能**编码。
+详见 `_url()` 的踩坑说明。
 """
 import hashlib
 import json
@@ -56,6 +65,8 @@ import os
 import re
 import shutil
 import datetime
+import urllib.error
+import urllib.parse
 import urllib.request
 
 SCHEMA = 1
@@ -196,6 +207,23 @@ def normalize_source(base):
     if not b.endswith("/zh"):
         b += "/zh"
     return b + "/"
+
+
+def _url(base, rel):
+    """把 base + 包内相对路径拼成**可用的 URL**。
+
+    必须对路径做百分号编码：`welcome/**` 的路径里带空格
+    （``Getting started/000 UI/000 Introduction.pxc``）。HTTP 客户端不会替你编码，
+    原样拼出来的 URL 会让 GitHub Pages / jsDelivr / Raw 全部取不到该文件
+    —— 实测返回码 000（连接直接失败），`%20` 编码后 200 正常
+    （2026-09-28 踩到：41 个文件只有 8 个能同步下来，32 个 welcome 全失败）。
+
+    ``safe="/"`` 保留路径分隔符；非 ASCII 字符会被编码成 UTF-8 的百分号序列，
+    这正是 URL 规范要求的写法，三个下载源都认。
+
+    注意：**只编码 URL**。本地文件路径（_local_copy / os.path.join）绝对不要过这里，
+    否则会把文件名里的 %20 当成真实字符。"""
+    return base + urllib.parse.quote(rel, safe="/")
 
 
 def _get(url, timeout=TIMEOUT):
@@ -392,7 +420,7 @@ def fetch_manifest(log=None):
 
     for name, base in sources():
         try:
-            man = validate_manifest(json.loads(_get(base + MANIFEST_NAME).decode("utf-8")))
+            man = validate_manifest(json.loads(_get(_url(base, MANIFEST_NAME)).decode("utf-8")))
         except Exception as e:
             say(f"源不可用（{name}）：{getattr(e, 'code', None) or type(e).__name__}")
             continue
@@ -421,17 +449,76 @@ def plan_files(man, local_hashes_list, only=None):
     return need
 
 
-def _download(base, rel, meta):
-    timeout = BIG_TIMEOUT if int(meta.get("size") or 0) > (2 << 20) else TIMEOUT
+def _is_pages(base):
+    """判断某个 base 是不是 GitHub Pages 站点。"""
     try:
-        data = _get(base + rel, timeout)
-    except Exception as e:
-        raise SyncError(f"下载失败 {rel}: {getattr(e, 'code', None) or e}")
-    if int(meta.get("size", -1)) != len(data):
-        raise SyncError(f"大小不符 {rel}: 期望 {meta.get('size')}，实得 {len(data)}")
-    if sha256_bytes(data) != meta.get("sha256"):
-        raise SyncError(f"校验不符 {rel}（内容与清单不一致）")
-    return data
+        return (urllib.parse.urlsplit(base).hostname or "").endswith(".github.io")
+    except Exception:
+        return False
+
+
+#: 超过这个体积就重新排源（见 _download_order）
+BIG_FILE = 2 << 20      # 2 MB
+
+
+def _download_order(rel, meta, base, all_bases):
+    """单个文件的源尝试顺序。
+
+    大文件（>2 MB，实际就是那 11 MB 中文字体）把 **GitHub Pages 排到最后**：
+    Pages 对静态大文件明显限速，2026-09-28 实测同一台机器下 11 MB 字体的速度是 ——
+
+        GitHub Pages   24.7 KB/s     （100 秒只下到 2.47 MB，必然撞 180 秒超时）
+        jsDelivr CDN   70.6 KB/s
+        GitHub Raw     72.3 KB/s
+
+    也就是 Pages 需要约 7.5 分钟、另外两个约 2.6 分钟。首次同步本来就要下这个字体，
+    让用户先白等 3 分钟超时再换源毫无意义，所以这里直接换序；小文件仍保持
+    Pages 优先（它是推送后最新的那个源）。
+    """
+    order = [base] + [b for b in (all_bases or []) if b != base]
+    if int(meta.get("size") or 0) > BIG_FILE:
+        order = ([b for b in order if not _is_pages(b)]
+                 + [b for b in order if _is_pages(b)])
+    return order
+
+
+def _download(base, rel, meta, bases=None, log=None, order=None):
+    """下载单个文件并校验（大小 + sha256）。
+
+    ``order`` 给出完整的源尝试顺序（见 `_download_order`）；不传则用
+    ``[base] + bases``。任一源取不到/校验不过就换下一个源重试，
+    不至于因为一个文件而让整次同步失败。
+
+    ``log`` 用于报告换源 —— 首次同步要拉 11 MB 中文字体，慢的时候界面上
+    几分钟没动静很像"卡死"，所以每次换源都留一行痕迹。
+    """
+    timeout = BIG_TIMEOUT if int(meta.get("size") or 0) > BIG_FILE else TIMEOUT
+    if order is None:
+        order = [base] + [b for b in (bases or []) if b != base]
+    last = None
+    for i, b in enumerate(order):
+        try:
+            data = _get(_url(b, rel), timeout)
+        except Exception as e:
+            last = e
+            if log and i + 1 < len(order):
+                log(f"  {rel} 在当前源取不到（{getattr(e, 'code', None) or type(e).__name__}），换下一个源…")
+            continue
+        if int(meta.get("size", -1)) != len(data):
+            last = SyncError(f"大小不符: 期望 {meta.get('size')}，实得 {len(data)}")
+            continue
+        if sha256_bytes(data) != meta.get("sha256"):
+            last = SyncError("内容与清单 sha256 不一致")
+            continue
+        if i:
+            _LAST_SOURCE_USED.append(b)
+        return data
+    reason = getattr(last, "code", None) or last or "无可用源"
+    raise SyncError(f"下载失败 {rel}: {reason}")
+
+
+#: 最近一次 _download 换源记录（诊断用，不参与逻辑）
+_LAST_SOURCE_USED = []
 
 
 def _local_copy(rel, local_dirs, dst):
@@ -486,13 +573,17 @@ def sync_pack(man, base, local_dirs, dest, log=None, only=None):
     say(f"需同步 {len(need)} 个文件，其余从本地复用")
     tried, ok = [], False
     candidates = [b for _n, b in sources() if b != base]
+    all_bases = [base] + candidates
     for b in [base] + candidates:
         if b in tried:
             continue
         tried.append(b)
         try:
             for rel in need:
-                data = _download(b, rel, man["files"][rel])
+                # 按文件挑源顺序（大文件走 CDN 优先）+ 逐源回退：
+                # 单个文件在某源上取不到时自动换下一个源，不必因为一个文件丢弃整批
+                data = _download(b, rel, man["files"][rel], log=say,
+                                 order=_download_order(rel, man["files"][rel], b, all_bases))
                 p = os.path.join(dest, *rel.split("/"))
                 os.makedirs(os.path.dirname(p), exist_ok=True)
                 with open(p, "wb") as f:
@@ -518,7 +609,8 @@ def sync_pack(man, base, local_dirs, dest, log=None, only=None):
         if os.path.isfile(p):
             continue
         if not _local_copy(rel, local_dirs, p):
-            data = _download(base, rel, man["files"][rel])
+            data = _download(base, rel, man["files"][rel], log=say,
+                             order=_download_order(rel, man["files"][rel], base, all_bases))
             os.makedirs(os.path.dirname(p), exist_ok=True)
             with open(p, "wb") as f:
                 f.write(data)

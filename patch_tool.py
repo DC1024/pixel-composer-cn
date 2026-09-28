@@ -79,6 +79,29 @@ def _bootstrap_paths():
         if rd not in sys.path:
             sys.path.insert(0, rd)
 
+def _setup_stdio():
+    """让命令行输出的字节在不同运行方式下保持一致（UTF-8）。
+
+    背景（2026-09-28 实测）：PyInstaller 打包出的 windowed EXE 在**输出被重定向
+    到文件或管道**时，`sys.stdout.encoding` 会退化成系统 ANSI 代码页（简体中文
+    Windows 上是 cp936/GBK），而同一个脚本用 `python patch_tool.py` 跑却是
+    UTF-8 —— 于是 `--version` 的「汉化工具」四个字在 EXE 下是 `BA BA BB AF …`，
+    在源码方式下是 `E6 B1 89 …`。抓日志/做校验的人很容易把前者当成乱码。
+
+    **真控制台不做处理**：Windows 下 Python 3.6+ 直接调 `WriteConsoleW` 写
+    宽字符，编码属性只影响重定向后的字节，所以控制台显示本来就是对的。
+    """
+    for name in ("stdout", "stderr"):
+        s = getattr(sys, name, None)
+        if s is None:
+            continue
+        try:
+            if s.isatty():
+                continue
+            s.reconfigure(encoding="utf-8", errors="replace")
+        except Exception:
+            pass      # 被替换成 StringIO / 老版本解释器：忽略即可
+
 # ------------------------- 路径探测 -------------------------
 def _uniq(paths):
     """按真实路径去重（保留先出现的那个写法）。"""
@@ -1337,7 +1360,7 @@ class PCButton:
     def grid(self, **kw):
         self.cv.grid(**kw)
 
-VERSION = "1.2.0"
+VERSION = "1.2.1"
 
 def _ui_font(size, bold=False, mono=False):
     """按平台挑一个存在的字体。
@@ -1516,6 +1539,7 @@ def parse_args(argv):
 
 def main():
     _bootstrap_paths()
+    _setup_stdio()
     opts, rest = parse_args(sys.argv[1:])
     if opts.get("install_dir"):
         os.environ["PIXELCOMPOSER_DIR"] = opts["install_dir"]
@@ -1565,6 +1589,7 @@ def main():
 
 def cli_loop(modules=None):
     _bootstrap_paths()
+    _setup_stdio()
     modules = resolve_modules(modules)
     print(f"Pixel Composer 一键汉化工具 v{VERSION}（CLI）")
     print(f"当前汉化区域: {module_summary(modules)}")
