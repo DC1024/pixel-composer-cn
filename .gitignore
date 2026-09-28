@@ -8,7 +8,13 @@ _zh_gen/
 *.bak_*
 *.pre_rollback_*
 
-# PyInstaller 构建产物（构建脚本会把 exe 复制到仓库根的 中文名 文件）
+# PyInstaller 构建产物（构建脚本会把 exe 复制到仓库根）
+# 发行产物只走 GitHub Releases，不入仓：两个 exe 各约 18 MB，且内容完全相同，
+# 每次发版提交都会永久留在 git 历史里（仓库 .git 已 78 MB）。
+# 下载地址：https://github.com/DC1024/pixel-composer-cn/releases/latest
+/PixelComposer-CN-Patcher.exe
+/PixelComposer一键汉化.exe
+*.exe
 .pyi_build/
 .pyi_spec/
 .pyi_dist/

@@ -27,6 +27,10 @@
 | **One-click EXE (recommended)** | [⬇ Download `PixelComposer-CN-Patcher.exe` (latest release)](https://github.com/DC1024/pixel-composer-cn/releases/latest/download/PixelComposer-CN-Patcher.exe) — portable, no Python, just double-click. |
 | 源码 Source | 克隆本仓库后运行 `patch_tool.py` / `一键汉化.bat`。 Clone and run `patch_tool.py` / `一键汉化.bat`. |
 
+> **EXE 只从 Releases 下载，仓库内不再存放**（两个约 18 MB 的构建产物每次发版都会进 git 历史，太浪费）。
+> 想要二进制请点上面的链接：[最新发行版](https://github.com/DC1024/pixel-composer-cn/releases/latest)。
+> **The EXE lives in Releases only** — the repo no longer tracks the ~18 MB build artifacts. Grab the binary from the [latest release](https://github.com/DC1024/pixel-composer-cn/releases/latest).
+
 ![工具界面 / GUI](assets/screenshot.png)
 
 > **配色 / Palette**：EXE 界面与官网均取自 Pixel Composer 官方 `default` 主题（`Themes/default/values.json`）——背景 `#1c1c23`、面板 `#3b3b4e`、主强调色橙 `#ff9166`、文字 `#d6d6e8`。
@@ -217,9 +221,9 @@ LocalAppData/PixelComposer/Locale/zh/...      ← 写入点 1 / root 1
 
 ## 从源码构建 EXE / Build the EXE from Source
 
-需要 Python 3.7+（含 tkinter）。双击运行 **`build_exe.bat`**，脚本会自动安装 PyInstaller、把 `zh/` 汉化包与同步模块内嵌进程序，产出单文件 **`PixelComposer一键汉化.exe`**（免安装、双击即用）。
+需要 Python 3.7+（含 tkinter）。双击运行 **`build_exe.bat`**，脚本会自动安装 PyInstaller、把 `zh/` 汉化包与同步模块内嵌进程序，产出单文件 **`PixelComposer一键汉化.exe`**（免安装、双击即用）。产物已被 `.gitignore` 忽略，不会进版本库 —— 正式发行请上传到 GitHub Releases。
 
-Requires Python 3.7+ (with tkinter). Double-click **`build_exe.bat`**; it installs PyInstaller, embeds the `zh/` pack + sync module, and produces a single-file **`PixelComposer一键汉化.exe`**.
+Requires Python 3.7+ (with tkinter). Double-click **`build_exe.bat`**; it installs PyInstaller, embeds the `zh/` pack + sync module, and produces a single-file **`PixelComposer一键汉化.exe`**. The artifact is git-ignored on purpose — publish it as a GitHub Release instead of committing it.
 
 等价的命令行 / Equivalent CLI:
 ```bash
