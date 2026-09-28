@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2026 DC
+Copyright (c) 2026 DC1024
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,3 +19,9 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+---
+
+Pixel Composer 软件本身 © 其原作者 / Pixel Composer software itself © its original author.
+本仓库仅包含第三方中文语言包与打补丁工具，请遵守 Pixel Composer 的许可协议。
+This repository contains only a third-party Chinese locale pack and patcher; respect Pixel Composer's own license.

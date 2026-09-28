@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.py[cod]
+_en_tmp/
+_zh_gen/
+
+# 运行时产生的备份（安装/还原时自动生成，勿入仓）
+*.bak_*
+*.pre_rollback_*
+
+# 本地工作副本（非发布内容）
+/dist/
+/tool/
+/ref/
+
+# 系统
+Thumbs.db
+.DS_Store
+desktop.ini

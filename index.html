@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-lang="zh">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Pixel Composer 中文汉化包 · Pixel Composer CN</title>
+<style>
+  :root{
+    --bg:#f5f8ff; --bg2:#eaf1ff; --card:#ffffff; --ink:#0f172a; --sub:#475569;
+    --brand:#2563eb; --brand2:#1e40af; --accent:#38bdf8; --line:#dbe6ff; --ok:#16a34a;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"Microsoft YaHei","PingFang SC","Segoe UI",system-ui,sans-serif;
+    background:linear-gradient(180deg,var(--bg),var(--bg2));color:var(--ink);line-height:1.65}
+  a{color:var(--brand);text-decoration:none}
+  .wrap{max-width:960px;margin:0 auto;padding:0 20px}
+  /* lang toggle */
+  .topbar{display:flex;justify-content:space-between;align-items:center;padding:18px 0}
+  .brand{font-weight:800;letter-spacing:.5px;color:var(--brand2)}
+  .lang{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:#fff}
+  .lang button{border:0;background:transparent;padding:6px 14px;cursor:pointer;font-size:13px;color:var(--sub)}
+  .lang button.active{background:var(--brand);color:#fff;font-weight:700}
+  /* hero */
+  .hero{text-align:center;padding:54px 20px 40px;background:radial-gradient(1200px 300px at 50% -40px,#cfe0ff,transparent)}
+  .hero h1{font-size:38px;line-height:1.2;margin-bottom:12px}
+  .hero h1 .cn{color:var(--brand2)}
+  .hero p{color:var(--sub);font-size:17px;max-width:640px;margin:0 auto 26px}
+  .cta{display:inline-flex;gap:12px;flex-wrap:wrap;justify-content:center}
+  .btn{padding:12px 22px;border-radius:12px;font-weight:700;font-size:15px;border:1px solid transparent}
+  .btn.primary{background:var(--brand);color:#fff}
+  .btn.ghost{background:#fff;color:var(--brand);border-color:var(--line)}
+  /* stats */
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:30px 0}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;text-align:center;box-shadow:0 6px 18px rgba(37,99,235,.06)}
+  .stat b{display:block;font-size:28px;color:var(--brand)}
+  .stat span{font-size:13px;color:var(--sub)}
+  /* sections */
+  section{padding:30px 0}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px;box-shadow:0 6px 18px rgba(37,99,235,.05)}
+  h2{font-size:24px;margin-bottom:6px}
+  h2 .en{display:block;font-size:14px;color:var(--sub);font-weight:500;margin-top:2px}
+  .lead{color:var(--sub);margin-bottom:18px}
+  /* steps */
+  .steps{counter-reset:s;display:grid;gap:14px}
+  .step{display:flex;gap:14px;align-items:flex-start}
+  .step::before{counter-increment:s;content:counter(s);flex:0 0 34px;height:34px;border-radius:50%;
+    background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800}
+  .step .body{background:#f8fbff;border:1px solid var(--line);border-radius:12px;padding:12px 16px;flex:1}
+  code{background:#eef4ff;color:var(--brand2);padding:2px 7px;border-radius:6px;font-family:Consolas,monospace;font-size:13px}
+  pre{background:#0f172a;color:#e2e8f0;padding:14px 16px;border-radius:12px;overflow:auto;font-family:Consolas,monospace;font-size:13px}
+  /* table */
+  table{width:100%;border-collapse:collapse;margin-top:6px;font-size:14px}
+  th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line)}
+  th{background:#f1f6ff;color:var(--brand2)}
+  /* bilingual toggle: .zh shown by default, .en hidden; EN swaps to natural display */
+  .en{display:none}
+  html[data-lang="en"] .zh{display:none}
+  html[data-lang="en"] .en{display:revert}
+  .twocol{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .pill{display:inline-block;background:#e7f0ff;color:var(--brand2);border-radius:999px;padding:2px 10px;font-size:12px;margin-left:6px}
+  footer{text-align:center;color:var(--sub);font-size:13px;padding:40px 20px;border-top:1px solid var(--line);margin-top:20px}
+  @media(max-width:720px){.stats{grid-template-columns:repeat(2,1fr)}.twocol{grid-template-columns:1fr}.hero h1{font-size:30px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar">
+    <div class="brand">Pixel Composer <span style="color:var(--brand)">CN</span></div>
+    <div class="lang">
+      <button id="btnZh" class="active" onclick="setLang('zh')">中文</button>
+      <button id="btnEn" onclick="setLang('en')">EN</button>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <h1><span class="cn zh">Pixel Composer 中文汉化包</span><span class="en">Pixel Composer Chinese Localization</span></h1>
+    <p class="zh">离线 · 自包含 · 一键汉化 —— 自带翻译引擎与预翻译语言包，无需联网，可一键回滚。</p>
+    <p class="en">Offline, self-contained, one-click. Ships with a translation engine and pre-translated pack — no network needed, with one-click rollback.</p>
+    <div class="cta">
+      <a class="btn primary" href="https://github.com/DC1024/pixel-composer-cn">⬇ <span class="zh">下载 / 查看仓库</span><span class="en">Download / Repo</span></a>
+      <a class="btn ghost" href="https://pixel-composer.com/" target="_blank" rel="noopener">Pixel Composer 官网</a>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat"><b>100%</b><span class="zh">界面 UI 覆盖</span><span class="en">UI coverage</span></div>
+    <div class="stat"><b>99.1%</b><span class="zh">词条覆盖</span><span class="en">Words coverage</span></div>
+    <div class="stat"><b>~93%</b><span class="zh">节点名称覆盖</span><span class="en">Node coverage</span></div>
+    <div class="stat"><b>0</b><span class="zh">联网需求</span><span class="en">Network needed</span></div>
+  </div>
+
+  <!-- QUICK START -->
+  <section>
+    <div class="card">
+      <h2><span class="zh">快速开始</span><span class="en">Quick Start</span></h2>
+      <p class="lead zh">三种方式任选其一，完成后重启 Pixel Composer 即可看到中文界面。</p>
+      <p class="lead en">Pick any of the three methods, then restart Pixel Composer to see the Chinese UI.</p>
+      <div class="steps">
+        <div class="step"><div class="body">
+          <strong class="zh">① 一键批处理（推荐）</strong><strong class="en">① One-click .bat (recommended)</strong>
+          <p class="zh">双击仓库内的 <code>一键汉化.bat</code> 并按提示操作。</p>
+          <p class="en">Double-click <code>一键汉化.bat</code> in the repo and follow prompts.</p>
+        </div></div>
+        <div class="step"><div class="body">
+          <strong class="zh">② 图形界面</strong><strong class="en">② GUI</strong>
+          <pre>python patch_tool.py</pre>
+          <p class="zh">弹出窗口后点击「① 一键汉化」。</p>
+          <p class="en">In the window, click "① 一键汉化（安装/启用）".</p>
+        </div></div>
+        <div class="step"><div class="body">
+          <strong class="zh">③ 命令行</strong><strong class="en">③ Command line</strong>
+          <pre>python patch_tool.py --install</pre>
+          <p class="zh">需要 Python 3.7+；若 <code>python</code> 不是 3.x，请改用 <code>py</code> 或 <code>python3</code>。</p>
+          <p class="en">Requires Python 3.7+. If <code>python</code> isn't 3.x, use <code>py</code> or <code>python3</code>.</p>
+        </div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- USAGE -->
+  <section>
+    <div class="twocol">
+      <div class="card">
+        <h2><span class="zh">图形界面按钮</span><span class="en">GUI Buttons</span></h2>
+        <table>
+          <tr><th class="zh">按钮</th><th class="zh">作用</th><th class="en">Button</th><th class="en">Action</th></tr>
+          <tr><td class="zh">① 一键汉化</td><td class="zh">安装并启用中文</td><td class="en">① Install & enable</td><td class="en">Install + enable Chinese</td></tr>
+          <tr><td class="zh">② 更新汉化</td><td class="zh">增量补全翻译</td><td class="en">② Update</td><td class="en">Incremental update</td></tr>
+          <tr><td class="zh">③ 恢复英文</td><td class="zh">切回英文（保留备份）</td><td class="en">③ Restore EN</td><td class="en">Back to English (backup kept)</td></tr>
+          <tr><td class="zh">④ 还原上一版</td><td class="zh">回滚到上次汉化</td><td class="en">④ Rollback</td><td class="en">Roll back to previous pack</td></tr>
+          <tr><td class="zh">⑤ 查看状态</td><td class="zh">显示目录与语言</td><td class="en">⑤ Status</td><td class="en">Show paths & language</td></tr>
+        </table>
+      </div>
+      <div class="card">
+        <h2><span class="zh">命令行参数</span><span class="en">CLI Flags</span></h2>
+        <pre>--install    安装并启用中文
+--update     增量更新汉化
+--restore    恢复英文
+--rollback   还原上一版汉化
+--status     查看当前状态
+--no-gui     无界面直接安装
+--cli        交互式命令行</pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section>
+    <div class="card">
+      <h2><span class="zh">工作原理</span><span class="en">How It Works</span></h2>
+      <p class="zh">Pixel Composer 使用 <b>Locale 覆盖机制</b>（而非修改二进制）：从 <code>Locale/{语言}/</code> 读取各类 json，<code>en</code> 作为兜底最先加载。本工具把预翻好的 <code>zh</code> 包写入该目录，并把语言开关 <code>preferences/1171/keys.json</code> 的 <code>local</code> 改为 <code>"zh"</code>。由于游戏的 <code>persistPreference.json</code> 在两处数据目录间互相指向，工具会<b>同时写入两个目录</b>并确保两处语言都设为 <code>zh</code>，汉化才能稳定生效。</p>
+      <p class="en">Pixel Composer uses a <b>Locale overlay</b> (not binary patching): it reads json files from <code>Locale/{lang}/</code>, with <code>en</code> as the first fallback. This tool drops the pre-translated <code>zh</code> pack there and sets <code>local</code> to <code>"zh"</code> in <code>preferences/1171/keys.json</code>. Because the game's <code>persistPreference.json</code> points circularly between two data dirs, the tool <b>writes to both roots</b> and sets <code>zh</code> in each, so the localization reliably applies.</p>
+      <pre>LocalAppData/PixelComposer/Locale/zh/...   ← 写入点 1
+游戏目录/PixelComposer/Locale/zh/...        ← 写入点 2
+两处 keys.json 均设 local="zh"</pre>
+    </div>
+  </section>
+
+  <!-- VS OLD -->
+  <section>
+    <div class="card">
+      <h2><span class="zh">相比旧社区汉化包</span><span class="en">vs. Old Community Pack</span></h2>
+      <table>
+        <tr><th class="zh">对比项</th><th class="zh">旧社区包</th><th class="zh">本方案</th>
+            <th class="en">Aspect</th><th class="en">Old pack</th><th class="en">This project</th></tr>
+        <tr><td class="zh">更新速度</td><td class="zh">慢，手动发布</td><td class="zh">内置引擎，增量更新</td>
+            <td class="en">Updates</td><td class="en">Slow, manual</td><td class="en">Built-in engine, incremental</td></tr>
+        <tr><td class="zh">覆盖率</td><td class="zh">较低</td><td class="zh">UI 100% · 词条 99.1% · 节点 ~93%</td>
+            <td class="en">Coverage</td><td class="en">Lower</td><td class="en">UI 100% · words 99.1% · nodes ~93%</td></tr>
+        <tr><td class="zh">联网需求</td><td class="zh">常需联网</td><td class="zh">完全离线</td>
+            <td class="en">Network</td><td class="en">Often online</td><td class="en">Fully offline</td></tr>
+        <tr><td class="zh">可回滚</td><td class="zh">通常不支持</td><td class="zh">备份 + 一键回滚</td>
+            <td class="en">Rollback</td><td class="en">Usually no</td><td class="en">Backup + one-click rollback</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <footer>
+    <p class="zh">MIT 许可证 © DC1024 · Pixel Composer 本身 © 其原作者，请遵守其许可。</p>
+    <p class="en">MIT License © DC1024 · Pixel Composer itself © its original author — respect its license.</p>
+    <p><a href="https://github.com/DC1024/pixel-composer-cn">GitHub: DC1024/pixel-composer-cn</a></p>
+  </footer>
+</div>
+
+<script>
+  function setLang(l){
+    document.documentElement.setAttribute('data-lang', l);
+    document.getElementById('btnZh').classList.toggle('active', l==='zh');
+    document.getElementById('btnEn').classList.toggle('active', l==='en');
+  }
+</script>
+</body>
+</html>
