@@ -86,7 +86,7 @@ python patch_tool.py --install
 | ③ 恢复英文 Restore English | 切回英文（保留汉化备份）。 Switch back to English (keeps a backup). |
 | ④ 还原上一版汉化 Rollback | 回滚到上一次安装的汉化包。 Roll back to the previously installed pack. |
 | ⑤ 查看状态 Status | 显示安装目录、汉化状态与当前语言。 Show install path, pack status, current language. |
-| ⑥ 汉化工作区标签 Localize layout tabs | 把自带布局 `Horizontal` / `Vertical` / `Preview` / `Drawing` / `Side menu` 改名为中文（标签取文件名）。 Rename built-in layouts to Chinese (tabs read the file name). |
+| ⑥ 汉化工作区标签 Localize layout tabs | 把自带布局改名为中文：**同时**改写 `layouts/*.json` 文件名与游戏自带 `pack/layouts.zip` 里的条目名（原 zip 备份为 `layouts.zip.bak_cn`）。 Renames the layout files **and** the entries inside the game's own `pack/layouts.zip` (the original zip is backed up as `layouts.zip.bak_cn`). |
 | ⑦ 还原布局名 Restore layout names | 把布局文件名还原成英文。 Restore the original English layout file names. |
 
 > **②「更新汉化」到底做了什么？ / What does ② actually do?**
@@ -154,7 +154,7 @@ LocalAppData/PixelComposer/Locale/zh/...      ← 写入点 1 / root 1
 | 位置 Where | 情况 Status | 处理 Workaround |
 |---|---|---|
 | **浮动面板标题**（`Toolbar`、`Collections` 等） | 这些标题由主程序内部维护的**面板注册表**直接绘制，**不走语言包**。已实测 20 余种候选键名（`panel_toolbar`、`panel_collections`、`Toolbar Panel`、原始字符串 `Toolbar` / `Collections` 等）全部无效。 | 无需处理：**打开面板的入口在「面板菜单」里，条目已全部汉化**（显示为「工具栏」「集合」「图表」等），不影响日常使用。 |
-| **工作区布局标签**（`Horizontal` / `Vertical` / `Preview` / `Drawing` / `Side menu`） | 标签显示的是 `layouts/*.json` 的**文件名**，本身不查语言表（已确认布局名不存在于任何语言包或偏好设置中，程序按目录枚举文件）。 | 点 **⑥ 汉化工作区标签** 把 5 个自带布局改成中文名；不满意可点 **⑦ 还原布局名**。`__default.json` 与 `layouts/version` 永不被改动。 |
+| **工作区布局标签**（`Horizontal` / `Vertical` / `Preview` / `Drawing` / `Side menu`） | 标签显示的是 `layouts/*.json` 的**文件名**，本身不查语言表（已确认布局名不存在于任何语言包或偏好设置中，程序按目录枚举文件）。⚠️ 只改文件名**会被还原**：实测改完名启动一次，游戏就从 `pack/layouts.zip` 把 5 个英文名重新解了出来，变成中英两套重复标签。 | 点 **⑥ 汉化工作区标签** —— 它会**同时改写 `pack/layouts.zip` 里的条目名**（原 zip 备份为 `layouts.zip.bak_cn`），改完启动实测**只剩中文名、英文名不再回来**；不满意点 **⑦ 还原布局名**。注意：执行 ⑥ 会触发游戏按 zip 重新解出一次内置布局，若你改过这 5 个内置布局的内容会被还原（你自建的布局不受影响）；`__default.json` 与 `layouts/version` 永不被改动。 |
 | `2d` / `3d` / `CMYK` / `OKLAB` / `PXC` 等 | 品牌名 / 格式名 / 专有名词。 | 按约定保留英文，避免歧义。 |
 
 **English** — Floating panel titles (`Toolbar`, `Collections`, …) are drawn by the executable's internal panel registry and **never pass through the locale tables** — 20+ candidate key forms were tested and none had any effect. The panel *menu* entries (the way you actually open these panels) are fully translated, so this is cosmetic. Workspace layout tabs show `layouts/*.json` **file names**, which the locale tables cannot touch — use button ⑥ to rename them (⑦ reverts); `__default.json` and `layouts/version` are never modified.

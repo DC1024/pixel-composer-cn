@@ -9,6 +9,9 @@ Pixel Composer 一键汉化工具（离线版 / 标准库 only）
   3) 恢复英文   : 切回 en
   4) 还原上一版 : 回滚到最近一次安装前的汉化包（zh.bak_*）
   5) 查看状态   : 显示当前语言与目录
+  6) 汉化工作区标签 : 自带布局改名成中文；同时改写 pack/layouts.zip 的条目名
+                      （只改文件名会被游戏重新解出英文名还原，故必须连 zip 一起改）
+  7) 还原布局名 : 把上面两条改动还原成英文
 依赖：仅 Python 标准库（tkinter 做界面，缺失时自动退回命令行）
 配色：与 Pixel Composer 官方 default 主题一致（Themes/default/values.json）
 """
@@ -394,8 +397,65 @@ def _retarget_layout_pref(runtime, mapping, logbox=None):
         except Exception:
             pass
 
+def patch_layout_zip(pairs, logbox=None):
+    """改写 pack/layouts.zip 里的条目名（pairs: [(旧名, 新名)]），返回改动条数。
+
+    为什么必须改 zip：只要 layouts/ 里缺了任一个自带布局，游戏启动时会从
+    pack/layouts.zip 把整套自带布局重新解出来 —— 光改文件名会被还原成英文
+    （实测：改完名后启动一次，Horizontal.json 等 5 个英文文件全部回来，
+    变成中英文各一套的重复项）。把 zip 里的条目名也改掉，游戏自己解出来的
+    就是中文名，才是稳定的做法。
+    首次调用会把原 zip 备份成 layouts.zip.bak_cn，便于还原。
+    """
+    install = find_install_dir()
+    zp = os.path.join(install, "pack", "layouts.zip") if install else ""
+    if not zp or not os.path.isfile(zp):
+        log("未找到 pack/layouts.zip，跳过内置布局改写。", logbox)
+        return 0
+    bak = zp + ".bak_cn"
+    if not os.path.isfile(bak):
+        try:
+            shutil.copy2(zp, bak)
+            log("已备份 pack/layouts.zip -> layouts.zip.bak_cn", logbox)
+        except Exception as e:
+            log(f"备份 layouts.zip 失败: {e}", logbox)
+    try:
+        with zipfile.ZipFile(zp) as zin:
+            items = [(i, zin.read(i.filename)) for i in zin.infolist()]
+    except Exception as e:
+        log(f"读取 layouts.zip 失败: {e}", logbox)
+        return 0
+    m = dict(pairs)
+    changed = 0
+    tmp = zp + ".tmp"
+    try:
+        with zipfile.ZipFile(tmp, "w", zipfile.ZIP_DEFLATED) as zo:
+            for info, data in items:
+                name = m.get(info.filename, info.filename)
+                if name != info.filename:
+                    changed += 1
+                ni = zipfile.ZipInfo(name, date_time=info.date_time)
+                ni.compress_type = info.compress_type
+                ni.external_attr = info.external_attr
+                zo.writestr(ni, data)
+        if changed:
+            os.replace(tmp, zp)
+            log(f"pack/layouts.zip 内置布局改名 {changed} 项", logbox)
+        else:
+            os.remove(tmp)
+            log("pack/layouts.zip 无需改动（可能已处理过）。", logbox)
+    except Exception as e:
+        if os.path.exists(tmp):
+            try:
+                os.remove(tmp)
+            except Exception:
+                pass
+        log(f"改写 layouts.zip 失败（游戏可能在运行中）: {e}", logbox)
+        return 0
+    return changed
+
 def do_layouts(restore=False, logbox=None):
-    """汉化 / 还原工作区标签（重命名自带布局文件）。"""
+    """汉化 / 还原工作区标签（同时改写 layouts/*.json 文件名与 pack/layouts.zip 条目名）。"""
     install = find_install_dir()
     dirs = find_layout_dirs(install)
     if not dirs:
@@ -404,6 +464,9 @@ def do_layouts(restore=False, logbox=None):
     pairs = [(a, b) for a, b in LAYOUT_CN.items()]
     if restore:
         pairs = [(b, a) for a, b in pairs]
+    # 1) 先改 pack/layouts.zip，避免游戏下次启动把英文名解回来
+    patch_layout_zip(pairs, logbox)
+    # 2) 再改已解出来的布局文件
     mapping, done = {}, 0
     for d in dirs:
         for src_name, dst_name in pairs:
@@ -539,10 +602,10 @@ def gui():
     from tkinter import scrolledtext
 
     root = tk.Tk()
-    root.title("Pixel Composer 汉化工具 v1.0.1  ·  离线版")
+    root.title("Pixel Composer 汉化工具 v1.0.2  ·  离线版")
     root.configure(bg=PC_BG)
-    root.geometry("620x664")
-    root.minsize(560, 580)
+    root.geometry("620x688")
+    root.minsize(560, 620)
     try:
         root.iconbitmap(os.path.join(resource_dir(), "app_icon.ico"))
     except Exception:
@@ -556,7 +619,7 @@ def gui():
     # 顶栏
     header = tk.Frame(root, bg=PC_BG)
     header.pack(fill="x", padx=22, pady=(18, 6))
-    tk.Label(header, text="Pixel Composer 汉化工具  v1.0.1", font=F_TITLE, bg=PC_BG, fg=PC_WHITE).pack(anchor="w")
+    tk.Label(header, text="Pixel Composer 汉化工具  v1.0.2", font=F_TITLE, bg=PC_BG, fg=PC_WHITE).pack(anchor="w")
     tk.Label(header, text="离线 · 自带汉化包与翻译引擎 · 不依赖网络 · 可一键回滚",
              font=F_SUB, bg=PC_BG, fg=PC_MDWHITE).pack(anchor="w", pady=(3, 0))
     tk.Frame(root, bg=PC_DKGREY, height=1).pack(fill="x", padx=22, pady=(12, 0))
@@ -586,8 +649,9 @@ def gui():
     tk.Frame(row3, bg=PC_BG, width=12).pack(side="left")
     PCButton(row3, "⑦  还原布局名", lambda: do_layouts(True, box),
              width=282, height=42, font=F_BTN).pack(side="left")
-    tk.Label(root, text="⑥ 会把自带布局文件改成中文名（工作区标签显示的就是文件名）；⑦ 可随时还原。",
-             font=F_SUB, bg=PC_BG, fg=PC_GREY).pack(padx=22, pady=(0, 8))
+    tk.Label(root, text="⑥ 汉化工作区标签：同时改写 layouts 文件名与 pack/layouts.zip 的条目名"
+                      "（只改文件名会被游戏解回英文）；⑦ 可随时还原。",
+             font=F_SUB, bg=PC_BG, fg=PC_GREY, wraplength=572, justify="left").pack(padx=22, pady=(0, 8), anchor="w")
 
     # 日志区
     logwrap = tk.Frame(root, bg=PC_DKGREY, bd=0)

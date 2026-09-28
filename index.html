@@ -165,7 +165,7 @@ python patch_tool.py --install  # 命令行安装 / CLI</pre>
           <tr><td class="zh">③ 恢复英文</td><td class="zh">切回英文（保留备份）</td><td class="en">③ Restore EN</td><td class="en">Back to English (backup kept)</td></tr>
           <tr><td class="zh">④ 还原上一版</td><td class="zh">回滚到上次汉化</td><td class="en">④ Rollback</td><td class="en">Roll back to previous pack</td></tr>
           <tr><td class="zh">⑤ 查看状态</td><td class="zh">显示目录与语言</td><td class="en">⑤ Status</td><td class="en">Show paths & language</td></tr>
-          <tr><td class="zh">⑥ 汉化工作区标签</td><td class="zh">把布局文件名改成中文（标签取文件名）</td><td class="en">⑥ Localize layout tabs</td><td class="en">Rename layout files to Chinese</td></tr>
+          <tr><td class="zh">⑥ 汉化工作区标签</td><td class="zh">改名 + 改写 <code>pack/layouts.zip</code> 条目名</td><td class="en">⑥ Localize layout tabs</td><td class="en">Rename files + patch layouts.zip</td></tr>
           <tr><td class="zh">⑦ 还原布局名</td><td class="zh">把布局文件名还原成英文</td><td class="en">⑦ Restore layout names</td><td class="en">Restore original layout file names</td></tr>
         </table>
         <div class="note">
@@ -215,9 +215,9 @@ python patch_tool.py --install  # 命令行安装 / CLI</pre>
         </tr>
         <tr>
           <td class="zh">工作区布局标签<br><code>Horizontal</code> · <code>Vertical</code> …</td>
-          <td class="zh">标签显示的是 <code>layouts/*.json</code> 的<b>文件名</b>，程序按目录枚举。用 <b>⑥</b> 改名即可汉化，<b>⑦</b> 一键还原；<code>__default.json</code> 永不被改动。</td>
+          <td class="zh">标签显示 <code>layouts/*.json</code> 的<b>文件名</b>，不查语言表；<b>只改文件名会被游戏从 <code>pack/layouts.zip</code> 重新解出英文名还原</b>（实测会变成中英两套标签）。<b>⑥</b> 会一并改写 zip 条目名，改完实测只剩中文名；<b>⑦</b> 一键还原。</td>
           <td class="en">Workspace layout tabs</td>
-          <td class="en">Tabs show <code>layouts/*.json</code> <b>file names</b>. Use <b>⑥</b> to rename, <b>⑦</b> to revert. <code>__default.json</code> is never touched.</td>
+          <td class="en">Tabs show <code>layouts/*.json</code> file names. Renaming files alone gets reverted from <code>pack/layouts.zip</code> (duplicate tabs observed). <b>⑥</b> also patches the zip entries; <b>⑦</b> reverts.</td>
         </tr>
         <tr>
           <td class="zh"><code>2d</code> · <code>3d</code> · <code>CMYK</code> · <code>OKLAB</code> · <code>PXC</code></td>
