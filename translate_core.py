@@ -1355,6 +1355,10 @@ def apply_locale_extras(dirpath):
     已存在的错误值按表纠正（OVERRIDE）。纯标准库实现，供 patch_tool 调用。
 
     返回 {"added": n, "overridden": m}。
+
+    注意：只在真的有改动时才写回，且一律以 LF 换行写出 —— 若无条件重写，
+    Windows 下文本模式会把换行变成 CRLF，包内文件字节一变，
+    同步功能就会误判"本地包与线上不一致"。
     """
     import os as _os, json as _json
     stats = {"added": 0, "overridden": 0}
@@ -1369,16 +1373,21 @@ def apply_locale_extras(dirpath):
             continue
         if not isinstance(d, dict):
             continue
+        changed = 0
         for k, v in LOCALE_ADD.items():
             if k not in d:
                 d[k] = v
                 stats["added"] += 1
+                changed += 1
         for k, v in LOCALE_OVERRIDE.items():
             if k in d and d[k] != v:
                 d[k] = v
                 stats["overridden"] += 1
+                changed += 1
+        if not changed:
+            continue
         try:
-            with open(path, "w", encoding="utf-8") as f:
+            with open(path, "w", encoding="utf-8", newline="\n") as f:
                 _json.dump(d, f, ensure_ascii=False, indent=1)
         except Exception:
             pass

@@ -233,7 +233,9 @@ def load_json_tolerant_bytes(files, name):
 
 
 def write_json(path, obj):
-    with open(path, "w", encoding="utf-8") as f:
+    # newline="\n" 很关键：Windows 下文本模式默认写 CRLF，会让包内文件字节与
+    # git blob（LF）不一致，同步时就对不上哈希了（见 zhsync.normalize_bytes）。
+    with open(path, "w", encoding="utf-8", newline="\n") as f:
         json.dump(obj, f, ensure_ascii=False, indent=1)
         f.write("\n")
 

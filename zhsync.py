@@ -34,6 +34,10 @@
 
 `files` 不含 manifest.json 自身。客户端按 sha256 只下载有变化的文件：
 11MB 的中文字体只在首次同步时下载一次，之后每次同步通常只拉几个几十 KB 的 json。
+
+⚠️ `sha256` 与 `size` 一律按 **CRLF→LF 归一后** 的字节计算 —— Windows 检出
+（`core.autocrlf=true`）与 Git 仓库/GitHub 上的字节不同，归一后两侧才能对上，
+否则每次同步都会误判"文件变了"而整包重下。详见 `normalize_bytes()`。
 """
 import hashlib
 import json
@@ -102,20 +106,44 @@ def _get(url, timeout=TIMEOUT):
         return r.read()
 
 
+def normalize_bytes(data):
+    """把 CRLF 归一成 LF —— 清单里的哈希一律按归一后的字节计算。
+
+    为什么必须归一（2026-09-28 实测踩到）：Windows 上若 `core.autocrlf=true`，
+    **工作区是 CRLF、Git 仓库里存的是 LF**，而 GitHub Raw / Pages / jsDelivr
+    发出来的也是 LF。直接按原始字节算哈希的话，本地清单和线上文件永远对不上：
+
+        junctions.json  本地 349 B / 线上 330 B
+        words.json      本地 78266 B / 线上 76169 B
+        nodes.json      本地 630865 B / 线上 585901 B
+
+    结果是每次同步都判定"文件变了"→ 白下载一整包（含 11 MB 字体）。
+    归一后两侧可比，Windows / Linux 检出的仓库都能正常工作。
+    """
+    return data.replace(b"\r\n", b"\n")
+
+
 def sha256_bytes(data):
-    return hashlib.sha256(data).hexdigest()
+    """按 CRLF→LF 归一后的字节计算 sha256。"""
+    return hashlib.sha256(normalize_bytes(data)).hexdigest()
+
+
+def read_pack_file(path):
+    """读取文件并返回 (归一后字节, 归一后长度)。"""
+    with open(path, "rb") as f:
+        data = normalize_bytes(f.read())
+    return data, len(data)
 
 
 def sha256_file(path):
-    h = hashlib.sha256()
-    with open(path, "rb") as f:
-        for chunk in iter(lambda: f.read(1 << 20), b""):
-            h.update(chunk)
-    return h.hexdigest()
+    return hashlib.sha256(read_pack_file(path)[0]).hexdigest()
 
 
 def hash_tree(dirpath, skip=(MANIFEST_NAME,)):
-    """目录内所有文件的 {相对路径: {"size": n, "sha256": ...}}，路径统一用 /。"""
+    """目录内所有文件的 {相对路径: {"size": n, "sha256": ...}}，路径统一用 /。
+
+    size / sha256 都按 CRLF→LF 归一后计算，保证与 git blob / raw 上的文件可比。
+    """
     out = {}
     if not os.path.isdir(dirpath):
         return out
@@ -125,7 +153,8 @@ def hash_tree(dirpath, skip=(MANIFEST_NAME,)):
                 continue
             p = os.path.join(base, n)
             rel = os.path.relpath(p, dirpath).replace(os.sep, "/")
-            out[rel] = {"size": os.path.getsize(p), "sha256": sha256_file(p)}
+            data, size = read_pack_file(p)
+            out[rel] = {"size": size, "sha256": hashlib.sha256(data).hexdigest()}
     return out
 
 
@@ -268,10 +297,12 @@ def _download(base, rel, meta):
         data = _get(base + rel, timeout)
     except Exception as e:
         raise SyncError(f"下载失败 {rel}: {getattr(e, 'code', None) or e}")
-    if int(meta.get("size", -1)) != len(data):
-        raise SyncError(f"大小不符 {rel}: 期望 {meta.get('size')}，实得 {len(data)}")
+    # 大小按「原始」或「CRLF→LF 归一后」任一相符即通过：源站给的可能就是 LF 版本
+    exp = meta.get("size")
+    if exp is not None and int(exp) not in (len(data), len(normalize_bytes(data))):
+        raise SyncError(f"大小不符 {rel}: 期望 {exp}，实得 {len(data)}")
     if sha256_bytes(data) != meta.get("sha256"):
-        raise SyncError(f"校验不符 {rel}")
+        raise SyncError(f"校验不符 {rel}（内容与清单不一致）")
     return data
 
 
