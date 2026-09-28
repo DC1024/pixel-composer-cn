@@ -23,8 +23,8 @@
 
 | 方式 Option | 说明 Description |
 |---|---|
-| **一键汉化 EXE（推荐）** | [⬇ 下载 `PixelComposer一键汉化.exe`](https://github.com/DC1024/pixel-composer-cn/raw/main/PixelComposer%E4%B8%80%E9%94%AE%E6%B1%89%E5%8C%96.exe) —— 免安装、免 Python，双击即用。 |
-| **One-click EXE (recommended)** | [⬇ Download `PixelComposer一键汉化.exe`](https://github.com/DC1024/pixel-composer-cn/raw/main/PixelComposer%E4%B8%80%E9%94%AE%E6%B1%89%E5%8C%96.exe) — portable, no Python, just double-click. |
+| **一键汉化 EXE（推荐）** | [⬇ 下载 `PixelComposer-CN-Patcher.exe`（v1.0.0 发行版）](https://github.com/DC1024/pixel-composer-cn/releases/latest/download/PixelComposer-CN-Patcher.exe) —— 免安装、免 Python，双击即用。 |
+| **One-click EXE (recommended)** | [⬇ Download `PixelComposer-CN-Patcher.exe` (v1.0.0 release)](https://github.com/DC1024/pixel-composer-cn/releases/latest/download/PixelComposer-CN-Patcher.exe) — portable, no Python, just double-click. |
 | 源码 Source | 克隆本仓库后运行 `patch_tool.py` / `一键汉化.bat`。 Clone and run `patch_tool.py` / `一键汉化.bat`. |
 
 ![工具界面 / GUI](assets/screenshot.png)
@@ -50,8 +50,8 @@
 ## 快速开始 / Quick Start
 
 ### 方式一：下载 EXE（推荐）/ Method 1: Download the EXE (recommended)
-下载 [`PixelComposer一键汉化.exe`](https://github.com/DC1024/pixel-composer-cn/raw/main/PixelComposer%E4%B8%80%E9%94%AE%E6%B1%89%E5%8C%96.exe)，双击打开，点击「① 一键汉化」即可。免安装、无需 Python。
-Download [`PixelComposer一键汉化.exe`](https://github.com/DC1024/pixel-composer-cn/raw/main/PixelComposer%E4%B8%80%E9%94%AE%E6%B1%89%E5%8C%96.exe), double-click, then click "① 一键汉化". Portable, no Python required.
+从 [Releases](https://github.com/DC1024/pixel-composer-cn/releases) 下载 [`PixelComposer-CN-Patcher.exe`](https://github.com/DC1024/pixel-composer-cn/releases/latest/download/PixelComposer-CN-Patcher.exe)，双击打开，点击「① 一键汉化」即可。免安装、无需 Python。
+Download [`PixelComposer-CN-Patcher.exe`](https://github.com/DC1024/pixel-composer-cn/releases/latest/download/PixelComposer-CN-Patcher.exe) from [Releases](https://github.com/DC1024/pixel-composer-cn/releases), double-click, then click "① 一键汉化". Portable, no Python required.
 
 ### 方式二：一键批处理 / Method 2: One-click `.bat`
 双击仓库内的 **`一键汉化.bat`**，按提示操作即可（需 Python 3.7+）。
