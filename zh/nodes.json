@@ -87,10 +87,10 @@
     "name": "深度"
    },
    {
-    "name": "拉伸Only"
+    "name": "拉伸仅"
    },
    {
-    "name": "面Only"
+    "name": "面仅"
    }
   ]
  },
@@ -183,16 +183,16 @@
     "name": "厚度"
    },
    {
-    "name": "Two侧"
+    "name": "TwoSides"
    },
    {
     "name": "厚度"
    },
    {
-    "name": "Sweep柔和"
+    "name": "扫描柔和"
    },
    {
-    "name": "Sweep扩散"
+    "name": "扫描扩散"
    },
    {
     "name": "Atten曲线"
@@ -380,7 +380,7 @@
     "name": "背面混合"
    },
    {
-    "name": "Swap视图法线X"
+    "name": "Swap视图正常X"
    },
    {
     "name": "AO模糊"
@@ -1055,7 +1055,7 @@
  },
  "Node_3D_Mesh_Export": {
   "name": "网格导出",
-  "tooltip": "将3D网格导出为.obj文件",
+  "tooltip": "导出3D网格体为.obj文件",
   "inputs": [
    {
     "name": "网格"
@@ -1210,7 +1210,7 @@
     "name": "文件路径"
    },
    {
-    "name": "翻转UV",
+    "name": "FlipUV",
     "tooltip": "翻转UV轴,可be使用到修复some纹理mapping错误."
    },
    {
@@ -1238,7 +1238,7 @@
  },
  "Node_3D_Mesh_Obj": {
   "name": "3D对象",
-  "tooltip": "从计算机加载.obj文件作为3D对象。",
+  "tooltip": "加载.obj文件从你的computer为a3D物体.",
   "inputs": [
    {
     "name": "位置"
@@ -1256,7 +1256,7 @@
     "name": "文件路径"
    },
    {
-    "name": "翻转UV",
+    "name": "FlipUV",
     "tooltip": "翻转UV轴，可用于修复某些纹理映射错误。"
    },
    {
@@ -1492,8 +1492,8 @@
   ]
  },
  "Node_3D_Mesh_Sphere_UV": {
-  "name": "3D UV球体",
-  "tooltip": "创建3D UV球体网格",
+  "name": "3DUVSphere",
+  "tooltip": "创建3Duvsphere网格体",
   "inputs": [
    {
     "name": "位置"
@@ -1802,7 +1802,7 @@
     "tooltip": "帧延迟之间each粒子生成."
    },
    {
-    "name": "Burst时长"
+    "name": "BurstDuration"
    },
    {
     "name": "生成数量",
@@ -1932,7 +1932,7 @@
     "name": "Turn缩放使用速度"
    },
    {
-    "name": "Collide地面"
+    "name": "CollideGround"
    },
    {
     "name": "地面偏移类型",
@@ -2378,8 +2378,8 @@
   ]
  },
  "Node_3D_UV_Remap": {
-  "name": "UV重映射",
-  "tooltip": "使用平面重新映射UV贴图",
+  "name": "UVRemap",
+  "tooltip": "RemapUV贴图使用平面.",
   "inputs": [
    {
     "name": "位置"
@@ -2400,7 +2400,7 @@
     "name": "目标子对象"
    },
    {
-    "name": "烘焙UV"
+    "name": "BakeUV"
    }
   ],
   "outputs": [
@@ -2737,7 +2737,7 @@
   ]
  },
  "Node_Application_In": {
-  "name": "GUI 输入",
+  "name": "GUI输入",
   "tooltip": "",
   "inputs": [
    {
@@ -2747,7 +2747,7 @@
   "outputs": []
  },
  "Node_Application_Out": {
-  "name": "GUI 输出",
+  "name": "GUI输出",
   "tooltip": "",
   "inputs": [],
   "outputs": [
@@ -2931,7 +2931,7 @@
   ]
  },
  "Node_Armature_IK": {
-  "name": "骨架IK",
+  "name": "ArmatureIK",
   "tooltip": "",
   "inputs": [
    {
@@ -3044,7 +3044,7 @@
   ]
  },
  "Node_Armature_Pose_Bone": {
-  "name": "骨架Pose骨骼",
+  "name": "ArmaturePose骨骼",
   "tooltip": "",
   "inputs": [
    {
@@ -3149,7 +3149,7 @@
   ]
  },
  "Node_Armature_Skin": {
-  "name": "骨架Skin",
+  "name": "ArmatureSkin",
   "tooltip": "",
   "inputs": [
    {
@@ -3178,7 +3178,7 @@
   ]
  },
  "Node_Armature_Subdivide": {
-  "name": "骨架Subdivide",
+  "name": "ArmatureSubdivide",
   "tooltip": "",
   "inputs": [
    {
@@ -3334,11 +3334,11 @@
   ]
  },
  "Node_Array_CSV_Parse": {
-  "name": "解析 CSV",
-  "tooltip": "将 CSV 字符串解析为数组。",
+  "name": "ParseCSV",
+  "tooltip": "ParseCSV字符串进入数组.",
   "inputs": [
    {
-    "name": "CSV 字符串"
+    "name": "CSV字符串"
    },
    {
     "name": "跳过行"
@@ -3530,7 +3530,7 @@
   ]
  },
  "Node_Array_Randomizer": {
-  "name": "数组WeightedSelector",
+  "name": "数组Weighted选择器",
   "tooltip": "",
   "inputs": [
    {
@@ -3542,7 +3542,7 @@
   ],
   "outputs": [
    {
-    "name": "数组Selector"
+    "name": "数组选择器"
    }
   ]
  },
@@ -3779,7 +3779,7 @@
   ],
   "outputs": [
    {
-    "name": "val 0"
+    "name": "val0"
    }
   ]
  },
@@ -3866,8 +3866,8 @@
   ]
  },
  "Node_ASE_File_Read": {
-  "name": "ASE 文件输入",
-  "tooltip": "加载支持图层和标签的 Aseprite 文件。",
+  "name": "ASE文件输入",
+  "tooltip": "加载Aseprite文件使用supportfor图层,tags.",
   "inputs": [
    {
     "name": "路径"
@@ -3913,11 +3913,11 @@
   ]
  },
  "Node_ASE_layer": {
-  "name": "ASE 图层",
-  "tooltip": "加载 Aseprite 项目文件",
+  "name": "ASE图层",
+  "tooltip": "加载Aseprite项目文件",
   "inputs": [
    {
-    "name": "ASE 数据"
+    "name": "ASE数据"
    },
    {
     "name": "裁剪输出"
@@ -3945,11 +3945,11 @@
   ]
  },
  "Node_ASE_Tag": {
-  "name": "ASE 标签",
-  "tooltip": "从 ASE 文件中读取标签。",
+  "name": "ASETag",
+  "tooltip": "Readtag从ASE文件.",
   "inputs": [
    {
-    "name": "ASE 数据"
+    "name": "ASE数据"
    },
    {
     "name": "标签"
@@ -3965,7 +3965,7 @@
   ]
  },
  "Node_ASE_Tileset": {
-  "name": "ASE瓦片集",
+  "name": "ASETileset",
   "tooltip": "",
   "inputs": [
    {
@@ -6478,7 +6478,7 @@
     "name": "维度"
    },
    {
-    "name": "Resource"
+    "name": "资源"
    }
   ],
   "outputs": [
@@ -6536,7 +6536,7 @@
  },
  "Node_Cellular": {
   "name": "细胞噪声",
-  "tooltip": "生成 Voronoi 图案。",
+  "tooltip": "生成泰森多边形图案.",
   "inputs": [
    {
     "name": "尺寸"
@@ -7146,7 +7146,7 @@
  },
  "Node_Color_Data": {
   "name": "颜色数据",
-  "tooltip": "从颜色中获取数据（RGB、HSV、亮度）。",
+  "tooltip": "获取数据(rgb,hsv,brightness)从颜色.",
   "inputs": [
    {
     "name": "颜色"
@@ -7183,8 +7183,8 @@
   ]
  },
  "Node_Color_HSV": {
-  "name": "HSV 颜色",
-  "tooltip": "从 HSV 颜色空间的值创建 (RGB) 颜色。",
+  "name": "HSV颜色",
+  "tooltip": "创建(rgb)颜色从数值输入HSV颜色间距.",
   "inputs": [
    {
     "name": "色相"
@@ -7293,8 +7293,8 @@
   ]
  },
  "Node_Color_OKLCH": {
-  "name": "OKLCH 颜色",
-  "tooltip": "从 OKLCH 颜色空间的值创建 (RGB) 颜色。",
+  "name": "OKLCH颜色",
+  "tooltip": "创建(rgb)颜色从数值输入OKLCH颜色间距.",
   "inputs": [
    {
     "name": "亮度"
@@ -7323,7 +7323,7 @@
     "name": "颜色"
    },
    {
-    "name": "原始 RGB"
+    "name": "原始RGB"
    }
   ]
  },
@@ -7453,8 +7453,8 @@
   ]
  },
  "Node_Color_RGB": {
-  "name": "RGB 颜色",
-  "tooltip": "从 RGB 颜色空间的值创建 (RGB) 颜色。",
+  "name": "RGB颜色",
+  "tooltip": "创建(rgb)颜色从数值输入RGB颜色间距.",
   "inputs": [
    {
     "name": "红色"
@@ -7583,8 +7583,8 @@
   ]
  },
  "Node_Color_to_HSV": {
-  "name": "颜色 HSV",
-  "tooltip": "返回颜色的归一化 HSV 分量。",
+  "name": "颜色HSV",
+  "tooltip": "ReturnnormalizedHSVcomponentsofa颜色.",
   "inputs": [
    {
     "name": "颜色"
@@ -7603,8 +7603,8 @@
   ]
  },
  "Node_Color_to_OKLCH": {
-  "name": "颜色 OKLCH",
-  "tooltip": "返回颜色的归一化 LCH 分量。",
+  "name": "颜色OKLCH",
+  "tooltip": "ReturnnormalizedLCHcomponentsofa颜色.",
   "inputs": [
    {
     "name": "颜色"
@@ -7623,8 +7623,8 @@
   ]
  },
  "Node_Color_to_RGB": {
-  "name": "颜色 RGB",
-  "tooltip": "返回颜色的归一化 RGB 分量。",
+  "name": "颜色RGB",
+  "tooltip": "ReturnnormalizedRGBcomponentsofa颜色.",
   "inputs": [
    {
     "name": "颜色"
@@ -7643,8 +7643,8 @@
   ]
  },
  "Node_Combine_HSV": {
-  "name": "HSV 组合",
-  "tooltip": "将 4 个图像组合成一个，每个图像用于控制 HSVA 通道",
+  "name": "HSV组合",
+  "tooltip": "组合4图像输入到one.Each图像使用到控件HSVA通道.",
   "inputs": [
    {
     "name": "色相"
@@ -7662,7 +7662,7 @@
     "name": "数组输入"
    },
    {
-    "name": "HSV 数组"
+    "name": "HSV数组"
    },
    {
     "name": "颜色间距",
@@ -7679,8 +7679,8 @@
   ]
  },
  "Node_Combine_RGB": {
-  "name": "RGBA 组合",
-  "tooltip": "将 4 个图像组合成一个，每个图像用于控制 RGBA 通道",
+  "name": "RGBA组合",
+  "tooltip": "组合4图像输入到one.Each图像使用到控件RGBA通道.",
   "inputs": [
    {
     "name": "红色"
@@ -7712,7 +7712,7 @@
     "name": "数组输入"
    },
    {
-    "name": "RGBA 数组"
+    "name": "RGBA数组"
    }
   ],
   "outputs": [
@@ -8320,8 +8320,8 @@
   ]
  },
  "Node_CSV_File_Read": {
-  "name": "CSV 文件输入",
-  "tooltip": "加载 .csv 文件为文本或数字数组。",
+  "name": "CSV文件输入",
+  "tooltip": "加载.csv为文本,数值数组.",
   "inputs": [
    {
     "name": "路径"
@@ -8340,8 +8340,8 @@
   ]
  },
  "Node_CSV_File_Write": {
-  "name": "CSV 文件输出",
-  "tooltip": "将数组保存为 .csv 文件。",
+  "name": "CSV文件输出",
+  "tooltip": "保存数组为.csv文件.",
   "inputs": [
    {
     "name": "路径"
@@ -8495,8 +8495,8 @@
   ]
  },
  "Node_Curve_HSV": {
-  "name": "HSV 曲线",
-  "tooltip": "使用曲线调整图像的 HSV 值。",
+  "name": "HSV曲线",
+  "tooltip": "Adjusthsv数值of图像使用曲线.",
   "inputs": [
    {
     "name": "输入表面"
@@ -9471,7 +9471,7 @@
  },
  "Node_Edge_Detect": {
   "name": "边缘检测",
-  "tooltip": "通过应用 Sobel、Prewitt 或 Laplacian 内核进行边缘检测。",
+  "tooltip": "边缘detect按applyingSobelPrewitt或Laplaciankernel.",
   "inputs": [
    {
     "name": "输入表面"
@@ -9740,7 +9740,7 @@
     "tooltip": "保存项目时自动导出。"
    },
    {
-    "name": "使用内置 GIF 编码器"
+    "name": "使用Built输入gifencoder"
    },
    {
     "name": "质量"
@@ -9865,7 +9865,7 @@
     "name": "跟随路径"
    },
    {
-    "name": "跟随Res"
+    "name": "FollowRes"
    },
    {
     "name": "Infinity"
@@ -9926,7 +9926,7 @@
     "name": "深度"
    },
    {
-    "name": "Rim法线"
+    "name": "Rim正常"
    }
   ]
  },
@@ -9964,7 +9964,7 @@
     "name": "深度"
    },
    {
-    "name": "Rim法线"
+    "name": "Rim正常"
    }
   ]
  },
@@ -10014,7 +10014,7 @@
     "name": "深度"
    },
    {
-    "name": "Rim法线"
+    "name": "Rim正常"
    }
   ]
  },
@@ -10061,7 +10061,7 @@
     "name": "深度"
    },
    {
-    "name": "Rim法线"
+    "name": "Rim正常"
    }
   ]
  },
@@ -10111,7 +10111,7 @@
     "name": "深度"
    },
    {
-    "name": "Rim法线"
+    "name": "Rim正常"
    }
   ]
  },
@@ -10483,7 +10483,7 @@
     "name": "粒子密度"
    },
    {
-    "name": "FLIP 比例"
+    "name": "FLIP比率"
    },
    {
     "name": "解析加速器"
@@ -10736,7 +10736,7 @@
   ]
  },
  "Node_FLIP_to_VFX": {
-  "name": "FLIP 转换为 VFX",
+  "name": "FLIP到VFX",
   "tooltip": "",
   "inputs": [
    {
@@ -11087,7 +11087,7 @@
     "name": "Substractive"
    },
    {
-    "name": "混合Original"
+    "name": "混合原始"
    },
    {
     "name": "拉伸调色板"
@@ -11233,7 +11233,7 @@
     "name": "相位"
    },
    {
-    "name": "速度Control",
+    "name": "速度控件",
     "display_data": [
      "频率",
      "周期"
@@ -11472,7 +11472,7 @@
   ]
  },
  "Node_FXAA": {
-  "name": "FXAA抗锯齿",
+  "name": "FXAA",
   "tooltip": "对图像应用快速近似抗锯齿。",
   "inputs": [
    {
@@ -11516,8 +11516,8 @@
   ]
  },
  "Node_Gabor_Noise": {
-  "name": "Gabor 噪声",
-  "tooltip": "生成 Gabor 噪声",
+  "name": "Gabor噪声",
+  "tooltip": "生成Gabor噪声",
   "inputs": [
    {
     "name": "尺寸"
@@ -11582,7 +11582,7 @@
  },
  "Node_Gamma_Map": {
   "name": "伽马映射",
-  "tooltip": "对图像应用伽马近似（pow(2.2)）。",
+  "tooltip": "应用伽马approximation(pow(2.2))到图像.",
   "inputs": [
    {
     "name": "输入表面"
@@ -12643,10 +12643,10 @@
     "name": "偏移映射"
    },
    {
-    "name": "Truchet 模式"
+    "name": "Truchet"
    },
    {
-    "name": "Truchet 种子"
+    "name": "纹理随机种子"
    },
    {
     "name": "水平翻转"
@@ -12789,13 +12789,13 @@
     "name": "间隔映射"
    },
    {
-    "name": "Truchet 模式"
+    "name": "Truchet"
    },
    {
-    "name": "Truchet 种子"
+    "name": "纹理随机种子"
    },
    {
-    "name": "Truchet 阈值"
+    "name": "Flip阈值"
    },
    {
     "name": "渐变映射"
@@ -13046,13 +13046,13 @@
     "name": "角度映射"
    },
    {
-    "name": "Truchet 模式"
+    "name": "Truchet"
    },
    {
-    "name": "Truchet 种子"
+    "name": "纹理随机种子"
    },
    {
-    "name": "Truchet 阈值"
+    "name": "Flip阈值"
    },
    {
     "name": "渐变映射"
@@ -13393,7 +13393,7 @@
     "name": "深度Pass"
    },
    {
-    "name": "法线Pass"
+    "name": "正常Pass"
    }
   ]
  },
@@ -13449,13 +13449,13 @@
     "name": "间隔映射"
    },
    {
-    "name": "Truchet 模式"
+    "name": "Truchet"
    },
    {
-    "name": "Truchet 种子"
+    "name": "纹理随机种子"
    },
    {
-    "name": "Truchet 阈值"
+    "name": "Flip阈值"
    },
    {
     "name": "瓷砖长度"
@@ -13587,7 +13587,7 @@
  },
  "Node_HLSL": {
   "name": "HLSL",
-  "tooltip": "在表面上执行 HLSL 着色器。",
+  "tooltip": "执行HLSL着色器开a面.",
   "inputs": [
    {
     "name": "顶点"
@@ -13758,8 +13758,8 @@
   ]
  },
  "Node_HSV_Channel": {
-  "name": "HSV 提取",
-  "tooltip": "提取图像的 HSVA 通道，每个通道成为一个独立的图像。",
+  "name": "HSV解压",
+  "tooltip": "解压HSVA通道开图像,each通道becomesitsown图像.",
   "inputs": [
    {
     "name": "输入表面"
@@ -13791,7 +13791,7 @@
   ]
  },
  "Node_HTTP_request": {
-  "name": "HTTP 请求",
+  "name": "HTTP",
   "tooltip": "从互联网请求数据。",
   "inputs": [
    {
@@ -13815,7 +13815,7 @@
   ]
  },
  "Node_HTTP_Request_File": {
-  "name": "HTTP 下载",
+  "name": "HTTP下载",
   "tooltip": "从互联网下载文件。",
   "inputs": [
    {
@@ -13904,10 +13904,10 @@
     "name": "起始帧"
    },
    {
-    "name": "绘制Before起始"
+    "name": "绘制之前开始"
    },
    {
-    "name": "编辑输入Timeline"
+    "name": "编辑输入时间线"
    }
   ],
   "outputs": [
@@ -13933,14 +13933,14 @@
   ]
  },
  "Node_Image_gif": {
-  "name": "GIF 图像",
-  "tooltip": "从您的计算机加载动画的 .gif 文件。",
+  "name": "图像GIF",
+  "tooltip": "加载动画.gif从你的computer.",
   "inputs": [
    {
     "name": "路径"
    },
    {
-    "name": "设置动画长度为 gif"
+    "name": "Match动画长度"
    },
    {
     "name": "输出为数组"
@@ -13967,10 +13967,10 @@
     "name": "动画速度"
    },
    {
-    "name": "编辑输入Timeline"
+    "name": "编辑输入时间线"
    },
    {
-    "name": "绘制Before起始"
+    "name": "绘制之前开始"
    }
   ],
   "outputs": [
@@ -14040,7 +14040,7 @@
   ]
  },
  "Node_Image_Grid_Patreon": {
-  "name": "Patreon 网格",
+  "name": "Patreon网格",
   "tooltip": "",
   "inputs": [
    {
@@ -14108,7 +14108,7 @@
     "name": "Match动画长度"
    },
    {
-    "name": "输出as数组"
+    "name": "输出为数组"
    },
    {
     "name": "循环模式",
@@ -14132,10 +14132,10 @@
     "name": "动画速度"
    },
    {
-    "name": "编辑输入Timeline"
+    "name": "编辑输入时间线"
    },
    {
-    "name": "绘制Before起始"
+    "name": "绘制之前开始"
    }
   ],
   "outputs": [
@@ -14981,7 +14981,7 @@
  },
  "Node_JPEG": {
   "name": "JPEG",
-  "tooltip": "对图像应用 JPEG 压缩。",
+  "tooltip": "应用JPEGcompression到图像.",
   "inputs": [
    {
     "name": "输入表面"
@@ -15039,8 +15039,8 @@
   ]
  },
  "Node_Json_File_Read": {
-  "name": "JSON 文件输入",
-  "tooltip": "使用键加载 .json 文件。",
+  "name": "JSON文件输入",
+  "tooltip": "加载.json文件使用按键.",
   "inputs": [
    {
     "name": "路径"
@@ -15056,8 +15056,8 @@
   ]
  },
  "Node_Json_File_Write": {
-  "name": "JSON 文件输出",
-  "tooltip": "将数据保存到 .json 文件。",
+  "name": "JSON文件输出",
+  "tooltip": "保存数据到.json文件.",
   "inputs": [
    {
     "name": "路径"
@@ -15075,8 +15075,8 @@
   "outputs": []
  },
  "Node_Julia_Set": {
-  "name": "Julia 集",
-  "tooltip": "生成 Julia 分形。",
+  "name": "Julia",
+  "tooltip": "生成Julia分形.",
   "inputs": [
    {
     "name": "尺寸"
@@ -15219,8 +15219,8 @@
   ]
  },
  "Node_Kuwahara": {
-  "name": "Kuwahara 滤镜",
-  "tooltip": "应用 Kuwahara 滤镜。创建类似水彩的效果。",
+  "name": "Kuwahara",
+  "tooltip": "应用Kuwahara筛选.Creatingawatercolor-like效果.",
   "inputs": [
    {
     "name": "输入表面"
@@ -15258,7 +15258,7 @@
     ]
    },
    {
-    "name": "Alpha"
+    "name": "透明"
    },
    {
     "name": "零交叉"
@@ -15651,7 +15651,7 @@
     "name": "偏移"
    },
    {
-    "name": "Separate段"
+    "name": "SeparateSegments"
    },
    {
     "name": "扩展"
@@ -16042,8 +16042,8 @@
   ]
  },
  "Node_Lua_Compute": {
-  "name": "Lua计算",
-  "tooltip": "执行Lua函数并返回数据。",
+  "name": "LuaCompute",
+  "tooltip": "执行lua函数和returnsa数据.",
   "inputs": [
    {
     "name": "函数名称"
@@ -16093,7 +16093,7 @@
  },
  "Node_Lua_Global": {
   "name": "Lua全局",
-  "tooltip": "在全局范围内执行Lua脚本而不返回任何数据。",
+  "tooltip": "执行lua脚本输入全局scope不含returningany数据.",
   "inputs": [
    {
     "name": "Lua代码",
@@ -16117,8 +16117,8 @@
   ]
  },
  "Node_Lua_Surface": {
-  "name": "Lua表面",
-  "tooltip": "在表面上执行Lua脚本。",
+  "name": "Lua面",
+  "tooltip": "执行lua脚本开a面.",
   "inputs": [
    {
     "name": "函数名称"
@@ -16394,7 +16394,7 @@
  },
  "Node_Matrix_Color_Apply": {
   "name": "矩阵颜色应用",
-  "tooltip": "将矩阵线性组合应用于RGB颜色",
+  "tooltip": "应用矩阵线性combination到RGB颜色",
   "inputs": [
    {
     "name": "输入表面"
@@ -16508,7 +16508,7 @@
  },
  "Node_Matrix_Get_Vector": {
   "name": "矩阵获取向量",
-  "tooltip": "获取entirerow或columnofa矩阵as数组.",
+  "tooltip": "获取entirerow或columnofa矩阵为数组.",
   "inputs": [
    {
     "name": "矩阵"
@@ -16818,7 +16818,7 @@
   ]
  },
  "Node_Mesh_Create_Lattice": {
-  "name": "Lattice网格",
+  "name": "Lattice网格体",
   "tooltip": "",
   "inputs": [
    {
@@ -16933,7 +16933,7 @@
     "name": "随机性"
    },
    {
-    "name": "Control点"
+    "name": "控件点"
    }
   ],
   "outputs": [
@@ -16947,7 +16947,7 @@
  },
  "Node_MIDI_In": {
   "name": "MIDI输入",
-  "tooltip": "接收MIDI消息。",
+  "tooltip": "ReceiveMIDI消息.",
   "inputs": [
    {
     "name": "输入",
@@ -17373,7 +17373,7 @@
     "name": "大小分组Varience"
    },
    {
-    "name": "衰减偏移分组Varience"
+    "name": "Decay偏移分组Varience"
    },
    {
     "name": "厚度分组Varience"
@@ -17495,7 +17495,7 @@
   ]
  },
  "Node_MK_Blast_Inline": {
-  "name": "MK爆发",
+  "name": "MKBlast",
   "tooltip": "",
   "inputs": [
    {
@@ -17834,7 +17834,7 @@
   ]
  },
  "Node_MK_Blinker": {
-  "name": "MK闪烁器",
+  "name": "MKBlinker",
   "tooltip": "随机闪烁选定颜色的区域。",
   "inputs": [
    {
@@ -17881,7 +17881,7 @@
   ]
  },
  "Node_MK_Brownian": {
-  "name": "MK布朗运动",
+  "name": "MKBrownian",
   "tooltip": "生成随机粒子。",
   "inputs": [
    {
@@ -18032,7 +18032,7 @@
     "name": "区域2"
    },
    {
-    "name": "末端Swing"
+    "name": "EndSwing"
    },
    {
     "name": "速度"
@@ -18117,7 +18117,7 @@
     "name": "面"
    },
    {
-    "name": "Max尝试"
+    "name": "MaxAttempt"
    },
    {
     "name": "Filled"
@@ -18433,7 +18433,7 @@
   ]
  },
  "Node_MK_Delay_Machine": {
-  "name": "MK延时器",
+  "name": "MK延迟Machine",
   "tooltip": "将多帧动画合并为一帧。",
   "inputs": [
    {
@@ -18592,7 +18592,7 @@
     ]
    },
    {
-    "name": "Fixed时长"
+    "name": "FixedDuration"
    },
    {
     "name": "正片叠底时长"
@@ -18613,7 +18613,7 @@
     "name": "随机种子"
    },
    {
-    "name": "Track位置",
+    "name": "跟踪位置",
     "display_data": [
      "起始",
      "末端",
@@ -18874,7 +18874,7 @@
   ]
  },
  "Node_MK_Fall": {
-  "name": "MK落叶",
+  "name": "MKFall",
   "tooltip": "生成落叶效果。",
   "inputs": [
    {
@@ -18970,7 +18970,7 @@
   ]
  },
  "Node_MK_Flag": {
-  "name": "MK旗帜",
+  "name": "MKFlag",
   "tooltip": "生成飘动的旗帜。",
   "inputs": [
    {
@@ -19160,7 +19160,7 @@
   ]
  },
  "Node_MK_Flare": {
-  "name": "MK镜头光晕",
+  "name": "MK镜头Flare",
   "tooltip": "生成镜头光晕。",
   "inputs": [
    {
@@ -19222,7 +19222,7 @@
   ]
  },
  "Node_MK_Fracture": {
-  "name": "MK破碎",
+  "name": "MKFracture",
   "tooltip": "确定性地破碎图像并应用基本物理效果。",
   "inputs": [
    {
@@ -19378,7 +19378,7 @@
     "name": "输出面"
    },
    {
-    "name": "射线Only"
+    "name": "射线仅"
    }
   ]
  },
@@ -19501,7 +19501,7 @@
   ]
  },
  "Node_MK_GridBalls": {
-  "name": "MK球体网格",
+  "name": "MK网格Balls",
   "tooltip": "生成可控制的球体网格。",
   "inputs": [
    {
@@ -19629,7 +19629,7 @@
   ]
  },
  "Node_MK_GridFlip": {
-  "name": "MK平面网格",
+  "name": "MK网格翻转",
   "tooltip": "生成可控制的平面网格。",
   "inputs": [
    {
@@ -20023,7 +20023,7 @@
     "name": "Glowbar大小"
    },
    {
-    "name": "Glowbar概率"
+    "name": "GlowbarChance"
    },
    {
     "name": "Shine使用"
@@ -20038,7 +20038,7 @@
     "name": "Shine速度"
    },
    {
-    "name": "Shine概率"
+    "name": "ShineChance"
    },
    {
     "name": "Shine反转"
@@ -20112,7 +20112,7 @@
     "name": "数量"
    },
    {
-    "name": "角度ofRepose"
+    "name": "AnglesofRepose"
    },
    {
     "name": "Column偏移"
@@ -20156,7 +20156,7 @@
   ]
  },
  "Node_MK_Rain": {
-  "name": "MK雨",
+  "name": "MKRain",
   "tooltip": "生成自定义的雨。",
   "inputs": [
    {
@@ -20445,7 +20445,7 @@
     "name": "深度曲线"
    },
    {
-    "name": "执行Shine"
+    "name": "DoShine"
    },
    {
     "name": "角度",
@@ -20498,7 +20498,7 @@
   ]
  },
  "Node_MK_Saber": {
-  "name": "MK光剑(刀光)",
+  "name": "MKSaber",
   "tooltip": "从两个点生成发光的光剑。",
   "inputs": [
    {
@@ -20693,7 +20693,7 @@
   ]
  },
  "Node_MK_Sparkle": {
-  "name": "MK闪光",
+  "name": "MKSparkle",
   "tooltip": "生成随机星形动画。",
   "inputs": [
    {
@@ -20751,7 +20751,7 @@
   ]
  },
  "Node_MK_Subpixel": {
-  "name": "MK子像素",
+  "name": "MKSubpixel",
   "tooltip": "在表面上应用子像素滤镜。",
   "inputs": [
    {
@@ -20822,7 +20822,7 @@
   ]
  },
  "Node_MK_Tile": {
-  "name": "MK瓷砖",
+  "name": "MK平铺",
   "tooltip": "生成适用于游戏引擎的瓷砖集。",
   "inputs": [
    {
@@ -21164,7 +21164,7 @@
     "name": "振幅之上长度"
    },
    {
-    "name": "Reflect顺序",
+    "name": "ReflectOrder",
     "display_data": [
      "Even",
      "Odd",
@@ -21337,7 +21337,7 @@
     "name": "Cone形状"
    },
    {
-    "name": "Cone修剪"
+    "name": "ConeTrim"
    },
    {
     "name": "随机"
@@ -21799,7 +21799,7 @@
     "name": "概率"
    },
    {
-    "name": "Reflect顺序",
+    "name": "ReflectOrder",
     "display_data": [
      "Even",
      "Odd",
@@ -21830,7 +21830,7 @@
   ]
  },
  "Node_MK_Tree_Leaf_Hull": {
-  "name": "叶Hull",
+  "name": "LeavesHull",
   "tooltip": "",
   "inputs": [
    {
@@ -21923,7 +21923,7 @@
     "name": "Fall方向"
    },
    {
-    "name": "颜色之上生命[live]"
+    "name": "颜色之上Life[live]"
    },
    {
     "name": "生命周期",
@@ -21938,7 +21938,7 @@
     ]
    },
    {
-    "name": "颜色之上生命[fall]"
+    "name": "颜色之上Life[fall]"
    },
    {
     "name": "Swing速度"
@@ -22622,7 +22622,7 @@
   ]
  },
  "Node_MK_WireFrame": {
-  "name": "MK线框",
+  "name": "MK连线帧",
   "tooltip": "",
   "inputs": [
    {
@@ -23080,7 +23080,7 @@
     "name": "Varience"
    },
    {
-    "name": "使用Conversion"
+    "name": "使用转换"
    },
    {
     "name": "ConvSurf1"
@@ -23194,7 +23194,7 @@
  },
  "Node_Noise_Simplex": {
   "name": "Simplex噪声",
-  "tooltip": "生成Simplex噪声，类似于柏林噪声但具有更好的保真度，但不可平铺。",
+  "tooltip": "生成simplex噪声,similiar到perlin噪声使用betterfidelitybutnon-tilable.",
   "inputs": [
    {
     "name": "尺寸"
@@ -23400,7 +23400,7 @@
     "name": "翻转Y"
    },
    {
-    "name": "修剪Flat"
+    "name": "TrimFlat"
    },
    {
     "name": "Solid背景"
@@ -23417,7 +23417,7 @@
  },
  "Node_Normalize": {
   "name": "归一化",
-  "tooltip": "将图像范围（亮度、RGB通道）归一化到[0, 1]范围内。",
+  "tooltip": "Normalize图像ranges(brightness,RGBchannels)输入到[0,1]范围.",
   "inputs": [
    {
     "name": "输入表面"
@@ -23447,7 +23447,7 @@
   ]
  },
  "Node_Normal_Adjust": {
-  "name": "Adjust法线",
+  "name": "Adjust正常",
   "tooltip": "",
   "inputs": [
    {
@@ -23650,7 +23650,7 @@
     "name": "基础高度"
    },
    {
-    "name": "Sweep方向"
+    "name": "扫描方向"
    }
   ],
   "outputs": [
@@ -23758,7 +23758,7 @@
  },
  "Node_Number_Simple": {
   "name": "数值简单",
-  "tooltip": "生成数值数据使用lesscontrolforbetter性能.",
+  "tooltip": "生成数值数据使用less控件forbetter性能.",
   "inputs": [
    {
     "name": "数值"
@@ -24063,7 +24063,7 @@
  },
  "Node_Override_Channel": {
   "name": "覆盖通道",
-  "tooltip": "用另一个表面的RGBA值替换一个表面的RGBA值。",
+  "tooltip": "替换RGBA数值ofone面使用another.",
   "inputs": [
    {
     "name": "表面"
@@ -24956,7 +24956,7 @@
  },
  "Node_Path_Bake": {
   "name": "烘焙路径",
-  "tooltip": "将路径数据烘焙为一个由二维向量点（vec2 points）组成的数组。",
+  "tooltip": "Bake路径数据进入数组ofvec2点.",
   "inputs": [
    {
     "name": "路径"
@@ -25972,7 +25972,7 @@
   ]
  },
  "Node_Path_SDF": {
-  "name": "路径转 SDF",
+  "name": "路径到SDF",
   "tooltip": "从路径绘制符号距离场。",
   "inputs": [
    {
@@ -26608,46 +26608,46 @@
   ]
  },
  "Node_PB_Box": {
-  "name": "PB 矩形框",
+  "name": "PB框",
   "tooltip": "",
   "inputs": [
    {
-    "name": "基础 PBBOX"
+    "name": "基础PBbox"
    },
    {
-    "name": "PBBOX"
+    "name": "PBbox"
    },
    {
-    "name": "PBBOX 左"
+    "name": "PBbox左"
    },
    {
-    "name": "PBBOX 顶"
+    "name": "PBbox上"
    },
    {
-    "name": "PBBOX 右"
+    "name": "PBbox右"
    },
    {
-    "name": "PBBOX 底"
+    "name": "PBbox下"
    },
    {
-    "name": "PBBOX 宽度"
+    "name": "PBbox宽度"
    },
    {
-    "name": "PBBOX 高度"
+    "name": "PBbox高度"
    }
   ],
   "outputs": [
    {
-    "name": "PBBOX"
+    "name": "PBbox"
    }
   ]
  },
  "Node_PB_Box_BBOX": {
-  "name": "PBBOX 转换",
+  "name": "PBBOX转换",
   "tooltip": "",
   "inputs": [
    {
-    "name": "PBBOX"
+    "name": "PBbox"
    }
   ],
   "outputs": [
@@ -26669,14 +26669,14 @@
   ]
  },
  "Node_PB_Box_Mirror": {
-  "name": "PBBOX 镜像",
+  "name": "PBBox镜像",
   "tooltip": "",
   "inputs": [
    {
-    "name": "镜像 PBBOX"
+    "name": "镜像PBbox"
    },
    {
-    "name": "PBBOX"
+    "name": "PBbox"
    },
    {
     "name": "轴"
@@ -26684,16 +26684,16 @@
   ],
   "outputs": [
    {
-    "name": "PBBOX"
+    "name": "PBbox"
    }
   ]
  },
  "Node_PB_Box_Point": {
-  "name": "PBBOX 获取点",
+  "name": "PBBOX获取点",
   "tooltip": "",
   "inputs": [
    {
-    "name": "PBBOX"
+    "name": "PBbox"
    },
    {
     "name": "锚点"
@@ -26709,11 +26709,11 @@
   ]
  },
  "Node_PB_Box_Split": {
-  "name": "PBBOX 分割",
+  "name": "PBBox拆分",
   "tooltip": "",
   "inputs": [
    {
-    "name": "PBBOX"
+    "name": "PBbox"
    },
    {
     "name": "轴",
@@ -26745,22 +26745,22 @@
   ],
   "outputs": [
    {
-    "name": "PBBOX"
+    "name": "PBbox"
    },
    {
-    "name": "PBBOX"
+    "name": "PBbox"
    }
   ]
  },
  "Node_PB_Crop_PBBOX": {
-  "name": "裁剪 PBBOX",
+  "name": "裁剪PBBOX",
   "tooltip": "",
   "inputs": [
    {
     "name": "表面"
    },
    {
-    "name": "PBBOX"
+    "name": "PBbox"
    }
   ],
   "outputs": [
@@ -26790,28 +26790,28 @@
   "tooltip": "",
   "inputs": [
    {
-    "name": "基础 PBBOX"
+    "name": "基础PBbox"
    },
    {
-    "name": "PBBOX"
+    "name": "PBbox"
    },
    {
-    "name": "PBBOX 左"
+    "name": "PBbox左"
    },
    {
-    "name": "PBBOX 顶"
+    "name": "PBbox上"
    },
    {
-    "name": "PBBOX 右"
+    "name": "PBbox右"
    },
    {
-    "name": "PBBOX 底"
+    "name": "PBbox下"
    },
    {
-    "name": "PBBOX 宽度"
+    "name": "PBbox宽度"
    },
    {
-    "name": "PBBOX 高度"
+    "name": "PBbox高度"
    },
    {
     "name": "类型",
@@ -26914,7 +26914,7 @@
     "name": "位置"
    },
    {
-    "name": "映射 BBOX"
+    "name": "贴图BBOX"
    },
    {
     "name": "厚度"
@@ -26983,7 +26983,7 @@
   ],
   "outputs": [
    {
-    "name": "PBBOX"
+    "name": "PBbox"
    },
    {
     "name": "输出表面"
@@ -26995,28 +26995,28 @@
   "tooltip": "",
   "inputs": [
    {
-    "name": "基础 PBBOX"
+    "name": "基础PBbox"
    },
    {
-    "name": "PBBOX"
+    "name": "PBbox"
    },
    {
-    "name": "PBBOX 左"
+    "name": "PBbox左"
    },
    {
-    "name": "PBBOX 顶"
+    "name": "PBbox上"
    },
    {
-    "name": "PBBOX 右"
+    "name": "PBbox右"
    },
    {
-    "name": "PBBOX 底"
+    "name": "PBbox下"
    },
    {
-    "name": "PBBOX 宽度"
+    "name": "PBbox宽度"
    },
    {
-    "name": "PBBOX 高度"
+    "name": "PBbox高度"
    },
    {
     "name": "角",
@@ -27103,7 +27103,7 @@
     "name": "位置"
    },
    {
-    "name": "映射 BBOX"
+    "name": "贴图BBOX"
    },
    {
     "name": "厚度"
@@ -27172,7 +27172,7 @@
   ],
   "outputs": [
    {
-    "name": "PBBOX"
+    "name": "PBbox"
    },
    {
     "name": "输出表面"
@@ -27184,28 +27184,28 @@
   "tooltip": "",
   "inputs": [
    {
-    "name": "基础 PBBOX"
+    "name": "基础PBbox"
    },
    {
-    "name": "PBBOX"
+    "name": "PBbox"
    },
    {
-    "name": "PBBOX 左"
+    "name": "PBbox左"
    },
    {
-    "name": "PBBOX 顶"
+    "name": "PBbox上"
    },
    {
-    "name": "PBBOX 右"
+    "name": "PBbox右"
    },
    {
-    "name": "PBBOX 底"
+    "name": "PBbox下"
    },
    {
-    "name": "PBBOX 宽度"
+    "name": "PBbox宽度"
    },
    {
-    "name": "PBBOX 高度"
+    "name": "PBbox高度"
    },
    {
     "name": "效果类型",
@@ -27285,7 +27285,7 @@
     "name": "位置"
    },
    {
-    "name": "映射 BBOX"
+    "name": "贴图BBOX"
    },
    {
     "name": "厚度"
@@ -27354,7 +27354,7 @@
   ],
   "outputs": [
    {
-    "name": "PBBOX"
+    "name": "PBbox"
    },
    {
     "name": "输出表面"
@@ -27366,28 +27366,28 @@
   "tooltip": "",
   "inputs": [
    {
-    "name": "基础 PBBOX"
+    "name": "基础PBbox"
    },
    {
-    "name": "PBBOX"
+    "name": "PBbox"
    },
    {
-    "name": "PBBOX 左"
+    "name": "PBbox左"
    },
    {
-    "name": "PBBOX 顶"
+    "name": "PBbox上"
    },
    {
-    "name": "PBBOX 右"
+    "name": "PBbox右"
    },
    {
-    "name": "PBBOX 底"
+    "name": "PBbox下"
    },
    {
-    "name": "PBBOX 宽度"
+    "name": "PBbox宽度"
    },
    {
-    "name": "PBBOX 高度"
+    "name": "PBbox高度"
    },
    {
     "name": "类型",
@@ -27487,7 +27487,7 @@
     "name": "位置"
    },
    {
-    "name": "映射 BBOX"
+    "name": "贴图BBOX"
    },
    {
     "name": "厚度"
@@ -27556,7 +27556,7 @@
   ],
   "outputs": [
    {
-    "name": "PBBOX"
+    "name": "PBbox"
    },
    {
     "name": "输出表面"
@@ -27568,28 +27568,28 @@
   "tooltip": "",
   "inputs": [
    {
-    "name": "基础 PBBOX"
+    "name": "基础PBbox"
    },
    {
-    "name": "PBBOX"
+    "name": "PBbox"
    },
    {
-    "name": "PBBOX 左"
+    "name": "PBbox左"
    },
    {
-    "name": "PBBOX 顶"
+    "name": "PBbox上"
    },
    {
-    "name": "PBBOX 右"
+    "name": "PBbox右"
    },
    {
-    "name": "PBBOX 底"
+    "name": "PBbox下"
    },
    {
-    "name": "PBBOX 宽度"
+    "name": "PBbox宽度"
    },
    {
-    "name": "PBBOX 高度"
+    "name": "PBbox高度"
    },
    {
     "name": "角",
@@ -27678,7 +27678,7 @@
     "name": "位置"
    },
    {
-    "name": "映射 BBOX"
+    "name": "贴图BBOX"
    },
    {
     "name": "厚度"
@@ -27747,7 +27747,7 @@
   ],
   "outputs": [
    {
-    "name": "PBBOX"
+    "name": "PBbox"
    },
    {
     "name": "输出表面"
@@ -27759,28 +27759,28 @@
   "tooltip": "",
   "inputs": [
    {
-    "name": "基础 PBBOX"
+    "name": "基础PBbox"
    },
    {
-    "name": "PBBOX"
+    "name": "PBbox"
    },
    {
-    "name": "PBBOX 左"
+    "name": "PBbox左"
    },
    {
-    "name": "PBBOX 顶"
+    "name": "PBbox上"
    },
    {
-    "name": "PBBOX 右"
+    "name": "PBbox右"
    },
    {
-    "name": "PBBOX 底"
+    "name": "PBbox下"
    },
    {
-    "name": "PBBOX 宽度"
+    "name": "PBbox宽度"
    },
    {
-    "name": "PBBOX 高度"
+    "name": "PBbox高度"
    },
    {
     "name": "边数"
@@ -27866,7 +27866,7 @@
     "name": "位置"
    },
    {
-    "name": "映射 BBOX"
+    "name": "贴图BBOX"
    },
    {
     "name": "厚度"
@@ -27935,7 +27935,7 @@
   ],
   "outputs": [
    {
-    "name": "PBBOX"
+    "name": "PBbox"
    },
    {
     "name": "输出表面"
@@ -27947,28 +27947,28 @@
   "tooltip": "",
   "inputs": [
    {
-    "name": "基础 PBBOX"
+    "name": "基础PBbox"
    },
    {
-    "name": "PBBOX"
+    "name": "PBbox"
    },
    {
-    "name": "PBBOX 左"
+    "name": "PBbox左"
    },
    {
-    "name": "PBBOX 顶"
+    "name": "PBbox上"
    },
    {
-    "name": "PBBOX 右"
+    "name": "PBbox右"
    },
    {
-    "name": "PBBOX 底"
+    "name": "PBbox下"
    },
    {
-    "name": "PBBOX 宽度"
+    "name": "PBbox宽度"
    },
    {
-    "name": "PBBOX 高度"
+    "name": "PBbox高度"
    },
    {
     "name": "左上角"
@@ -28060,7 +28060,7 @@
     "name": "位置"
    },
    {
-    "name": "映射 BBOX"
+    "name": "贴图BBOX"
    },
    {
     "name": "厚度"
@@ -28129,7 +28129,7 @@
   ],
   "outputs": [
    {
-    "name": "PBBOX"
+    "name": "PBbox"
    },
    {
     "name": "输出表面"
@@ -28141,28 +28141,28 @@
   "tooltip": "",
   "inputs": [
    {
-    "name": "基础 PBBOX"
+    "name": "基础PBbox"
    },
    {
-    "name": "PBBOX"
+    "name": "PBbox"
    },
    {
-    "name": "PBBOX 左"
+    "name": "PBbox左"
    },
    {
-    "name": "PBBOX 顶"
+    "name": "PBbox上"
    },
    {
-    "name": "PBBOX 右"
+    "name": "PBbox右"
    },
    {
-    "name": "PBBOX 底"
+    "name": "PBbox下"
    },
    {
-    "name": "PBBOX 宽度"
+    "name": "PBbox宽度"
    },
    {
-    "name": "PBBOX 高度"
+    "name": "PBbox高度"
    },
    {
     "name": "效果类型",
@@ -28242,7 +28242,7 @@
     "name": "位置"
    },
    {
-    "name": "映射 BBOX"
+    "name": "贴图BBOX"
    },
    {
     "name": "厚度"
@@ -28311,7 +28311,7 @@
   ],
   "outputs": [
    {
-    "name": "PBBOX"
+    "name": "PBbox"
    },
    {
     "name": "输出表面"
@@ -28323,28 +28323,28 @@
   "tooltip": "",
   "inputs": [
    {
-    "name": "基础 PBBOX"
+    "name": "基础PBbox"
    },
    {
-    "name": "PBBOX"
+    "name": "PBbox"
    },
    {
-    "name": "PBBOX 左"
+    "name": "PBbox左"
    },
    {
-    "name": "PBBOX 顶"
+    "name": "PBbox上"
    },
    {
-    "name": "PBBOX 右"
+    "name": "PBbox右"
    },
    {
-    "name": "PBBOX 底"
+    "name": "PBbox下"
    },
    {
-    "name": "PBBOX 宽度"
+    "name": "PBbox宽度"
    },
    {
-    "name": "PBBOX 高度"
+    "name": "PBbox高度"
    },
    {
     "name": "角半径"
@@ -28437,7 +28437,7 @@
     "name": "位置"
    },
    {
-    "name": "映射 BBOX"
+    "name": "贴图BBOX"
    },
    {
     "name": "厚度"
@@ -28506,7 +28506,7 @@
   ],
   "outputs": [
    {
-    "name": "PBBOX"
+    "name": "PBbox"
    },
    {
     "name": "输出表面"
@@ -28518,28 +28518,28 @@
   "tooltip": "",
   "inputs": [
    {
-    "name": "基础 PBBOX"
+    "name": "基础PBbox"
    },
    {
-    "name": "PBBOX"
+    "name": "PBbox"
    },
    {
-    "name": "PBBOX 左"
+    "name": "PBbox左"
    },
    {
-    "name": "PBBOX 顶"
+    "name": "PBbox上"
    },
    {
-    "name": "PBBOX 右"
+    "name": "PBbox右"
    },
    {
-    "name": "PBBOX 底"
+    "name": "PBbox下"
    },
    {
-    "name": "PBBOX 宽度"
+    "name": "PBbox宽度"
    },
    {
-    "name": "PBBOX 高度"
+    "name": "PBbox高度"
    },
    {
     "name": "边数"
@@ -28638,7 +28638,7 @@
     "name": "位置"
    },
    {
-    "name": "映射 BBOX"
+    "name": "贴图BBOX"
    },
    {
     "name": "厚度"
@@ -28707,7 +28707,7 @@
   ],
   "outputs": [
    {
-    "name": "PBBOX"
+    "name": "PBbox"
    },
    {
     "name": "输出表面"
@@ -28719,28 +28719,28 @@
   "tooltip": "",
   "inputs": [
    {
-    "name": "基础 PBBOX"
+    "name": "基础PBbox"
    },
    {
-    "name": "PBBOX"
+    "name": "PBbox"
    },
    {
-    "name": "PBBOX 左"
+    "name": "PBbox左"
    },
    {
-    "name": "PBBOX 顶"
+    "name": "PBbox上"
    },
    {
-    "name": "PBBOX 右"
+    "name": "PBbox右"
    },
    {
-    "name": "PBBOX 底"
+    "name": "PBbox下"
    },
    {
-    "name": "PBBOX 宽度"
+    "name": "PBbox宽度"
    },
    {
-    "name": "PBBOX 高度"
+    "name": "PBbox高度"
    },
    {
     "name": "表面"
@@ -28760,28 +28760,28 @@
   "tooltip": "",
   "inputs": [
    {
-    "name": "基础 PBBOX"
+    "name": "基础PBbox"
    },
    {
-    "name": "PBBOX"
+    "name": "PBbox"
    },
    {
-    "name": "PBBOX 左"
+    "name": "PBbox左"
    },
    {
-    "name": "PBBOX 顶"
+    "name": "PBbox上"
    },
    {
-    "name": "PBBOX 右"
+    "name": "PBbox右"
    },
    {
-    "name": "PBBOX 底"
+    "name": "PBbox下"
    },
    {
-    "name": "PBBOX 宽度"
+    "name": "PBbox宽度"
    },
    {
-    "name": "PBBOX 高度"
+    "name": "PBbox高度"
    },
    {
     "name": "轴",
@@ -28873,7 +28873,7 @@
     "name": "位置"
    },
    {
-    "name": "映射 BBOX"
+    "name": "贴图BBOX"
    },
    {
     "name": "厚度"
@@ -28942,7 +28942,7 @@
   ],
   "outputs": [
    {
-    "name": "PBBOX"
+    "name": "PBbox"
    },
    {
     "name": "输出表面"
@@ -28954,28 +28954,28 @@
   "tooltip": "",
   "inputs": [
    {
-    "name": "基础 PBBOX"
+    "name": "基础PBbox"
    },
    {
-    "name": "PBBOX"
+    "name": "PBbox"
    },
    {
-    "name": "PBBOX 左"
+    "name": "PBbox左"
    },
    {
-    "name": "PBBOX 顶"
+    "name": "PBbox上"
    },
    {
-    "name": "PBBOX 右"
+    "name": "PBbox右"
    },
    {
-    "name": "PBBOX 底"
+    "name": "PBbox下"
    },
    {
-    "name": "PBBOX 宽度"
+    "name": "PBbox宽度"
    },
    {
-    "name": "PBBOX 高度"
+    "name": "PBbox高度"
    },
    {
     "name": "底边",
@@ -29083,7 +29083,7 @@
     "name": "位置"
    },
    {
-    "name": "映射 BBOX"
+    "name": "贴图BBOX"
    },
    {
     "name": "厚度"
@@ -29152,7 +29152,7 @@
   ],
   "outputs": [
    {
-    "name": "PBBOX"
+    "name": "PBbox"
    },
    {
     "name": "输出表面"
@@ -29160,11 +29160,11 @@
   ]
  },
  "Node_PB_Filter_Mirror": {
-  "name": "PB 镜像",
+  "name": "PB镜像",
   "tooltip": "",
   "inputs": [
    {
-    "name": "PBBOX"
+    "name": "PBbox"
    },
    {
     "name": "表面"
@@ -29180,11 +29180,11 @@
   ]
  },
  "Node_PB_Filter_Polar": {
-  "name": "PB 极坐标",
+  "name": "PBPolar",
   "tooltip": "",
   "inputs": [
    {
-    "name": "PBBOX"
+    "name": "PBbox"
    },
    {
     "name": "表面"
@@ -29275,16 +29275,16 @@
     "name": "高光方向"
    },
    {
-    "name": "形状 PBBOX"
+    "name": "形状PBbox"
    },
    {
-    "name": "目标 PBBOX"
+    "name": "目标PBbox"
    },
    {
-    "name": "使用 PBBOX"
+    "name": "使用PBbox"
    },
    {
-    "name": "PBBOX 模式",
+    "name": "PBbox模式",
     "display_data": [
      "4 方向",
      "扩展"
@@ -29401,7 +29401,7 @@
   ]
  },
  "Node_PB_Output": {
-  "name": "PB 输出",
+  "name": "PB输出",
   "tooltip": "",
   "inputs": [
    {
@@ -29629,8 +29629,8 @@
   ]
  },
  "Node_Perlin": {
-  "name": "Perlin 噪声",
-  "tooltip": "生成 Perlin 噪声",
+  "name": "Perlin噪声",
+  "tooltip": "生成perlin噪声.",
   "inputs": [
    {
     "name": "尺寸"
@@ -29788,8 +29788,8 @@
   ]
  },
  "Node_Perlin_Extra": {
-  "name": "额外 Perlin 噪声",
-  "tooltip": "使用不同算法生成随机 Perlin 噪声",
+  "name": "ExtraPerlins",
+  "tooltip": "随机perlin噪声made使用differentalgorithms.",
   "inputs": [
    {
     "name": "尺寸"
@@ -30002,7 +30002,7 @@
  },
  "Node_Pixel_Math": {
   "name": "像素数学",
-  "tooltip": "直接对 RGBA 值应用数学运算",
+  "tooltip": "应用mathematical操作directly开RGBA数值.",
   "inputs": [
    {
     "name": "输入表面"
@@ -31371,7 +31371,7 @@
     "tooltip": "帧延迟之间each粒子生成."
    },
    {
-    "name": "Burst时长"
+    "name": "BurstDuration"
    },
    {
     "name": "生成数量",
@@ -31585,7 +31585,7 @@
     "name": "执行旋转"
    },
    {
-    "name": "执行Scae"
+    "name": "DoScae"
    }
   ],
   "outputs": [
@@ -32675,7 +32675,7 @@
     "tooltip": "帧延迟之间each粒子生成."
    },
    {
-    "name": "Burst时长"
+    "name": "BurstDuration"
    },
    {
     "name": "生成数量",
@@ -33208,7 +33208,7 @@
     "name": "输出面"
    },
    {
-    "name": "Deformed网格"
+    "name": "Deformed网格体"
    }
   ]
  },
@@ -33238,7 +33238,7 @@
     ]
    },
    {
-    "name": "绘制Before起始"
+    "name": "绘制之前开始"
    },
    {
     "name": "Fractional帧"
@@ -33410,7 +33410,7 @@
   ],
   "outputs": [
    {
-    "name": "Euler角度"
+    "name": "EulerAngles"
    }
   ]
  },
@@ -34447,8 +34447,8 @@
   ]
  },
  "Node_RGB_Channel": {
-  "name": "RGBA 提取",
-  "tooltip": "提取图像上的 RGBA 通道，每个通道成为单独的图像",
+  "name": "RGBA解压",
+  "tooltip": "解压RGBA通道开图像,each通道becomesitsown图像.",
   "inputs": [
    {
     "name": "输入表面"
@@ -34610,7 +34610,7 @@
     "name": "Cell缩放"
    },
    {
-    "name": "Itr系数"
+    "name": "ItrFactor"
    },
    {
     "name": "Ridge旋转"
@@ -34756,7 +34756,7 @@
     "name": "Fracture阈值"
    },
    {
-    "name": "网格Expansion"
+    "name": "网格体Expansion"
    },
    {
     "name": "密度"
@@ -34786,7 +34786,7 @@
     "name": "Damping"
    },
    {
-    "name": "Breaking力",
+    "name": "BreakingForce",
     "tooltip": "数量of力到breakjoint,zeroforunbreakable."
    },
    {
@@ -34837,7 +34837,7 @@
     "name": "Wall摩擦"
    },
    {
-    "name": "Wall弹性"
+    "name": "WallBounciness"
    }
   ],
   "outputs": []
@@ -34867,7 +34867,7 @@
     "name": "Damping"
    },
    {
-    "name": "Breaking力",
+    "name": "BreakingForce",
     "tooltip": "数量of力到breakjoint,zeroforunbreakable."
    }
   ],
@@ -34891,13 +34891,13 @@
     "name": "偏移"
    },
    {
-    "name": "Max力"
+    "name": "MaxForce"
    },
    {
     "name": "MaxTorque"
    },
    {
-    "name": "Breaking力",
+    "name": "BreakingForce",
     "tooltip": "数量of力到breakjoint,zeroforunbreakable."
    }
   ],
@@ -35015,7 +35015,7 @@
     "name": "Collision点"
    },
    {
-    "name": "新建Collision触发"
+    "name": "新建CollisionTrigger"
    },
    {
     "name": "新建Collision点"
@@ -35165,7 +35165,7 @@
     "name": "透明"
    },
    {
-    "name": "设置Mass"
+    "name": "设置批量"
    },
    {
     "name": "模式",
@@ -35176,7 +35176,7 @@
     ]
    },
    {
-    "name": "Mass"
+    "name": "批量"
    },
    {
     "name": "设置摩擦"
@@ -35406,7 +35406,7 @@
   ]
  },
  "Node_RM_Cloud": {
-  "name": "RM 云",
+  "name": "RM云",
   "tooltip": "生成距离场云",
   "inputs": [
    {
@@ -35463,8 +35463,8 @@
   ]
  },
  "Node_RM_Combine": {
-  "name": "RM 合并",
-  "tooltip": "通过布尔运算组合 2 个 SDF 对象",
+  "name": "RM组合",
+  "tooltip": "组合2SDF物体使用布尔操作.",
   "inputs": [
    {
     "name": "尺寸"
@@ -35550,8 +35550,8 @@
   ]
  },
  "Node_RM_Primitive": {
-  "name": "RM 原始形状",
-  "tooltip": "创建 SDF 对象",
+  "name": "RM图元",
+  "tooltip": "创建SDF物体.",
   "inputs": [
    {
     "name": "尺寸"
@@ -35762,8 +35762,8 @@
   ]
  },
  "Node_RM_Render": {
-  "name": "RM 渲染",
-  "tooltip": "渲染 SDF 对象",
+  "name": "RM渲染",
+  "tooltip": "渲染SDF物体.",
   "inputs": [
    {
     "name": "尺寸"
@@ -35809,7 +35809,7 @@
     "name": "相机缩放"
    },
    {
-    "name": "SDF 对象"
+    "name": "SDF物体"
    },
    {
     "name": "环境插值"
@@ -35834,7 +35834,7 @@
   ]
  },
  "Node_RM_Render_Cross": {
-  "name": "RM渲染交叉",
+  "name": "RM渲染Cross",
   "tooltip": "",
   "inputs": [
    {
@@ -35967,7 +35967,7 @@
   ]
  },
  "Node_RM_Terrain": {
-  "name": "RM 地形",
+  "name": "RMTerrain",
   "tooltip": "从高度图创建 3D 地形",
   "inputs": [
    {
@@ -36026,7 +36026,7 @@
   ]
  },
  "Node_RM_to_Mesh": {
-  "name": "RM到网格",
+  "name": "RM到网格体",
   "tooltip": "",
   "inputs": [
    {
@@ -36194,7 +36194,7 @@
  },
  "Node_Scale_Algo": {
   "name": "缩放算法",
-  "tooltip": "使用 Scale2x、Scale3x 算法缩放图像",
+  "tooltip": "缩放图像使用pixel-art基于scalingalgorithms.",
   "inputs": [
    {
     "name": "输入表面"
@@ -36837,7 +36837,7 @@
  },
  "Node_Segment_Filter": {
   "name": "过滤线段",
-  "tooltip": "根据条件过滤线段（vec2 数组）",
+  "tooltip": "筛选segment(vec2array)基于开aconditions.",
   "inputs": [
    {
     "name": "线段"
@@ -37025,7 +37025,7 @@
     "name": "输出表面"
    },
    {
-    "name": "阴影Only"
+    "name": "阴影仅"
    }
   ]
  },
@@ -37425,7 +37425,7 @@
     "name": "深度"
    },
    {
-    "name": "Rim法线"
+    "name": "Rim正常"
    }
   ]
  },
@@ -37543,10 +37543,10 @@
     "name": "斜切"
    },
    {
-    "name": "箭头Sizes"
+    "name": "ArrowSizes"
    },
    {
-    "name": "箭头Head"
+    "name": "ArrowHead"
    },
    {
     "name": "齿数量"
@@ -37930,8 +37930,8 @@
   ]
  },
  "Node_Shell": {
-  "name": "执行 Shell",
-  "tooltip": "执行 Shell 脚本",
+  "name": "执行Shell",
+  "tooltip": "执行shell脚本.",
   "inputs": [
    {
     "name": "路径"
@@ -38210,7 +38210,7 @@
   ]
  },
  "Node_Slider_Range_Data": {
-  "name": "Slider范围",
+  "name": "滑块范围",
   "tooltip": "",
   "inputs": [
    {
@@ -38256,7 +38256,7 @@
   "outputs": []
  },
  "Node_Slideshow_Node_Anchor": {
-  "name": "Slideshow节点",
+  "name": "幻灯片节点",
   "tooltip": "",
   "inputs": [
    {
@@ -38538,10 +38538,10 @@
     "name": "初始压力"
    },
    {
-    "name": "材质 MacCormack 权重"
+    "name": "材质Maccormack权重"
    },
    {
-    "name": "速度 MacCormack 权重"
+    "name": "速度Maccormack权重"
    },
    {
     "name": "边界",
@@ -38721,7 +38721,7 @@
     "name": "更新步长"
    },
    {
-    "name": "Subdivide时间步"
+    "name": "SubdivideTimestep"
    }
   ],
   "outputs": [
@@ -38867,7 +38867,7 @@
   "tooltip": "Receive面throughSpout",
   "inputs": [
    {
-    "name": "Receiver名称"
+    "name": "接收器名称"
    },
    {
     "name": "动画"
@@ -38880,8 +38880,8 @@
   ]
  },
  "Node_Spout_Send": {
-  "name": "Spout 发送器",
-  "tooltip": "通过 Spout 发送表面",
+  "name": "Spout发送方",
+  "tooltip": "发送面throughSpout",
   "inputs": [
    {
     "name": "发送者名称"
@@ -39635,7 +39635,7 @@
  },
  "Node_String_Format": {
   "name": "格式化文本",
-  "tooltip": "将 {var} 格式的字符串替换为适当的变量",
+  "tooltip": "替换字符串使用{var}格式使用aproper变量.",
   "inputs": [
    {
     "name": "文本"
@@ -39844,7 +39844,7 @@
     "name": "周期"
    },
    {
-    "name": "修剪White间距"
+    "name": "TrimWhite间距"
    }
   ],
   "outputs": [
@@ -40037,11 +40037,11 @@
   ]
  },
  "Node_Struct_JSON_Parse": {
-  "name": "解析 JSON",
-  "tooltip": "将 JSON 字符串解析为结构体/数组",
+  "name": "ParseJSON",
+  "tooltip": "Parsejson字符串进入struct/array.",
   "inputs": [
    {
-    "name": "JSON 字符串"
+    "name": "JSON字符串"
    }
   ],
   "outputs": [
@@ -40281,7 +40281,7 @@
     "name": "深度Pass"
    },
    {
-    "name": "法线Pass"
+    "name": "正常Pass"
    }
   ]
  },
@@ -40358,7 +40358,7 @@
     "name": "深度Pass"
    },
    {
-    "name": "法线Pass"
+    "name": "正常Pass"
    }
   ]
  },
@@ -40534,7 +40534,7 @@
  },
  "Node_SVG": {
   "name": "SVG",
-  "tooltip": "加载 SVG 文件",
+  "tooltip": "加载aSVG文件.",
   "inputs": [
    {
     "name": "路径"
@@ -40558,7 +40558,7 @@
     "name": "输出表面"
    },
    {
-    "name": "SVG 结构"
+    "name": "SVG物体"
    },
    {
     "name": "维度"
@@ -40816,7 +40816,7 @@
     "name": "输入表面"
    },
    {
-    "name": "RG 映射"
+    "name": "RG贴图"
    },
    {
     "name": "激活"
@@ -40855,7 +40855,7 @@
  },
  "Node_Text_File_Read": {
   "name": "文本文件输入",
-  "tooltip": "加载 .txt 文件为文本",
+  "tooltip": "加载.txt输入为文本.",
   "inputs": [
    {
     "name": "路径"
@@ -40872,7 +40872,7 @@
  },
  "Node_Text_File_Write": {
   "name": "文本文件输出",
-  "tooltip": "将文本保存为 .txt 文件",
+  "tooltip": "保存文本为a.txt文件.",
   "inputs": [
    {
     "name": "路径"
@@ -41211,25 +41211,25 @@
     ]
    },
    {
-    "name": "GM 导出类型",
+    "name": "GM导出类型",
     "display_data": [
      "房间"
     ]
    },
    {
-    "name": "GM 房间"
+    "name": "GMRoom"
    },
    {
-    "name": "GM 房间名称"
+    "name": "GMRoom名称"
    },
    {
-    "name": "GM 图层名称"
+    "name": "GM图层名称"
    },
    {
     "name": "图块集"
    },
    {
-    "name": "GD 场景"
+    "name": "GD场景"
    }
   ],
   "outputs": []
@@ -41275,8 +41275,8 @@
   ]
  },
  "Node_Tonemap_ACE": {
-  "name": "ACE 色调映射",
-  "tooltip": "应用 ACE 色调映射",
+  "name": "ACE",
+  "tooltip": "应用ACEtonemapping.",
   "inputs": [
    {
     "name": "输入表面"
@@ -41335,7 +41335,7 @@
   ]
  },
  "Node_Track_Pixel": {
-  "name": "Track像素",
+  "name": "跟踪像素",
   "tooltip": "",
   "inputs": [
    {
@@ -41345,7 +41345,7 @@
     "name": "原点"
    },
    {
-    "name": "Track半径"
+    "name": "跟踪半径"
    },
    {
     "name": "Scan半径"
@@ -41735,7 +41735,7 @@
  },
  "Node_Unicode": {
   "name": "Unicode",
-  "tooltip": "将 Unicode ID 转换为字符串",
+  "tooltip": "转换unicodeid进入字符串.",
   "inputs": [
    {
     "name": "Unicode"
@@ -42201,7 +42201,7 @@
     "name": "小工具大小"
    },
    {
-    "name": "Relative单位"
+    "name": "相对单位"
    }
   ],
   "outputs": [
@@ -42612,7 +42612,7 @@
   ]
  },
  "Node_VerletSim_Force": {
-  "name": "Push网格",
+  "name": "Push网格体",
   "tooltip": "",
   "inputs": [
    {
@@ -42667,7 +42667,7 @@
   ]
  },
  "Node_VerletSim_Mesh": {
-  "name": "Verlet网格",
+  "name": "Verlet网格体",
   "tooltip": "",
   "inputs": [
    {
@@ -42696,7 +42696,7 @@
   ]
  },
  "Node_VerletSim_Mesh_Bridge": {
-  "name": "Bridge网格",
+  "name": "Bridge网格体",
   "tooltip": "",
   "inputs": [
    {
@@ -42774,7 +42774,7 @@
   ]
  },
  "Node_VerletSim_Mesh_Disk": {
-  "name": "Disk网格",
+  "name": "Disk网格体",
   "tooltip": "",
   "inputs": [
    {
@@ -42877,7 +42877,7 @@
   ]
  },
  "Node_VerletSim_Mesh_Pleat": {
-  "name": "Pleat网格",
+  "name": "Pleat网格体",
   "tooltip": "",
   "inputs": [
    {
@@ -42922,7 +42922,7 @@
   ]
  },
  "Node_VerletSim_Mesh_Tear": {
-  "name": "Tear网格",
+  "name": "Tear网格体",
   "tooltip": "",
   "inputs": [
    {
@@ -42955,7 +42955,7 @@
     "name": "随机种子"
    },
    {
-    "name": "Break网格"
+    "name": "Break网格体"
    }
   ],
   "outputs": [
@@ -43286,8 +43286,8 @@
   ]
  },
  "Node_VFX_Group_Inline": {
-  "name": "VFX 组",
-  "tooltip": "创建 VFX 组，可以使用不同的力节点操作生成的粒子",
+  "name": "VFX",
+  "tooltip": "创建VFX分组,which生成粒子that可bemanipulated使用differentforce节点.",
   "inputs": [
    {
     "name": "循环"
@@ -43349,7 +43349,7 @@
   ]
  },
  "Node_VFX_Override": {
-  "name": "VFX 覆盖",
+  "name": "VFX覆盖",
   "tooltip": "用新变量替换粒子变量",
   "inputs": [
    {
@@ -43825,7 +43825,7 @@
   ]
  },
  "Node_VFX_Trail": {
-  "name": "VFX 轨迹",
+  "name": "VFXTrail",
   "tooltip": "从粒子运动生成路径。",
   "inputs": [
    {
@@ -43845,7 +43845,7 @@
   ]
  },
  "Node_VFX_Triangulate": {
-  "name": "VFX 三角化",
+  "name": "VFXTriangulate",
   "tooltip": "在粒子之间绘制线条。",
   "inputs": [
    {
@@ -43927,7 +43927,7 @@
   ]
  },
  "Node_VFX_Variable": {
-  "name": "VFX 变量",
+  "name": "VFX变量",
   "tooltip": "从粒子对象中提取变量。",
   "inputs": [
    {
@@ -44118,8 +44118,8 @@
   ]
  },
  "Node_Voronoi_Extra": {
-  "name": "额外 Voronoi",
-  "tooltip": "使用不同算法生成随机 Voronoi 噪声。",
+  "name": "Extra泰森多边形",
+  "tooltip": "随机泰森多边形噪声made使用differentalgorithms.",
   "inputs": [
    {
     "name": "尺寸"
@@ -44377,8 +44377,8 @@
   ]
  },
  "Node_WAV_File_Read": {
-  "name": "WAV 文件输入",
-  "tooltip": "加载 WAV 音频文件。",
+  "name": "WAV文件输入",
+  "tooltip": "加载wav音频文件.",
   "inputs": [
    {
     "name": "路径"
@@ -44409,8 +44409,8 @@
   ]
  },
  "Node_WAV_File_Write": {
-  "name": "WAV 文件输出",
-  "tooltip": "保存 WAV 音频文件。",
+  "name": "WAV文件输出",
+  "tooltip": "保存wav音频文件.",
   "inputs": [
    {
     "name": "路径"
@@ -44522,8 +44522,8 @@
   ]
  },
  "Node_Websocket_Receiver": {
-  "name": "WebSocket 接收器",
-  "tooltip": "创建 WebSocket 服务器以从网络接收数据。",
+  "name": "Websocket接收器",
+  "tooltip": "创建websocketserver到receive数据从network.",
   "inputs": [
    {
     "name": "端口"
@@ -44539,7 +44539,7 @@
     ]
    },
    {
-    "name": "URL"
+    "name": "Url"
    }
   ],
   "outputs": [
@@ -44552,8 +44552,8 @@
   ]
  },
  "Node_Websocket_Sender": {
-  "name": "WebSocket 发送器",
-  "tooltip": "创建 WebSocket 服务器以将数据发送到网络。",
+  "name": "Websocket发送方",
+  "tooltip": "创建websocketserver到发送数据到network.",
   "inputs": [
    {
     "name": "端口"
@@ -44871,8 +44871,8 @@
   ]
  },
  "Node_XML_File_Read": {
-  "name": "XML 文件读取",
-  "tooltip": "加载 XML 文件。",
+  "name": "XML文件输入",
+  "tooltip": "加载xml文件.",
   "inputs": [
    {
     "name": "路径"
@@ -44888,8 +44888,8 @@
   ]
  },
  "Node_XML_File_Write": {
-  "name": "XML 文件写入",
-  "tooltip": "将结构体写入 XML 文件。",
+  "name": "XML文件输出",
+  "tooltip": "Write结构体到xml文件.",
   "inputs": [
    {
     "name": "路径"

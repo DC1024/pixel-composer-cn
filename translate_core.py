@@ -776,6 +776,213 @@ EXT = (".png", ".jpg", ".jpeg", ".gif", ".webp", ".bmp", ".tga", ".tiff", ".mp4"
        ".js", ".py", ".sh", ".exe", ".dll", ".ttf", ".otf", ".md", ".pdf", ".svg",
        ".fbx", ".obj", ".glb", ".gltf", ".pcx", ".pxc", ".cpxc", ".zip")
 
+# ===================== v1.0.1 补充词典：修复残留英文 =====================
+KEEP |= {
+    "pxchub", "pcx", "pxc", "ffmpeg", "imagemagick", "gifski", "webp", "discord",
+    "patreon", "wiki", "bluesky", "mastodon", "twitter", "youtube", "aseprite",
+    "krita", "lospec", "ora", "mkfx", "ugc", "flip", "shadertoy", "lua", "json",
+    "gamemaker", "hlsl", "rgba", "oklch",
+}
+
+WORD.update({
+    # 面板 / 窗口 / 控件
+    "toolbar": "工具栏", "topbar": "顶栏", "sidebar": "侧栏", "menubar": "菜单栏",
+    "junction": "连接点", "junctions": "连接点", "minimap": "小地图",
+    "dropper": "吸管", "displayer": "显示器", "selector": "选择器",
+    "separator": "分隔符", "divider": "分隔线", "slider": "滑块", "widget": "控件",
+    "control": "控件", "controls": "控件", "curvebox": "曲线框", "curve": "曲线",
+    # 常用词（此前未收录）
+    "account": "账户", "marker": "标记", "markers": "标记", "pie": "环形",
+    "hotkey": "快捷键", "shortcut": "快捷键", "hovering": "悬停", "slideshow": "幻灯片",
+    "quantize": "量化", "prioritize": "优先", "always": "始终", "history": "历史",
+    "saved": "已保存", "children": "子级", "siblings": "同级", "explore": "浏览",
+    "capture": "捕获", "track": "跟踪", "tracking": "跟踪", "receiver": "接收器",
+    "envelope": "包络", "backface": "背面", "occlusion": "遮蔽", "organize": "整理",
+    "centralize": "居中", "extract": "解压", "culling": "剔除", "favorited": "已收藏",
+    "sequence": "序列", "sweep": "扫描", "simplify": "简化", "padding": "内边距",
+    "flex": "弹性", "purge": "清除", "store": "存储", "portable": "便携",
+    "gesture": "手势", "sensitivity": "灵敏度", "profile": "个人资料",
+    "pressure": "压力", "plane": "平面", "conversion": "转换", "convert": "转换",
+    "divisible": "整除", "shifting": "偏移", "wheel": "滚轮", "created": "创建于",
+    "only": "仅", "again": "再次", "as": "为", "before": "之前", "box": "框",
+    "cycle": "循环", "changed": "已更改", "selecting": "选择", "recording": "录制",
+    "spacebar": "空格键", "startup": "启动", "meta": "元", "mass": "批量",
+    "inspect": "检查", "fitler": "筛选", "horzontal": "水平", "translated": "已翻译",
+    "untranslated": "未翻译", "workshop": "创意工坊", "submission": "投稿",
+    "thumbnail": "缩略图", "upload": "上传", "download": "下载", "comment": "评论",
+    "comments": "评论", "rating": "评分", "online": "在线", "resource": "资源",
+    "resources": "资源", "preset": "预设", "presets": "预设", "showcase": "展示",
+    "package": "包", "terminal": "终端", "remote": "远程", "average": "平均",
+    "delta": "增量", "perfect": "完美", "native": "原生", "direct": "直接",
+    "conflict": "冲突", "expands": "展开", "expand": "展开", "dopesheet": "摄影表",
+    "timeline": "时间线", "keyframe": "关键帧", "tunnel": "隧道", "stray": "游离",
+    "disconnected": "未连接", "inline": "内联", "untitled": "未命名",
+    "notification": "通知", "favorite": "收藏", "favourite": "收藏",
+})
+
+PHRASE.update({
+    # 单/短语（精确匹配优先）
+    "Steam Workshop": "Steam 创意工坊", "Workshop": "创意工坊",
+    "Pie Menu": "环形菜单", "Pie menu": "环形菜单", "pie menu": "环形菜单",
+    "Always Show": "始终显示", "Clear History": "清除历史",
+    "Current Only": "仅当前", "Selection Only": "仅选区",
+    "Current and Children": "当前及子级",
+    "Delete Saved Layout": "删除已保存布局",
+    "Edit Graph Toolbar": "编辑图表工具栏",
+    "Edit Preview Toolbar": "编辑预览工具栏",
+    "Edit Preview 3D Toolbar": "编辑预览 3D 工具栏",
+    "Edit Preview 3D SDF Toolbar": "编辑预览 3D SDF 工具栏",
+    "Reset Graph Toolbar": "重置图表工具栏",
+    "Reset Preview Toolbar": "重置预览工具栏",
+    "Reset Preview 3D Toolbar": "重置预览 3D 工具栏",
+    "Reset Preview 3D SDF Toolbar": "重置预览 3D SDF 工具栏",
+    "Lock Left Toolbar": "锁定左侧工具栏", "Lock Right Toolbar": "锁定右侧工具栏",
+    "Always show Left toolbar": "始终显示左侧工具栏",
+    "Always show Right toolbar": "始终显示右侧工具栏",
+    "Toolbar Direction": "工具栏方向", "Toolbar Padding": "工具栏内边距",
+    "New Floating Workspace": "新建浮动工作区",
+    "Load in Safe Mode": "以安全模式载入",
+    "Lock Panel": "锁定面板", "Full Panel": "全屏面板", "Toolbar Panel": "工具栏面板",
+    "Account Setting": "账户设置", "Addon settings": "插件设置",
+    "Open Steam Workshop": "打开 Steam 创意工坊",
+    "Update Content to Workshop": "更新内容到创意工坊",
+    "Upload To Workshop": "上传到创意工坊",
+    "Upload To Steam": "上传到 Steam 创意工坊",
+    "View on Workshop": "在创意工坊查看",
+    "Your Workshop Page": "你的创意工坊页面",
+    "Steam Workshop Panel": "Steam 创意工坊面板",
+    "Upload as a new Steam Workshop submission": "作为新的 Steam 创意工坊投稿上传",
+    "Generate UGC Thumbnail": "生成 UGC 缩略图", "Generate UGC": "生成 UGC",
+    "System Info": "系统信息", "Remote Terminal": "远程终端",
+    "Process Maker": "处理制作器", "Quick Anim": "快速动画", "Quick Nav": "快速导航",
+    "Auto Organize All": "自动整理全部", "Frame Separator": "帧分隔符",
+    "Frame Sequence Editor": "帧序列编辑器", "Manual Tracking": "手动跟踪",
+    "Clear Manual Track Data": "清除手动跟踪数据",
+    "Goto Next Marker": "跳到下一个标记", "Goto Previous Marker": "跳到上一个标记",
+    "Next Marker": "下一个标记", "Previous Marker": "上一个标记",
+    "Add Marker": "添加标记", "Edit Marker": "编辑标记", "Remove Marker": "移除标记",
+    "Clear Markers": "清除标记", "Marker Settings": "标记设置", "Toggle Marker": "切换标记",
+    "Envelope Keys": "包络关键帧", "Move Left Again": "再次左移", "Move Right Again": "再次右移",
+    "Slideshow Next": "幻灯片下一页", "Slideshow Previous": "幻灯片上一页",
+    "Spacebar Action": "空格键动作", "Edit Hotkey": "编辑快捷键",
+    "Reset Hotkey": "重置快捷键", "Remove Hotkey": "移除快捷键",
+    "Direct Key Capture": "直接按键捕获", "Show on Selector": "在选择器中显示",
+    "Node Selector": "节点选择器", "Node Chain": "节点链", "Node Multiplier": "节点倍增器",
+    "Node Dropper": "节点吸管", "Node Action Pie": "节点动作环形菜单",
+    "Node Attribute Pie": "节点属性环形菜单", "Node Preset Pie": "节点预设环形菜单",
+    "Create pie menu": "创建环形菜单", "Edit Node Pie menu": "编辑节点环形菜单",
+    "Editing Pie menu": "编辑环形菜单",
+    "Default curvebox height": "默认曲线框高度", "Expands to full width": "展开至全宽",
+    "Text scale*": "文本缩放*", "Multi windows": "多窗口", "Zoom Sensitivity": "缩放灵敏度",
+    "Purge Data": "清除数据", "Store Position": "存储位置",
+    "Favorited Properties": "已收藏属性", "Custom Panels": "自定义面板",
+    "Ambient Occlusion": "环境光遮蔽", "Blend Original": "混合原始",
+    "Mask Under": "遮罩下层", "Mass Connect": "批量连接",
+    "Inspect Parent Node": "检查父级节点", "Prioritize Connection": "优先连线",
+    "Prioritize Favourite": "优先收藏", "Depth Of Field": "景深",
+    "Edge detect": "边缘检测", "Face Culling": "面剔除",
+    "Delete Hovering": "删除悬停项", "Cycle Channel": "循环通道",
+    "Open in Browser": "在浏览器中打开", "Open Explorer": "打开资源管理器",
+    "Open Welcome files Folder": "打开欢迎文件文件夹", "Explore Folder": "浏览文件夹",
+    "Export Showcase Package": "导出展示包", "Import JSON as": "导入 JSON 为",
+    "Import PXC as": "导入 PXC 为", "Extract To": "解压到",
+    "Toggle Hex": "切换十六进制", "Toggle Meta View": "切换元视图",
+    "Toggle Sidebar": "切换侧栏", "Toggle Topbar": "切换顶栏",
+    "Toggle Dopesheet": "切换摄影表", "Toggle Mini Timeline": "切换迷你时间线",
+    "Toggle Recording": "切换录制", "Show Topbar": "显示顶栏", "Hide Topbar": "隐藏顶栏",
+    "Show View Control": "显示视图控件", "Hide View Control": "隐藏视图控件",
+    "Reset Topbar": "重置顶栏", "Reset Sidebar": "重置侧栏",
+    "Edit Topbar": "编辑顶栏", "Edit Sidebar": "编辑侧栏",
+    "Quantize Keys": "量化关键帧", "Quantize on Scale": "缩放时量化",
+    "Relative Unit": "相对单位", "View Plane": "视图平面",
+    "Sort by Creation Date": "按创建日期排序", "Sort by Trending": "按热度排序",
+    "Sort by Vote": "按投票排序", "This Month": "本月", "This Week": "本周",
+    "This Year": "今年", "Toggle Search Steam": "搜索 Steam",
+    "Include Steam": "包含 Steam", "Update Steam": "更新 Steam",
+    "Filter Selecting Node": "筛选所选节点", "Fitler Node Type": "筛选节点类型",
+    "Replace with Selecting": "用所选替换", "Panel Node Goto": "定位节点",
+    # 整句
+    "room size not divisible by tile size. May cause tile shifting.":
+        "房间尺寸不能被瓦片尺寸整除，可能导致瓦片偏移。",
+    "Startup error causes preference value to be resetted. Preference is now read-only. Backup the current Preference files and restart.":
+        "启动错误导致首选项数值被重置。首选项现为只读，请备份当前首选项文件后重启。",
+    "Send node to preview to be use as project thumbnail before uploading.":
+        "上传前将节点发送到预览，用作项目缩略图。",
+    "Linking submission to PXC hub will allows for in-software rating and comment Data separated from Steam Workshop)":
+        "将投稿链接到 PXC Hub 可启用软件内评分与评论（数据与 Steam 创意工坊分离）。",
+    "Profile image uses data from Steam.": "个人头像使用来自 Steam 的数据。",
+    "Show online account.": "显示在线账户。", "Check for update on start.": "启动时检查更新。",
+    "Use Gesture for Pan/Zoom": "使用手势平移/缩放",
+    "Use native file selector": "使用系统原生文件选择器",
+    "Use pie menu for hotkey conflict.": "热键冲突时使用环形菜单。",
+    "Paste node directly inside inline group.": "将节点直接粘贴到内联分组内。",
+    "Press Enter to create equation node.": "按 Enter 创建公式节点。",
+    "Ctrl + Wheel to zoom": "Ctrl + 滚轮缩放",
+    "Use ALT for": "ALT 键用于", "Use Pressure": "使用压力",
+    "Force Close on Escape": "按 Escape 强制关闭",
+    "Load all current collections": "载入当前全部藏品",
+    "Load all nodes": "载入全部节点",
+    "Update all current collections": "更新当前全部藏品",
+    "Add metadata to current collections": "为当前藏品添加元数据",
+    "Switch input/output": "切换输入/输出",
+    "Right Click to switch tab": "右键切换标签页",
+    "Break Control Mirror": "断开控制镜像",
+    "Color Format RGBA,": "颜色格式 RGBA，",
+    "Presets Default Overwited,": "预设默认已覆盖，",
+    "Created on": "创建于", "Export project json": "导出项目 JSON",
+    "Export project .zip": "导出项目 .zip", "Import project .zip": "导入项目 .zip",
+    "Export .zip": "导出为 .zip", "Import .zip": "导入 .zip",
+    "Change without conversion": "更改而不转换", "Compressed Archive (zip)": "压缩归档 (zip)",
+    "Portable project (.zip)": "便携项目 (.zip)", "JSON Struct (json)": "JSON 结构体 (json)",
+    "Link all to PXC hub": "全部链接到 PXC Hub", "Link to PXC hub": "链接到 PXC Hub",
+    "Not linked to PXC hub": "未链接到 PXC Hub",
+    "Link to PCX hub to enable comments.": "链接到 PCX Hub 以启用评论。",
+    "PXC Login": "PXC 登录", "PXC Logout": "PXC 登出", "PXC Sprites": "PXC 精灵",
+    "PCX Reference": "PCX 参考", "Lua Reference": "Lua 参考", "Lua": "Lua 脚本",
+    "Search Wiki": "搜索 Wiki", "Community Wiki": "社区 Wiki",
+    "Connect to Patreon": "连接 Patreon", "Patreon Contents": "Patreon 内容",
+    "Patreon Bonus Projects": "Patreon 奖励项目", "Open in Discord": "在 Discord 中打开",
+    "Pixel Composer Discord": "Pixel Composer Discord", "itch.io page": "itch.io 页面",
+    "Steam page": "Steam 页面", "About Pixel Composer": "关于 Pixel Composer",
+    "Art by Kenney": "美术：Kenney", "Key displayer": "按键显示器",
+    "Locale Manager": "语言管理器", "Import Resources": "导入资源",
+    "Update resource version": "更新资源版本", "Export Missing and Untranslated Text":
+        "导出缺失与未翻译文本",
+    "Show Grid": "显示网格", "Grid setting": "网格设置", "Center preview": "居中预览",
+    "Preview background": "预览背景", "Render all nodes": "渲染全部节点",
+    "Render disabled node when export": "导出时渲染被禁用的节点",
+    "Execute all export nodes": "执行全部导出节点",
+    "Reset default collection": "重置默认藏品", "Reset layout": "重置布局",
+    "Save layout": "保存布局", "Save Current Layout": "保存当前布局",
+    "Open autosave folder": "打开自动保存文件夹",
+    "Open autosave directory": "打开自动保存目录",
+    "Open local directory": "打开本地目录",
+    "Tutorial videos": "教学视频", "Pixel Composer Forum": "Pixel Composer 论坛",
+    "Newer version available": "有新版本可用", "Node credit dialog": "节点鸣谢对话框",
+    "Save current preview as": "当前预览另存为", "Force crash": "强制崩溃",
+    "Display Error": "显示错误", "Display Warning": "显示警告",
+    "Generate Node Locale": "生成节点语言文件", "Generate theme object": "生成主题对象",
+    "Update sample projects": "更新示例项目", "Tester": "测试器",
+    "Flip Fluid": "FLIP 流体", "FLIP Solver": "FLIP 解算器", "FLIP Fluid": "FLIP 流体",
+    "Verlet solver": "Verlet 解算器", "Verlet iteration": "Verlet 迭代次数",
+    "Add vector2": "添加二维向量 (Vec2)", "Add vector3": "添加三维向量 (Vec3)",
+    "Add vector4": "添加四维向量 (Vec4)", "3D SDF View Settings": "3D SDF 视图设置",
+    "Per Pressure Settings": "压力设置", "Pixel Perfect": "像素完美",
+    "Pixel Delta": "像素增量", "Sat Average": "饱和度平均", "Val Average": "明度平均",
+    "Graph Simplify Scale": "图表简化缩放", "Gradient Sweep": "渐变扫描",
+    "Hue Flex": "色相弹性", "Separate Shape": "分离形状",
+    "Separate/Combine Axis": "分离/合并轴", "Toggle Separate Axis": "切换分离轴",
+    "Sep Axis": "分离轴", "Store Position": "存储位置", "Pop-up": "弹出",
+    "Pop-up content": "弹出内容", "Update note": "更新说明",
+    "Running shell script": "正在运行 shell 脚本",
+    "HTTP": "HTTP", "HLSL Libraries": "HLSL 库", "Sca": "缩放",
+    "Save frozen": "保存冻结状态", "Save new project before exit?": "退出前保存新项目？",
+    "Load Saved Layout": "载入已保存布局", "Saved Layout": "已保存布局",
+    "Tab Alignment": "标签对齐", "Sub-Palettes": "子调色板",
+    "Generate UGC Thumbnail": "生成 UGC 缩略图",
+    "Key displayer": "按键显示器", "Key Displayer": "按键显示器",
+})
+
 
 def _is_keep(tok):
     t = tok.strip().lower().strip(".,;:!?()[]{}'\"")
@@ -871,6 +1078,311 @@ def translate(text):
     for ph in placeholders:
         zh = zh.replace("\x00", ph, 1)
     return zh
+
+
+# ============================================================================
+# v1.0.1 补充表（2026-09-28）：补齐菜单项/面板键、修正机翻
+# 用途：修复「已汉化但仍显示英文」的条目。成因有且仅有两类：
+#   A) 键根本不在官方 Locale/en/words.json 里 —— 从 data.win 反查出来的
+#      内嵌键（面板标题 <name>_panel、面板右键菜单 lock_panel、
+#      工具栏/侧栏编辑器 *_toolbar / *_sidebar 键族）。官方漏登记，
+#      任何语言包都覆盖不到，只能由我们补进 zh/words.json 与 zh/UI.json。
+#   B) 键在官方表里，但旧版机翻把一句英文拆坏了（如 "Blend at Selection"
+#      -> "混合at选区"、"Fill and Pad" -> "填充和Pad"），这里逐条纠正。
+# 这两张表由 apply_locale_extras() 在「安装汉化」「更新汉化」后统一注入。
+# ============================================================================
+
+# A) 官方 en 缺失、需新增的键（值即中文）
+LOCALE_ADD = {
+    # ---- 面板标题：data.win 按 <name>_panel 查表 ----
+    "toolbar_panel": "工具栏面板",
+    "locale_manager_panel": "语言管理器面板",
+    # ---- 面板右键菜单 ----
+    "lock_panel": "锁定面板",
+    "full_panel": "面板最大化",
+    # ---- 其它内嵌键 ----
+    "toolbar": "工具栏",
+    "side_menu": "侧边菜单",
+    "node_side_menu": "侧边菜单",
+    "drawing": "绘画",
+    "layout": "布局",
+    # ---- 工具栏编辑器（预览 / 图表）----
+    "preview_toolbar": "预览工具栏",
+    "preview_edit_toolbar": "编辑预览工具栏…",
+    "preview_toolbar_3d": "预览 3D 工具栏",
+    "preview_edit_toolbar_3d": "编辑预览 3D 工具栏…",
+    "preview_toolbar_3d_sdf": "预览 3D SDF 工具栏",
+    "preview_edit_toolbar_3d_sdf": "编辑预览 3D SDF 工具栏…",
+    "preview_reset_toolbar": "重置预览工具栏",
+    "preview_reset_toolbar_3d": "重置预览 3D 工具栏",
+    "preview_reset_toolbar_3d_sdf": "重置预览 3D SDF 工具栏",
+    "graph_edit_toolbar": "编辑图表工具栏…",
+    "graph_reset_toolbar": "重置图表工具栏",
+    "graph_toolbars_general": "工具栏通用设置",
+    "panel_toolbar_padding": "工具栏内边距",
+    "panel_preview_toolbar_horizontal": "水平",
+    # ---- 侧栏编辑器 ----
+    "animation_sidebar": "侧栏",
+    "animation_edit_sidebar": "编辑侧栏…",
+    "animation_reset_sidebar": "重置侧栏",
+    "animation_sidebar_context": "侧栏右键菜单",
+    "nodes_toggle_sidebar": "切换侧栏",
+    "nodes_edit_sidebar": "编辑侧栏",
+    # ---- 工作区面板按钮 ----
+    "panel_workspace_apply": "应用到当前",
+    "panel_workspace_replace": "替换为当前",
+    "panel_workspace_delete": "删除",
+    # ---- 工作区标签：来自 layouts/*.json 的文件名，按原名直查 ----
+    "Horizontal": "水平",
+    "Vertical": "垂直",
+    "Preview": "预览",
+    "Drawing": "绘画",
+    "Side menu": "侧边菜单",
+    # ---- 浮层面板标题：程序拿面板「短名」直查，短名是首字母大写的英文原名 ----
+    "Toolbar": "工具栏",
+    "File Explorer": "文件浏览器",
+    "Animation": "动画",
+    "Randomizer": "随机化",
+    "Align": "对齐",
+    "Tunnels": "隧道",
+    "Color": "颜色",
+    "Palettes": "调色板",
+    "Palettes Mixer": "调色板混合器",
+    "Gradients": "渐变",
+    "Console": "控制台",
+    "Globalvar": "全局变量",
+    "Locale Manager": "语言管理器",
+    "Steam Workshop": "Steam 创意工坊",
+    "Collection Runner": "集合运行器",
+    "Node Manager": "节点管理器",
+    "Dialog Manager": "对话框管理器",
+    "Collections": "集合",
+    "Graph": "图表",
+    "Nodes": "节点",
+    "Inspector": "检视器",
+    "Workspace": "工作区",
+    "Delete": "删除",
+}
+
+# A2) 浮层面板标题。
+# 已实测确认：面板标题 = loc("<面板对象名>")，对象名形如 panel_toolbar。
+# 官方 en/words.json 只登记了 panel_globalvar、panel_driver 两个前缀式键，
+# 其余 110 个 panel_* 对象全部漏登记 —— 所以任何语言包都译不到面板标题
+# （"Toolbar"、"File Explorer"、"Graph" 这些都会漏成英文）。
+# 这里按 GML 对象名补齐。走 LOCALE_ADD 语义：官方已有的键不会被覆盖。
+PANEL_TITLES = {
+    "panel_menu": "菜单",
+    "panel_palette": "调色板",
+    "panel_palettes": "调色板",
+    "panel_palette_mixer": "调色板混合器",
+    "panel_palettes_mixer": "调色板混合器",
+    "panel_color": "颜色",
+    "panel_preview": "预览",
+    "panel_preview_window": "预览窗口",
+    "panel_animation": "动画",
+    "panel_workspace": "工作区",
+    "panel_inspector": "检视器",
+    "panel_graph": "图表",
+    "panel_collection": "集合",
+    "panel_collections": "集合",
+    "panel_collection_manager": "集合管理器",
+    "panel_collection_runner": "集合运行器",
+    "panel_collections_settings": "集合设置",
+    "panel_notification": "通知",
+    "panel_file_explorer": "文件浏览器",
+    "panel_nodes": "节点",
+    "panel_toolbar": "工具栏",
+    "panel_toolbar_icon": "工具栏图标",
+    "panel_dialog_manager": "对话框管理器",
+    "panel_steam_workshop": "Steam 创意工坊",
+    "panel_steam_workshop_selector": "Steam 创意工坊选择器",
+    "panel_steam_link_edit": "Steam 链接",
+    "panel_console": "控制台",
+    "panel_gradient": "渐变",
+    "panel_gradients": "渐变",
+    "panel_align": "对齐",
+    "panel_node_align": "节点对齐",
+    "panel_randomizer": "随机化",
+    "panel_tunnel": "隧道",
+    "panel_tunnels": "隧道",
+    "panel_locale_manager": "语言管理器",
+    "panel_node_manager": "节点管理器",
+    "panel_delete": "删除",
+    "panel_project_variables": "项目变量",
+    "panel_project_info": "项目信息",
+    "panel_history": "历史",
+    "panel_timer": "计时器",
+    "panel_preference": "偏好设置",
+    "panel_presets": "预设",
+    "panel_system_info": "系统信息",
+    "panel_release_note": "更新日志",
+    "panel_node_credit": "节点积分",
+    "panel_patreon": "Patreon",
+    "panel_account": "账户",
+    "panel_account_settings": "账户设置",
+    "panel_addon": "附加组件",
+    "panel_canvas": "画布",
+    "panel_global_layer": "全局图层",
+    "panel_data": "数据",
+    "panel_function": "函数",
+    "panel_note_md": "笔记",
+    "panel_text_editor": "文本编辑器",
+    "panel_image_array_editor": "图像数组编辑器",
+    "panel_graph_selector": "图表选择器",
+    "panel_process_maker": "流程生成器",
+    "panel_dev_project_manager": "项目管理器",
+    "panel_migration_error": "迁移错误",
+    "panel_graph_export_image_dialog": "导出图表为图像",
+    "panel_addnode_pie_editor": "节点饼图编辑器",
+    "panel_menuitems_editor": "菜单项编辑器",
+    "panel_code_reference": "代码参考",
+    "panel_hlsl_libraries": "HLSL 库",
+    "panel_curve_preset": "曲线预设",
+    "panel_array_sequence": "数组序列",
+    "panel_capture_project": "捕获项目",
+    "panel_node_custom_import": "导入自定义节点",
+    "panel_node_data_gen": "节点数据生成",
+    "panel_gm_explorer": "GameMaker 资源管理器",
+    "panel_asset_select": "素材选择",
+    "panel_canvas_asset_selector": "素材选择器",
+    "panel_canvas_color_selector": "颜色选择器",
+    "panel_canvas_layer": "图层",
+    "panel_canvas_tool": "画布工具",
+    "panel_canvas_tool_settings": "画布工具设置",
+    "panel_canvas_grid_setting": "网格设置",
+    "panel_graph_auto_organize": "自动整理",
+    "panel_graph_connection_settings": "连线设置",
+    "panel_graph_grid_settings": "网格设置",
+    "panel_graph_node_multiplier": "节点倍数",
+    "panel_graph_node_position": "节点位置",
+    "panel_graph_view_settings": "视图设置",
+    "panel_preview_grid_setting": "网格设置",
+    "panel_preview_histogram": "直方图",
+    "panel_preview_onion_setting": "洋葱皮设置",
+    "panel_preview_snap_setting": "吸附设置",
+    "panel_preview_view_settings": "视图设置",
+    "panel_preview_3d_grid_setting": "3D 网格设置",
+    "panel_preview_3d_setting": "3D 设置",
+    "panel_preview_3d_sdf_setting": "3D SDF 设置",
+    "panel_inspector_elements": "检视器元素",
+    "panel_inspector_view_settigns": "检视器视图设置",
+    "panel_keyframe_driver": "关键帧驱动",
+    "panel_group_io_edit": "编组 IO 编辑",
+    "panel_node_canvas_pressure": "笔压设置",
+    "panel_profile_render": "渲染分析",
+    "panel_default_editor": "默认编辑器",
+    "panel_custom": "自定义面板",
+    "panel_custom_editor": "自定义编辑器",
+    "panel_custom_inspector": "自定义检视器",
+    "panel_action_create": "创建动作",
+    "panel_action_manager": "动作管理器",
+    "panel_animation_analyze_settings": "动画分析设置",
+    "panel_animation_cleaner": "动画清理器",
+    "panel_animation_dopesheet": "摄影表",
+    "panel_animation_marker_settings": "标记设置",
+    "panel_animation_region_settings": "区域设置",
+    "panel_animation_scaler": "动画缩放器",
+    "panel_animation_settings": "动画设置",
+    "panel_animation_settings_call": "动画设置",
+    "panel_animation_view_settings": "动画视图设置",
+    "panel_cubemarch_guide": "Cubemarch 指南",
+    "panel_test": "测试",
+}
+LOCALE_ADD.update(PANEL_TITLES)
+
+# A3) 工作区标签的候选键（布局名小写化），实测若命中则可免去重命名布局文件。
+LOCALE_ADD.update({
+    "workspace_horizontal": "水平",
+    "workspace_drawing": "绘画",
+    "workspace_preview": "预览",
+    "workspace_side_menu": "侧边菜单",
+    "workspace_vertical": "垂直",
+})
+
+# B) 键已存在、但旧机翻质量不合格 —— 逐条纠正
+LOCALE_OVERRIDE = {
+    # words.json / UI.json 通用
+    "full_panel": "面板最大化",
+    "graph": "图表",
+    "collections": "集合",
+    "collection": "集合",
+    "nodes": "节点",
+    "blend_at_selection": "在选区混合",
+    "fill_and_pad": "填充与扩展",
+    "instance_of": "的实例",
+    "menu_bar": "菜单栏",
+    "mouse_alpha": "鼠标 Alpha",
+    "mouse_color": "鼠标颜色",
+    "more_preset": "更多预设",
+    "new_globalvar": "新建全局变量",
+    "palette_editor_delete_other": "删除未选中",
+    "post-process": "后处理",
+    "pref_theme_panel_border_accent": "强调色边框",
+    "preview_pass": "预览通道",
+    "preview_channel_rgba": "预览通道 > RGBA",
+    "project_variables": "项目变量",
+    "remove_all_regions": "移除全部区域",
+    "set_end_at_select": "在选区设置结束",
+    "set_start_at_select": "在选区设置开始",
+    "show_at_scale": "按比例显示",
+    "update_db": "更新数据库",
+    "io_editor": "IO 编辑器",
+    "repeat_xy": "重复 XY",
+    "gradient_editor_blend_HSV_inv": "HSV 反转",
+    "pref_directory_webp": "WebP 路径*",
+    "link_to_pcx_hub_to_enable_comments.": "链接到 PXC Hub 以启用评论。",
+    # UI.json
+    "anim_scale_scale_factor": "缩放系数：",
+    "pref_keyboard_hold_start": "键盘长按开始",
+    "pref_keyboard_repeat_delay": "键盘重复延迟",
+    "pref_inspector_line_break_width": "检视器换行宽度",
+    "pref_graph_zoom_smoothing": "图表缩放平滑",
+    "panel_graph_straight_connection_line": "直线连线",
+    "panel_graph_elbow_connection_line": "折线连线",
+    "more_actions": "更多操作…",
+    "dialog_migration_title": "程序目录在 1.13 中已更改",
+    "dialog_migration_content": "这意味着所有自定义藏品、素材、调色板、渐变、字体与预设都需要手动迁移。",
+    "migrate_files": "迁移文件",
+    "graph_export_solid_background": "纯色背景",
+}
+
+
+def apply_locale_extras(dirpath):
+    """把 LOCALE_ADD / LOCALE_OVERRIDE 注入 dirpath 下的 words.json 与 UI.json。
+
+    两张表同时写入 words.json 与 UI.json —— 因为游戏把两个文件合并成同一张
+    查表字典，写两份可确保无论它优先读哪个都能命中。已有键不覆盖（ADD），
+    已存在的错误值按表纠正（OVERRIDE）。纯标准库实现，供 patch_tool 调用。
+
+    返回 {"added": n, "overridden": m}。
+    """
+    import os as _os, json as _json
+    stats = {"added": 0, "overridden": 0}
+    for fname in ("words.json", "UI.json"):
+        path = _os.path.join(dirpath, fname)
+        if not _os.path.isfile(path):
+            continue
+        try:
+            with open(path, encoding="utf-8") as f:
+                d = _json.load(f)
+        except Exception:
+            continue
+        if not isinstance(d, dict):
+            continue
+        for k, v in LOCALE_ADD.items():
+            if k not in d:
+                d[k] = v
+                stats["added"] += 1
+        for k, v in LOCALE_OVERRIDE.items():
+            if k in d and d[k] != v:
+                d[k] = v
+                stats["overridden"] += 1
+        try:
+            with open(path, "w", encoding="utf-8") as f:
+                _json.dump(d, f, ensure_ascii=False, indent=1)
+        except Exception:
+            pass
+    return stats
 
 
 if __name__ == "__main__":

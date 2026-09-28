@@ -77,6 +77,9 @@
   td{color:var(--white)}
   .twocol{display:grid;grid-template-columns:1fr 1fr;gap:16px}
   .kicker{color:var(--lime);font-weight:700}
+  .note{background:var(--deep);border:1px solid var(--dkgrey);border-left:3px solid var(--orange);
+    border-radius:10px;padding:14px 18px;margin-top:16px;color:var(--mdwhite);font-size:14px}
+  .note b{color:var(--white)}
   /* bilingual toggle */
   .en{display:none}
   html[data-lang="en"] .zh{display:none}
@@ -118,8 +121,8 @@
 
   <!-- STATS -->
   <div class="stats">
-    <div class="stat"><b>100%</b><span class="zh">界面 UI 覆盖</span><span class="en">UI coverage</span></div>
-    <div class="stat"><b>99.1%</b><span class="zh">词条覆盖</span><span class="en">Words coverage</span></div>
+    <div class="stat"><b>98.5%</b><span class="zh">词条覆盖</span><span class="en">Words coverage</span></div>
+    <div class="stat"><b>2096</b><span class="zh">词条总数</span><span class="en">Total entries</span></div>
     <div class="stat"><b>~93%</b><span class="zh">节点名称覆盖</span><span class="en">Node coverage</span></div>
     <div class="stat"><b>0</b><span class="zh">联网需求</span><span class="en">Network needed</span></div>
   </div>
@@ -158,21 +161,29 @@ python patch_tool.py --install  # 命令行安装 / CLI</pre>
         <table>
           <tr><th class="zh">按钮</th><th class="zh">作用</th><th class="en">Button</th><th class="en">Action</th></tr>
           <tr><td class="zh">① 一键汉化</td><td class="zh">安装并启用中文</td><td class="en">① Install & enable</td><td class="en">Install + enable Chinese</td></tr>
-          <tr><td class="zh">② 更新汉化</td><td class="zh">增量补全翻译</td><td class="en">② Update</td><td class="en">Incremental update</td></tr>
+          <tr><td class="zh">② 更新汉化</td><td class="zh">离线增量补全（取自游戏自带 locale.zip，不联网）</td><td class="en">② Update</td><td class="en">Offline incremental fill (from the game's own locale.zip)</td></tr>
           <tr><td class="zh">③ 恢复英文</td><td class="zh">切回英文（保留备份）</td><td class="en">③ Restore EN</td><td class="en">Back to English (backup kept)</td></tr>
           <tr><td class="zh">④ 还原上一版</td><td class="zh">回滚到上次汉化</td><td class="en">④ Rollback</td><td class="en">Roll back to previous pack</td></tr>
           <tr><td class="zh">⑤ 查看状态</td><td class="zh">显示目录与语言</td><td class="en">⑤ Status</td><td class="en">Show paths & language</td></tr>
+          <tr><td class="zh">⑥ 汉化工作区标签</td><td class="zh">把布局文件名改成中文（标签取文件名）</td><td class="en">⑥ Localize layout tabs</td><td class="en">Rename layout files to Chinese</td></tr>
+          <tr><td class="zh">⑦ 还原布局名</td><td class="zh">把布局文件名还原成英文</td><td class="en">⑦ Restore layout names</td><td class="en">Restore original layout file names</td></tr>
         </table>
+        <div class="note">
+          <p class="zh"><b>②「更新汉化」不联网、也不会从 GitHub 下载任何东西。</b>它从你本机游戏自带的 <code>pack/locale.zip</code> 解出官方 <code>en</code> 基准，用内置翻译引擎把其中新增/尚未收录的字符串补翻进 <code>zh</code>，再重新写入两个数据目录。游戏更新后点一次 ② 即可跟上新词条；只有<b>工具本身</b>升级才需要重新下载 EXE。</p>
+          <p class="en"><b>② "Update" is fully offline — it never downloads from GitHub.</b> It extracts the official <code>en</code> baseline from the game's own <code>pack/locale.zip</code>, fills new or uncovered strings via the built-in engine, and rewrites both data roots. Only the <b>tool itself</b> needs a fresh download.</p>
+        </div>
       </div>
       <div class="card">
         <h2><span class="zh">命令行参数</span><span class="en">CLI Flags</span></h2>
-        <pre>--install    安装并启用中文
---update     增量更新汉化
---restore    恢复英文
---rollback   还原上一版汉化
---status     查看当前状态
---no-gui     无界面直接安装
---cli        交互式命令行</pre>
+        <pre>--install           安装并启用中文
+--update            离线增量更新汉化
+--restore           恢复英文
+--rollback          还原上一版汉化
+--status            查看当前状态
+--layouts           汉化工作区标签
+--layouts-restore   还原布局文件名
+--no-gui            无界面直接安装
+--cli               交互式命令行</pre>
       </div>
     </div>
   </section>
@@ -189,6 +200,35 @@ python patch_tool.py --install  # 命令行安装 / CLI</pre>
     </div>
   </section>
 
+  <!-- LIMITATIONS -->
+  <section>
+    <div class="card">
+      <h2><span class="zh">已知限制</span><span class="en">Known Limitations</span></h2>
+      <table>
+        <tr><th class="zh">位置</th><th class="zh">情况与处理</th>
+            <th class="en">Where</th><th class="en">Status & workaround</th></tr>
+        <tr>
+          <td class="zh">浮动面板标题<br><code>Toolbar</code> · <code>Collections</code></td>
+          <td class="zh">由主程序内部的面板注册表直接绘制，<b>不走语言包</b>；已实测 20 余种候选键名全部无效。<b>无需处理</b>：打开面板的入口「面板菜单」条目已全部汉化。</td>
+          <td class="en">Floating panel titles</td>
+          <td class="en">Drawn by the executable's internal registry, never through locale tables (20+ candidate keys tested). Cosmetic only — the panel <b>menu</b> entries are fully translated.</td>
+        </tr>
+        <tr>
+          <td class="zh">工作区布局标签<br><code>Horizontal</code> · <code>Vertical</code> …</td>
+          <td class="zh">标签显示的是 <code>layouts/*.json</code> 的<b>文件名</b>，程序按目录枚举。用 <b>⑥</b> 改名即可汉化，<b>⑦</b> 一键还原；<code>__default.json</code> 永不被改动。</td>
+          <td class="en">Workspace layout tabs</td>
+          <td class="en">Tabs show <code>layouts/*.json</code> <b>file names</b>. Use <b>⑥</b> to rename, <b>⑦</b> to revert. <code>__default.json</code> is never touched.</td>
+        </tr>
+        <tr>
+          <td class="zh"><code>2d</code> · <code>3d</code> · <code>CMYK</code> · <code>OKLAB</code> · <code>PXC</code></td>
+          <td class="zh">品牌名 / 格式名 / 专有名词，按约定保留英文以免歧义。</td>
+          <td class="en">Brands / formats / proper nouns</td>
+          <td class="en">Kept in English on purpose to avoid ambiguity.</td>
+        </tr>
+      </table>
+    </div>
+  </section>
+
   <!-- VS OLD -->
   <section>
     <div class="card">
@@ -198,8 +238,8 @@ python patch_tool.py --install  # 命令行安装 / CLI</pre>
             <th class="en">Aspect</th><th class="en">Old pack</th><th class="en">This project</th></tr>
         <tr><td class="zh">更新速度</td><td class="zh">慢，手动发布</td><td class="zh kicker">内置引擎，增量更新</td>
             <td class="en">Updates</td><td class="en">Slow, manual</td><td class="en">Built-in engine, incremental</td></tr>
-        <tr><td class="zh">覆盖率</td><td class="zh">较低</td><td class="zh kicker">UI 100% · 词条 99.1% · 节点 ~93%</td>
-            <td class="en">Coverage</td><td class="en">Lower</td><td class="en">UI 100% · words 99.1% · nodes ~93%</td></tr>
+        <tr><td class="zh">覆盖率</td><td class="zh">较低</td><td class="zh kicker">词条 98.5%（1888/1916）· 节点 ~93%</td>
+            <td class="en">Coverage</td><td class="en">Lower</td><td class="en">words 98.5% (1888/1916) · nodes ~93%</td></tr>
         <tr><td class="zh">联网需求</td><td class="zh">常需联网</td><td class="zh kicker">完全离线</td>
             <td class="en">Network</td><td class="en">Often online</td><td class="en">Fully offline</td></tr>
         <tr><td class="zh">可回滚</td><td class="zh">通常不支持</td><td class="zh kicker">备份 + 一键回滚</td>
@@ -211,7 +251,7 @@ python patch_tool.py --install  # 命令行安装 / CLI</pre>
   <footer>
     <p class="zh">MIT 许可证 © DC1024 · 配色与 Pixel Composer 官方主题一致 · Pixel Composer 本身 © 其原作者，请遵守其许可。</p>
     <p class="en">MIT License © DC1024 · Palette matches Pixel Composer's official theme · Pixel Composer itself © its original author.</p>
-    <p style="margin-top:8px"><a href="https://github.com/DC1024/pixel-composer-cn">GitHub · DC1024/pixel-composer-cn</a> &nbsp;·&nbsp; <a href="https://github.com/DC1024/pixel-composer-cn/releases">Releases · v1.0.0</a></p>
+    <p style="margin-top:8px"><a href="https://github.com/DC1024/pixel-composer-cn">GitHub · DC1024/pixel-composer-cn</a> &nbsp;·&nbsp; <a href="https://github.com/DC1024/pixel-composer-cn/releases">Releases · 最新/latest</a></p>
   </footer>
 </div>
 

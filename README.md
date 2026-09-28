@@ -23,8 +23,8 @@
 
 | 方式 Option | 说明 Description |
 |---|---|
-| **一键汉化 EXE（推荐）** | [⬇ 下载 `PixelComposer-CN-Patcher.exe`（v1.0.0 发行版）](https://github.com/DC1024/pixel-composer-cn/releases/latest/download/PixelComposer-CN-Patcher.exe) —— 免安装、免 Python，双击即用。 |
-| **One-click EXE (recommended)** | [⬇ Download `PixelComposer-CN-Patcher.exe` (v1.0.0 release)](https://github.com/DC1024/pixel-composer-cn/releases/latest/download/PixelComposer-CN-Patcher.exe) — portable, no Python, just double-click. |
+| **一键汉化 EXE（推荐）** | [⬇ 下载 `PixelComposer-CN-Patcher.exe`（最新发行版）](https://github.com/DC1024/pixel-composer-cn/releases/latest/download/PixelComposer-CN-Patcher.exe) —— 免安装、免 Python，双击即用。 |
+| **One-click EXE (recommended)** | [⬇ Download `PixelComposer-CN-Patcher.exe` (latest release)](https://github.com/DC1024/pixel-composer-cn/releases/latest/download/PixelComposer-CN-Patcher.exe) — portable, no Python, just double-click. |
 | 源码 Source | 克隆本仓库后运行 `patch_tool.py` / `一键汉化.bat`。 Clone and run `patch_tool.py` / `一键汉化.bat`. |
 
 ![工具界面 / GUI](assets/screenshot.png)
@@ -43,7 +43,7 @@
 | 配色一致 Themed | 界面配色与 Pixel Composer 官方主题一致。 GUI palette matches Pixel Composer's official theme. |
 | 安全 Safe | 写入前自动备份原文件，支持「恢复英文」与「还原上一版」。 Auto-backup before writing; restore English or roll back. |
 | 双目录 Dual-root | 自动同时写入 `LocalAppData` 与游戏目录，避免汉化"不生效"。 Writes to both data dirs so the language actually applies. |
-| 高覆盖 High coverage | UI 100% / 词条 99.1% / 节点约 93%。 See [覆盖率 / Coverage](#覆盖率-coverage). |
+| 高覆盖 High coverage | 官方词条 1888 / 1916 已汉化（**98.5%**），另补 180 条官方未收录词条；节点约 93%。 See [覆盖率 / Coverage](#覆盖率-coverage). |
 
 ---
 
@@ -82,37 +82,47 @@ python patch_tool.py --install
 | 按钮 Button | 作用 Action |
 |---|---|
 | ① 一键汉化（安装/启用） Install & enable | 安装并启用中文（完整写入）。 Install + enable Chinese (full write). |
-| ② 更新汉化（增量补全） Update | 增量更新到最新翻译。 Incrementally update to the latest translations. |
+| ② 更新汉化（增量补全） Update | **离线**从游戏自带 `pack/locale.zip` 取官方基准，用内置引擎补翻新增/未收录字符串。 Offline: rebuild from the game's own `pack/locale.zip` using the built-in engine. |
 | ③ 恢复英文 Restore English | 切回英文（保留汉化备份）。 Switch back to English (keeps a backup). |
 | ④ 还原上一版汉化 Rollback | 回滚到上一次安装的汉化包。 Roll back to the previously installed pack. |
 | ⑤ 查看状态 Status | 显示安装目录、汉化状态与当前语言。 Show install path, pack status, current language. |
+| ⑥ 汉化工作区标签 Localize layout tabs | 把自带布局 `Horizontal` / `Vertical` / `Preview` / `Drawing` / `Side menu` 改名为中文（标签取文件名）。 Rename built-in layouts to Chinese (tabs read the file name). |
+| ⑦ 还原布局名 Restore layout names | 把布局文件名还原成英文。 Restore the original English layout file names. |
+
+> **②「更新汉化」到底做了什么？ / What does ② actually do?**
+> 它**不联网，也不会从 GitHub 下载任何东西**。步骤是：① 从你本机游戏自带的 `pack/locale.zip` 解出官方 `en` 基准；② 用内置的翻译引擎 `translate_core.py` 把其中**新增或尚未收录**的字符串补翻进 `zh`；③ 重新写入两个数据目录。所以游戏更新后点一次 ② 就能跟上新词条，全程离线。需要更新的**只是工具本身**时，才要重新下载新版 EXE。
+>
+> It is **fully offline and never downloads anything from GitHub**. It extracts the official `en` baseline from the game's own `pack/locale.zip`, uses the built-in `translate_core.py` engine to fill in **new or not-yet-covered** strings, and rewrites both data roots. So after a game update, one click on ② catches up — no network. Only the **tool itself** needs a fresh download when a new version is released.
 
 ### 命令行参数 / Command-line flags
 ```text
---install      安装并启用中文（等价于 --no-gui）
---update       增量更新汉化
---restore      恢复英文
---rollback     还原上一版汉化
---status       查看当前状态
---no-gui       无界面直接安装（用于脚本/自动化）
---cli          强制进入交互式命令行
+--install           安装并启用中文（等价于 --no-gui）
+--update            增量更新汉化（离线，取自游戏自带 locale.zip）
+--restore           恢复英文
+--rollback          还原上一版汉化
+--status            查看当前状态
+--layouts           汉化工作区标签（重命名布局文件）
+--layouts-restore   还原布局文件名
+--no-gui            无界面直接安装（用于脚本/自动化）
+--cli               强制进入交互式命令行
 ```
 示例 / Examples:
 ```bash
-python patch_tool.py --update     # 更新到最新翻译
-python patch_tool.py --status     # 查看状态
-python patch_tool.py --no-gui     # 脚本中静默安装
+python patch_tool.py --update            # 增量补全翻译
+python patch_tool.py --status            # 查看状态
+python patch_tool.py --layouts           # 工作区标签改中文
+python patch_tool.py --no-gui            # 脚本中静默安装
 ```
 
 ---
 
 ## 覆盖率 / Coverage
 
-| 文件 File | 覆盖 Coverage | 内容 Content |
+| 文件 File | 条目 Entries | 内容 Content |
 |---|---|---|
-| `UI.json` | 379 / 379（**100%**） | 界面文本 / UI strings |
-| `words.json` | 1916（**99.1%**） | 词条 / 标签 / 菜单项 / words & labels |
-| `nodes.json` | 942（**约 93%**） | 节点名称 / node names |
+| `words.json` | **2096** | 词条 / 标签 / 菜单项。官方 `en` 的 1916 条中已汉化 **1888** 条（**98.5%**），另额外补充 180 条官方未收录词条。 |
+| `UI.json` | 560 | 界面文本 / UI strings |
+| `nodes.json` | 942 | 节点名称 / node names（约 93%） |
 | `junctions.json` | 3 | 连接点 / junctions |
 | `config.json` / `fonts/` / `notes/` | 已含 / included | 配置与字体 / config & fonts |
 
@@ -139,12 +149,24 @@ LocalAppData/PixelComposer/Locale/zh/...      ← 写入点 1 / root 1
 
 ---
 
+## 已知限制 / Known Limitations
+
+| 位置 Where | 情况 Status | 处理 Workaround |
+|---|---|---|
+| **浮动面板标题**（`Toolbar`、`Collections` 等） | 这些标题由主程序内部维护的**面板注册表**直接绘制，**不走语言包**。已实测 20 余种候选键名（`panel_toolbar`、`panel_collections`、`Toolbar Panel`、原始字符串 `Toolbar` / `Collections` 等）全部无效。 | 无需处理：**打开面板的入口在「面板菜单」里，条目已全部汉化**（显示为「工具栏」「集合」「图表」等），不影响日常使用。 |
+| **工作区布局标签**（`Horizontal` / `Vertical` / `Preview` / `Drawing` / `Side menu`） | 标签显示的是 `layouts/*.json` 的**文件名**，本身不查语言表（已确认布局名不存在于任何语言包或偏好设置中，程序按目录枚举文件）。 | 点 **⑥ 汉化工作区标签** 把 5 个自带布局改成中文名；不满意可点 **⑦ 还原布局名**。`__default.json` 与 `layouts/version` 永不被改动。 |
+| `2d` / `3d` / `CMYK` / `OKLAB` / `PXC` 等 | 品牌名 / 格式名 / 专有名词。 | 按约定保留英文，避免歧义。 |
+
+**English** — Floating panel titles (`Toolbar`, `Collections`, …) are drawn by the executable's internal panel registry and **never pass through the locale tables** — 20+ candidate key forms were tested and none had any effect. The panel *menu* entries (the way you actually open these panels) are fully translated, so this is cosmetic. Workspace layout tabs show `layouts/*.json` **file names**, which the locale tables cannot touch — use button ⑥ to rename them (⑦ reverts); `__default.json` and `layouts/version` are never modified.
+
+---
+
 ## 与旧社区汉化包的区别 / vs. Old Community Pack
 
 | 对比项 / Aspect | 旧社区汉化包 Old pack | 本方案 This project |
 |---|---|---|
 | 更新速度 Updates | 慢，依赖作者手动发布 / slow, manual | 内置引擎，可随游戏增量更新 / built-in engine, incremental |
-| 覆盖率 Coverage | 较低 / lower | UI 100% · 词条 99.1% · 节点 ~93% |
+| 覆盖率 Coverage | 较低 / lower | 词条 98.5%（1888/1916）· 节点 ~93% |
 | 联网需求 Network | 常需联网取包 / often online | 完全离线 / fully offline |
 | 可回滚 Rollback | 通常不支持 / usually no | 备份 + 一键回滚 / backup + one-click rollback |
 | 双目录 Dual-root | 易漏写导致不生效 / easy to miss | 自动双写 / auto dual-write |
@@ -178,6 +200,7 @@ The icon is generated by `build/make_icon.py` (colors from Pixel Composer's offi
 - `build/en_*.json` — 从游戏原始 `en` 语言包抽取的源数据。
 - `build/zh_*_seed.json` — 人工校对的中文种子。
 - `build/build_locale.py` / `build/analyze.py` — 构建与分析脚本。
+- `build/retranslate_leftovers.py` — 补翻残留英文条目。
 
 如需补充翻译，可编辑字典后运行构建脚本重新生成 `zh/` 包。
 To add translations, edit the dictionaries and re-run the build scripts to regenerate the `zh/` pack.

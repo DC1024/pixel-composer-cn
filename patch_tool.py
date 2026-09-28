@@ -158,6 +158,30 @@ def backup_and_copy(src, dst, logbox=None):
     log(f"已写入: {dst}", logbox)
     return True
 
+def apply_extras(runtime, logbox=None):
+    """把内置补充表（LOCALE_ADD / LOCALE_OVERRIDE）注入已安装的 zh 包。
+
+    这两张表修的是「官方 en/words.json 里根本没登记、因此任何语言包都覆盖不到」
+    的键（面板标题 toolbar_panel、面板右键菜单 lock_panel、工具栏/侧栏编辑器键族
+    preview_edit_toolbar / nodes_toggle_sidebar 等），以及旧版机翻拆坏的句子。
+    安装与更新两条路径都会调用，保证不会被覆盖回去。"""
+    try:
+        from translate_core import apply_locale_extras
+    except Exception as e:
+        log(f"补充词表不可用，跳过（不影响主流程）: {e}", logbox)
+        return
+    zh = os.path.join(runtime, "Locale", "zh")
+    if not os.path.isdir(zh):
+        return
+    try:
+        st = apply_locale_extras(zh)
+    except Exception as e:
+        log(f"补充词表注入失败: {e}", logbox)
+        return
+    if st.get("added") or st.get("overridden"):
+        log(f"补充词表：新增 {st['added']} 条、纠正 {st['overridden']} 条", logbox)
+
+
 def set_language(code, runtime, logbox=None):
     kp = find_keys_json(runtime)
     os.makedirs(os.path.dirname(kp), exist_ok=True)
@@ -315,6 +339,7 @@ def do_install(update=False, logbox=None):
         if not backup_and_copy(src, t, logbox):
             ok = False
             break
+        apply_extras(root, logbox)
         ensure_en(root, install, logbox)
         set_language("zh", root, logbox)
     if ok:
@@ -328,6 +353,81 @@ def do_restore(logbox=None):
     for root in roots:
         set_language("en", root, logbox)
     log("已恢复英文，重启软件生效。", logbox)
+
+# ------------------- 工作区标签（布局文件名）--------------------
+# 工作区标签显示的是 layouts/*.json 的文件名，本身不走语言包。
+# 若「按原名查表」不生效，就用这里把自带布局改名成中文（可一键还原）。
+# __default.json 被程序按名引用，绝不改动。
+LAYOUT_CN = {
+    "Horizontal.json": "水平.json",
+    "Vertical.json": "垂直.json",
+    "Preview.json": "预览.json",
+    "Drawing.json": "绘画.json",
+    "Side menu.json": "侧边菜单.json",
+}
+
+def find_layout_dirs(install=None):
+    out = []
+    for root in find_all_data_roots(install):
+        d = os.path.join(root, "layouts")
+        if os.path.isdir(d):
+            rp = os.path.realpath(d)
+            if rp not in [os.path.realpath(x) for x in out]:
+                out.append(d)
+    return out
+
+def _retarget_layout_pref(runtime, mapping, logbox=None):
+    """把 Preferences/*/keys.json 里记录的当前布局名同步改名，避免加载失败。"""
+    kp = find_keys_json(runtime)
+    if not os.path.isfile(kp):
+        return
+    try:
+        d = json.load(open(kp, encoding="utf-8"))
+    except Exception:
+        return
+    cur = d.get("panel_layout_file")
+    if isinstance(cur, str) and cur in mapping:
+        d["panel_layout_file"] = mapping[cur]
+        try:
+            json.dump(d, open(kp, "w", encoding="utf-8"), indent=2, ensure_ascii=False)
+            log(f"当前布局引用已同步为「{mapping[cur]}」", logbox)
+        except Exception:
+            pass
+
+def do_layouts(restore=False, logbox=None):
+    """汉化 / 还原工作区标签（重命名自带布局文件）。"""
+    install = find_install_dir()
+    dirs = find_layout_dirs(install)
+    if not dirs:
+        log("未找到 layouts 目录，跳过。", logbox)
+        return
+    pairs = [(a, b) for a, b in LAYOUT_CN.items()]
+    if restore:
+        pairs = [(b, a) for a, b in pairs]
+    mapping, done = {}, 0
+    for d in dirs:
+        for src_name, dst_name in pairs:
+            src, dst = os.path.join(d, src_name), os.path.join(d, dst_name)
+            if not os.path.isfile(src):
+                continue
+            if os.path.exists(dst):
+                log(f"目标已存在，跳过: {dst_name}", logbox)
+                continue
+            try:
+                shutil.move(src, dst)
+            except Exception as e:
+                log(f"改名失败 {src_name}: {e}", logbox)
+                continue
+            mapping[src_name[:-5]] = dst_name[:-5]
+            done += 1
+            log(f"{'还原' if restore else '汉化'}布局 {src_name} -> {dst_name}", logbox)
+        # layouts/version 不动：保持不变才不会触发游戏重新解压覆盖
+    if not done:
+        log("没有需要改名的布局文件（可能已处理过）。", logbox)
+    else:
+        for root in find_all_data_roots(install):
+            _retarget_layout_pref(root, mapping, logbox)
+        log("完成：重启 Pixel Composer 后查看工作区标签。", logbox)
 
 def do_rollback(logbox=None):
     """还原到最近一次安装前的汉化包（从各数据目录的 zh.bak_* 取最新一份）"""
@@ -439,10 +539,10 @@ def gui():
     from tkinter import scrolledtext
 
     root = tk.Tk()
-    root.title("Pixel Composer 汉化工具  ·  离线版")
+    root.title("Pixel Composer 汉化工具 v1.0.1  ·  离线版")
     root.configure(bg=PC_BG)
-    root.geometry("620x600")
-    root.minsize(560, 520)
+    root.geometry("620x664")
+    root.minsize(560, 580)
     try:
         root.iconbitmap(os.path.join(resource_dir(), "app_icon.ico"))
     except Exception:
@@ -456,7 +556,7 @@ def gui():
     # 顶栏
     header = tk.Frame(root, bg=PC_BG)
     header.pack(fill="x", padx=22, pady=(18, 6))
-    tk.Label(header, text="Pixel Composer 汉化工具", font=F_TITLE, bg=PC_BG, fg=PC_WHITE).pack(anchor="w")
+    tk.Label(header, text="Pixel Composer 汉化工具  v1.0.1", font=F_TITLE, bg=PC_BG, fg=PC_WHITE).pack(anchor="w")
     tk.Label(header, text="离线 · 自带汉化包与翻译引擎 · 不依赖网络 · 可一键回滚",
              font=F_SUB, bg=PC_BG, fg=PC_MDWHITE).pack(anchor="w", pady=(3, 0))
     tk.Frame(root, bg=PC_DKGREY, height=1).pack(fill="x", padx=22, pady=(12, 0))
@@ -474,12 +574,20 @@ def gui():
     tk.Frame(row1, bg=PC_BG, width=12).pack(side="left")
     PCButton(row1, "③  恢复英文", lambda: do_restore(box),
              width=282, height=42, font=F_BTN).pack(side="left")
-    row2 = tk.Frame(root, bg=PC_BG); row2.pack(padx=22, pady=(0, 12))
+    row2 = tk.Frame(root, bg=PC_BG); row2.pack(padx=22, pady=(0, 8))
     PCButton(row2, "④  还原上一版汉化", lambda: do_rollback(box),
              width=282, height=42, font=F_BTN).pack(side="left")
     tk.Frame(row2, bg=PC_BG, width=12).pack(side="left")
     PCButton(row2, "⑤  查看状态", lambda: do_status(box),
              width=282, height=42, font=F_BTN).pack(side="left")
+    row3 = tk.Frame(root, bg=PC_BG); row3.pack(padx=22, pady=(0, 8))
+    PCButton(row3, "⑥  汉化工作区标签", lambda: do_layouts(False, box),
+             width=282, height=42, font=F_BTN).pack(side="left")
+    tk.Frame(row3, bg=PC_BG, width=12).pack(side="left")
+    PCButton(row3, "⑦  还原布局名", lambda: do_layouts(True, box),
+             width=282, height=42, font=F_BTN).pack(side="left")
+    tk.Label(root, text="⑥ 会把自带布局文件改成中文名（工作区标签显示的就是文件名）；⑦ 可随时还原。",
+             font=F_SUB, bg=PC_BG, fg=PC_GREY).pack(padx=22, pady=(0, 8))
 
     # 日志区
     logwrap = tk.Frame(root, bg=PC_DKGREY, bd=0)
@@ -505,7 +613,8 @@ def main():
     args = sys.argv[1:]
     mode = None
     for a in args:
-        if a in ("--install", "--update", "--restore", "--rollback", "--status", "--no-gui", "--cli"):
+        if a in ("--install", "--update", "--restore", "--rollback", "--status",
+                 "--layouts", "--layouts-restore", "--no-gui", "--cli"):
             mode = a.lstrip("-")
     if mode and mode != "cli":
         if mode in ("install", "no-gui"): do_install(False)
@@ -513,6 +622,8 @@ def main():
         elif mode == "restore": do_restore()
         elif mode == "rollback": do_rollback()
         elif mode == "status": do_status()
+        elif mode == "layouts": do_layouts(False)
+        elif mode == "layouts-restore": do_layouts(True)
         return
     # 尝试 GUI，否则 CLI
     try:
@@ -526,7 +637,8 @@ def cli_loop():
     _bootstrap_paths()
     print("Pixel Composer 一键汉化工具（CLI）")
     while True:
-        print("\n1) 一键汉化  2) 更新汉化  3) 恢复英文  4) 还原上一版汉化  5) 查看状态  0) 退出")
+        print("\n1) 一键汉化  2) 更新汉化  3) 恢复英文  4) 还原上一版汉化  5) 查看状态")
+        print("6) 汉化工作区标签  7) 还原布局名  0) 退出")
         try:
             c = input("选择> ").strip()
         except EOFError:
@@ -536,6 +648,8 @@ def cli_loop():
         elif c == "3": do_restore()
         elif c == "4": do_rollback()
         elif c == "5": do_status()
+        elif c == "6": do_layouts(False)
+        elif c == "7": do_layouts(True)
         elif c == "0": break
         else: print("无效输入")
 
