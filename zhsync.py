@@ -408,21 +408,51 @@ def validate_manifest(man):
     return man
 
 
-def fetch_manifest(log=None):
+def version_key(v):
+    """把 ``"1.2.0"`` 解析成 ``(1, 2, 0)`` 以便比较；解析不了的段按 0 算。
+
+    清单里的 ``version`` 是字符串，直接比大小会踩 ``"1.10.0" < "1.9.0"`` 这种坑。
+    """
+    try:
+        return tuple(int(x) if str(x).isdigit() else 0 for x in str(v).strip().split("."))
+    except Exception:
+        return ()
+
+
+def fetch_manifest(log=None, floor=None):
     """依次尝试各源拉取清单。
 
     返回 (manifest, source_name, base_url)；全部失败返回 (None, None, None)。
     失败原因通过 log 说明，不抛异常（调用方据此回退）。
+
+    ``floor`` 是可接受的最低版本（通常传本地已装的最高版本）：某个源返回比它
+    **更旧**的清单时不采用，继续问下一个源。
+
+    为什么要这道闸（2026-09-28 实测）：jsDelivr 对分支引用（``@main``）有较长
+    缓存，推送后一段时间内它仍在返回**上一个版本**的清单 —— 实测 v1.2.1 推送后
+    ``zh/manifest.json`` 在 jsDelivr 上还是 ``v1.0.3 / 8 个文件``（Pages 和 Raw
+    都是 ``v1.2.0 / 41 个文件``）。正常情况 Pages 最先命中、拿到的是最新的，不会
+    出事；但一旦 Pages 临时不可达（实测出现过直接返回 000），按"取到第一个就返回"
+    就会**把用户已经装好的包降级成 8 个文件**。所以加了这道闸。
+
+    没有源达到 ``floor`` 时返回 (None, None, None)，让调用方走既有的"离线"分支
+    —— 那条路会回退到随附包，不会把用户的包换旧。
     """
     def say(msg):
         if log:
             log(msg)
 
+    floor_key = version_key(floor) if floor else ()
     for name, base in sources():
         try:
             man = validate_manifest(json.loads(_get(_url(base, MANIFEST_NAME)).decode("utf-8")))
         except Exception as e:
             say(f"源不可用（{name}）：{getattr(e, 'code', None) or type(e).__name__}")
+            continue
+        key = version_key(man.get("version"))
+        if floor_key and key and key < floor_key:
+            say(f"忽略 {name} 上的旧清单 v{man.get('version')}"
+                f"（低于本地 v{floor}，可能是 CDN 缓存），换下一个源…")
             continue
         say(f"已获取在线清单 v{man.get('version')}（{name}）")
         return man, name, base

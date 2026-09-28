@@ -809,6 +809,10 @@ def sync_from_github(roots, logbox=None, modules=None):
 
     ``modules`` 只影响"哪些文件算需要同步"，未选中的区域完全不参与比对，
     否则每次同步都会因为"少装了某个文件"而误报有更新。
+
+    传给 ``fetch_manifest`` 的 ``floor`` 是本地已装的最高版本：jsDelivr 对
+    ``@main`` 有较长缓存，推送后会有一段时间返回**上一版**的清单，加这道闸
+    避免在 Pages 临时不可达时把用户装好的包降级（详见 ``zhsync.fetch_manifest``）。
     """
     try:
         import zhsync
@@ -816,8 +820,14 @@ def sync_from_github(roots, logbox=None, modules=None):
         log(f"同步模块不可用（{e}）", logbox)
         return "offline", None
 
+    floor = None
+    for r in roots:
+        v = zhsync.installed_version(r)
+        if v and (floor is None or zhsync.version_key(v) > zhsync.version_key(floor)):
+            floor = v
+
     log("正在检查线上最新汉化包…", logbox)
-    man, src_name, base = zhsync.fetch_manifest(lambda m: log(m, logbox))
+    man, src_name, base = zhsync.fetch_manifest(lambda m: log(m, logbox), floor=floor)
     if not man:
         log("无法获取线上清单（网络不可用或仓库暂不可达）", logbox)
         return "offline", None
