@@ -17,6 +17,10 @@ zh/notes/*.md         text eol=lf
 # 汉化包内字体：二进制（-text 保证不会被当作文本做 CRLF 归一而损坏）
 zh/fonts/*.ttf        binary
 
+# 入门指南示例：.pxc 是二进制容器（u32 偏移 + THMB/META 分块 + zlib 主数据），
+# 同样禁止任何换行处理，否则容器结构会被改坏
+*.pxc                 binary
+
 # 仓库自身脚本与文档
 *.py                  text eol=lf
 *.md                  text eol=lf
@@ -24,6 +28,8 @@ zh/fonts/*.ttf        binary
 *.html                text eol=lf
 *.css                 text eol=lf
 *.js                  text eol=lf
+# Linux/macOS 一键脚本：必须 LF，带 CR 的 shebang 会让 bash 直接报错
+*.sh                  text eol=lf
 
 # Windows 批处理必须 CRLF
 *.bat                 text eol=crlf
@@ -36,3 +42,4 @@ zh/fonts/*.ttf        binary
 *.ico                 binary
 *.png                 binary
 *.zip                 binary
+*.tar.gz              binary

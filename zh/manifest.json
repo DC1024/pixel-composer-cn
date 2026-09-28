@@ -1,14 +1,15 @@
 {
  "schema": 1,
  "pack": "pixel-composer-cn",
- "version": "1.0.3",
+ "version": "1.2.0",
  "game_version": 122000,
- "built_at": "2026-09-28 21:31:39 +0800",
+ "built_at": "2026-09-28 23:17:07 +0800",
  "counts": {
   "words": 2096,
   "UI": 560,
   "nodes": 942,
-  "junctions": 3
+  "junctions": 3,
+  "welcome": 33
  },
  "files": {
   "config.json": {
@@ -42,6 +43,138 @@
   "fonts/LXGWWenKaiMonoLite-Bold.ttf": {
    "size": 11047984,
    "sha256": "730f6f0fc2b0c83271a25af00520d2f44fcf40b1b3615f7851a56dc70c5f3907"
+  },
+  "welcome/Getting started/000 UI/000 Introduction.pxc": {
+   "size": 7982,
+   "sha256": "c2585e0ba8833c104207ac0ed97408c03165c876b7105bd153b7c499fa57525e"
+  },
+  "welcome/Getting started/000 UI/005 Node Shortcuts.pxc": {
+   "size": 10856,
+   "sha256": "2a49504cc61e9162e5a8ba54c7e0efb715c3874d0563b76ea73ee6f34c7e23b4"
+  },
+  "welcome/Getting started/000 UI/100 Organization.pxc": {
+   "size": 12885,
+   "sha256": "89c3372112c232cdd467179a759a9748d4d84afb3ba278bf74861a99195452f3"
+  },
+  "welcome/Getting started/100 Nodes/010 Image import.pxc": {
+   "size": 7286,
+   "sha256": "86149aa8cabb994fccccd92721e79e6cff52a6c3f9382d0a8d43402de15d9e55"
+  },
+  "welcome/Getting started/100 Nodes/020 Animation.pxc": {
+   "size": 6247,
+   "sha256": "8bc56a9fca07b094a1ff122c30df957cfd3ecb27c0460829d3df6952550af087"
+  },
+  "welcome/Getting started/100 Nodes/030 Group.pxc": {
+   "size": 8347,
+   "sha256": "30eb9a4a45bd827aae9b42a0afbeeaa63dc290ea4f98e16c5513c582e953f3a7"
+  },
+  "welcome/Getting started/100 Nodes/040 Loop.pxc": {
+   "size": 8109,
+   "sha256": "50b096a34b7bbe6db6d4db67f47a2ae4411ed951b2f104062fef62d525b44a39"
+  },
+  "welcome/Getting started/100 Nodes/070 Composing.pxc": {
+   "size": 9807,
+   "sha256": "40bfefe6baff49791f8ac404e7a8bce6ee71892d21832df996f22e63ea0ba65a"
+  },
+  "welcome/Getting started/100 Nodes/080 Path.pxc": {
+   "size": 12219,
+   "sha256": "9a836fdcbab8884a236915dc0e3045e305df30a809066247fc0e484312239d7b"
+  },
+  "welcome/Getting started/300 Particle/050 Particles.pxc": {
+   "size": 16761,
+   "sha256": "b0f387880312ddfc0b822fa05004cc49134affbdcb1ac3ac7a3f59c3b482d723"
+  },
+  "welcome/Getting started/300 Particle/060 Particle System.pxc": {
+   "size": 13022,
+   "sha256": "21ce694cea5930f3fcb1773e807c18d7cbcf15b9e460a3b15261a9648fe3ac9b"
+  },
+  "welcome/Getting started/800 Simulation/100 Rigidsim.pxc": {
+   "size": 10590,
+   "sha256": "3eecc05664dce1d1cb753a78793cee66bb210655c9a310d93e62de33126a47e4"
+  },
+  "welcome/Getting started/800 Simulation/200 Smokesim.pxc": {
+   "size": 8968,
+   "sha256": "286da74c12a926f6b1bbc0ebabfc7ba5af3ac28e7ad599bb1dc3c6ac457ba660"
+  },
+  "welcome/Getting started/800 Simulation/300 FLIP Fluid.pxc": {
+   "size": 8525,
+   "sha256": "d6af10596bf14ef8a2e2f5f28160d016e298670e52533b76ae5b3424355d9deb"
+  },
+  "welcome/Getting started/800 Simulation/400 Strandsim.pxc": {
+   "size": 9642,
+   "sha256": "154a83442096527d4f09afc8af93fe77a337daea63c19b4eb4d22a460a6a116c"
+  },
+  "welcome/Getting started/900 Advances/090 Expression.pxc": {
+   "size": 6806,
+   "sha256": "9ab6ab8d10a20d876970810cbcf6b3bb8cb47a31418438fb434c90d665550632"
+  },
+  "welcome/Getting started/900 Advances/120 UV Workflow.pxc": {
+   "size": 10397,
+   "sha256": "6c4e45855ef153f46e761095438ea1cf1574c25ef8028bf7fdc07ca634ffb836"
+  },
+  "welcome/Sample Projects/Box Explode 3D.pxc": {
+   "size": 11977,
+   "sha256": "4c970bd8217135ab55b18acfa36ad87dc7003e157782ab6054ad78730508132a"
+  },
+  "welcome/Sample Projects/Castle.pxc": {
+   "size": 14232,
+   "sha256": "de836e630013528a933e22a73158d486515f4d909dd095eaa3c3cc413e4f716c"
+  },
+  "welcome/Sample Projects/Cogwheels.pxc": {
+   "size": 11407,
+   "sha256": "d7ab97347123962f8d42403a406c8583fa6a272b42e76640742b4faa49bd4e34"
+  },
+  "welcome/Sample Projects/Cyber Frame.pxc": {
+   "size": 28976,
+   "sha256": "488b2e46120740d9c24b73687ab6cb5a95d42f7ed430c991472449e5c5c892af"
+  },
+  "welcome/Sample Projects/Grass Block.pxc": {
+   "size": 20066,
+   "sha256": "9461cc6ac4593602c4b58d137250a2e042f744478e250d31b23c40f4fa56fc08"
+  },
+  "welcome/Sample Projects/Magic Circle.pxc": {
+   "size": 97092,
+   "sha256": "f0f184f17c3d2b7ab605117e61e44079492d4911ba5f594f238079299018188f"
+  },
+  "welcome/Sample Projects/Ornate circle.pxc": {
+   "size": 103601,
+   "sha256": "284b99c985a4f78332e4b32735160d3de2c72c42436278877cf8addce1538b74"
+  },
+  "welcome/Sample Projects/Random Shape Processor.pxc": {
+   "size": 12169,
+   "sha256": "95732902d2a901a95e7a4a9fbff7488c2b2cd4f27f402e105797eac1830f9b84"
+  },
+  "welcome/Sample Projects/Sci-fi Hex Hole.pxc": {
+   "size": 35838,
+   "sha256": "1d6e1dca2d74d52133dd1329850252abf571c854210e40485fd9807929dadf99"
+  },
+  "welcome/Sample Projects/Smoke Explosion.pxc": {
+   "size": 13081,
+   "sha256": "1370155130ab80d11545dde960ecb7a901fb25baf8294d8cde7d0199c17cb70d"
+  },
+  "welcome/Sample Projects/Spiral.pxc": {
+   "size": 18638,
+   "sha256": "3c9f270f0c1d8956a3d2296f592513f0deadb7829331fc72ddca402092a0c40d"
+  },
+  "welcome/Sample Projects/Star Collapse.pxc": {
+   "size": 107294,
+   "sha256": "7b220cd2346d71b5749afdfb02ef1d243feece0b107e100883e14755c0f387b8"
+  },
+  "welcome/Sample Projects/Tree.pxc": {
+   "size": 13327,
+   "sha256": "892f5052c231f91be266b872594c6e782e87d45e4baeea3ee78df87ce58787f6"
+  },
+  "welcome/Sample Projects/Wavy Spiral.pxc": {
+   "size": 51572,
+   "sha256": "dbe19fe1c1c0d6ee6f16a56e38d3e83a1b6567752d9b0855d1da43978bd7a6e4"
+  },
+  "welcome/Sample Projects/Wood Floor.pxc": {
+   "size": 7996,
+   "sha256": "8fcac5a6e46eb0a0f83859f5d125807981b0973f9c68fda96eafbfd8f1efbf2f"
+  },
+  "welcome/Templates/Canvas.pxc": {
+   "size": 3395,
+   "sha256": "363b662920ae8468004b54b8bc2bbcc6c14d2c8d5e5b548cf798557be53e3a7a"
   }
  }
 }

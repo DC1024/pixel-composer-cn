@@ -80,13 +80,19 @@
   .note{background:var(--deep);border:1px solid var(--dkgrey);border-left:3px solid var(--orange);
     border-radius:10px;padding:14px 18px;margin-top:16px;color:var(--mdwhite);font-size:14px}
   .note b{color:var(--white)}
+  /* screenshots */
+  .shots{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .shot{background:var(--deep);border:1px solid var(--dkgrey);border-radius:12px;overflow:hidden}
+  .shot img{display:block;width:100%;height:auto}
+  .shot .cap{padding:10px 14px;font-size:13px;color:var(--mdwhite);border-top:1px solid var(--dkgrey)}
+  .shot .cap b{color:var(--orange)}
   /* bilingual toggle */
   .en{display:none}
   html[data-lang="en"] .zh{display:none}
   html[data-lang="en"] .en{display:revert}
   footer{text-align:center;color:var(--grey);font-size:13px;padding:38px 20px;
     border-top:1px solid var(--dkgrey);margin-top:22px}
-  @media(max-width:720px){.stats{grid-template-columns:repeat(2,1fr)}.twocol{grid-template-columns:1fr}.hero h1{font-size:28px}}
+  @media(max-width:720px){.stats{grid-template-columns:repeat(2,1fr)}.twocol{grid-template-columns:1fr}.shots{grid-template-columns:1fr}.hero h1{font-size:28px}}
 </style>
 </head>
 <body>
@@ -107,16 +113,18 @@
     <img class="logo" src="assets/logo.png" alt="logo" onerror="this.style.display='none'"/>
     <h1><span class="zh">Pixel Composer <span class="accent">中文汉化包</span></span>
         <span class="en">Pixel Composer <span class="accent">Chinese Localization</span></span></h1>
-    <p class="zh">一键汉化 · 装好即离线可用 —— 随附完整预翻译语言包，联网时可一键同步最新汉化，可一键回滚。提供免安装 EXE，下载双击即用。</p>
-    <p class="en">One-click localization, offline-ready. Ships with a complete pre-translated pack, one-click online sync for updates, and one-click rollback. A standalone EXE is included: download and double-click.</p>
+    <p class="zh">一键汉化 · 装好即离线可用 —— 随附完整预翻译语言包（含入门指南教程），联网时可一键同步最新汉化，可一键回滚。<b>六个区域可自选</b>，想留英文的地方留着就行。提供 Windows 免安装 EXE 与 Linux 一键脚本。</p>
+    <p class="en">One-click localization, offline-ready. Ships with a complete pre-translated pack (getting-started tutorials included), one-click online sync, and one-click rollback. <b>Six areas are individually toggleable</b> — keep whatever you like in English. Standalone Windows EXE and a Linux one-click script.</p>
     <div class="cta">
       <a class="btn primary" href="https://github.com/DC1024/pixel-composer-cn/releases/latest/download/PixelComposer-CN-Patcher.exe">
-        ⬇ <span class="zh">下载一键汉化 EXE</span><span class="en">Download EXE</span></a>
+        ⬇ <span class="zh">下载一键汉化 EXE（Windows）</span><span class="en">Download EXE (Windows)</span></a>
+      <a class="btn primary" href="https://github.com/DC1024/pixel-composer-cn/releases/latest/download/PixelComposer-CN-Linux.tar.gz">
+        ⬇ <span class="zh">下载 Linux 一键包</span><span class="en">Download Linux bundle</span></a>
       <a class="btn ghost" href="https://github.com/DC1024/pixel-composer-cn/releases">
         <span class="zh">发行版 / Releases</span><span class="en">Releases</span></a>
     </div>
-    <div class="ver zh">免安装 · 需 Windows 64 位 · MIT 许可</div>
-    <div class="ver en">Portable · Windows 64-bit · MIT License</div>
+    <div class="ver zh">Windows 免安装 EXE · Linux 原生 / SteamOS / Proton · MIT 许可</div>
+    <div class="ver en">Windows standalone EXE · Linux native / SteamOS / Proton · MIT License</div>
   </div>
 
   <!-- STATS -->
@@ -124,6 +132,8 @@
     <div class="stat"><b>98.5%</b><span class="zh">词条覆盖</span><span class="en">Words coverage</span></div>
     <div class="stat"><b>2096</b><span class="zh">词条总数</span><span class="en">Total entries</span></div>
     <div class="stat"><b>~93%</b><span class="zh">节点名称覆盖</span><span class="en">Node coverage</span></div>
+    <div class="stat"><b>33</b><span class="zh">入门指南已汉化</span><span class="en">Tutorials localized</span></div>
+    <div class="stat"><b>6</b><span class="zh">可选汉化区域</span><span class="en">Toggleable areas</span></div>
     <div class="stat"><b>3</b><span class="zh">同步源容错</span><span class="en">Fallback sources</span></div>
   </div>
 
@@ -135,9 +145,19 @@
       <p class="lead en">Pick either method, then restart Pixel Composer to see the Chinese UI.</p>
       <div class="steps">
         <div class="step"><div class="body dl">
-          <strong class="zh">下载 EXE，双击运行（推荐）</strong><strong class="en">Download the EXE and double-click (recommended)</strong>
+          <strong class="zh">Windows：下载 EXE，双击运行（推荐）</strong><strong class="en">Windows: download the EXE and double-click (recommended)</strong>
           <p class="zh">下载上方「一键汉化 EXE」（发行版附件 <code>PixelComposer-CN-Patcher.exe</code>），双击打开，点击「① 一键汉化」即可。免安装、无需 Python。</p>
           <p class="en">Download the release asset <code>PixelComposer-CN-Patcher.exe</code> above, double-click, then click "① 一键汉化". Portable, no Python required.</p>
+        </div></div>
+        <div class="step"><div class="body dl">
+          <strong class="zh">Linux：下载一键包，跑 install.sh</strong><strong class="en">Linux: download the bundle and run install.sh</strong>
+          <p class="zh">解压后 <code>./install.sh</code> 即可（有 tkinter 开图形界面，没有就自动进命令行，功能一致）。只需要系统自带的 Python 3，不装任何依赖。</p>
+          <p class="en">Unpack and run <code>./install.sh</code> — opens the GUI if <code>tkinter</code> is present, otherwise an equivalent CLI. Only needs the system Python 3, no dependencies.</p>
+          <pre>tar -xzf PixelComposer-CN-Linux.tar.gz
+cd PixelComposer-CN-Linux
+./install.sh                    # 图形界面 / CLI
+./install.sh install            # 或直接一键汉化 / or install directly
+./install.sh deps               # 看看缺什么 / check dependencies</pre>
         </div></div>
         <div class="step"><div class="body">
           <strong class="zh">源码方式一：一键批处理</strong><strong class="en">From source: one-click .bat</strong>
@@ -153,6 +173,50 @@ python patch_tool.py --install  # 命令行安装 / CLI</pre>
     </div>
   </section>
 
+  <!-- SCREENSHOTS -->
+  <section>
+    <div class="card">
+      <h2><span class="zh">截图</span><span class="en">Screenshots</span></h2>
+      <div class="shots">
+        <div class="shot">
+          <img src="assets/screenshot.png" alt="GUI"/>
+          <div class="cap">
+            <span class="zh"><b>汉化工具</b> · 六个区域可勾选（默认全选）· ⑧ 旧包残留只读清点</span>
+            <span class="en"><b>The tool</b> · six toggleable areas (all on by default) · ⑧ read-only leftover scan</span>
+          </div>
+        </div>
+        <div class="shot">
+          <img src="assets/ingame.png" alt="in-game"/>
+          <div class="cap">
+            <span class="zh"><b>游戏内</b> · 入门指南教程页正文已是中文（卡片标题取自文件名，保持英文）</span>
+            <span class="en"><b>In-game</b> · the getting-started tutorial prose is Chinese (card titles come from file names and stay English)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PER-AREA -->
+  <section>
+    <div class="card">
+      <h2><span class="zh">按区域汉化</span><span class="en">Per-area Localization</span></h2>      <p class="lead zh">界面上有六个复选框，<b>默认全部选中 = 全部汉化</b>。想保留英文习惯（比如已经熟悉的节点名），把对应项取消勾选即可 —— 取消 = 不安装该文件，游戏会回退到内置英文。</p>
+      <p class="lead en">Six checkboxes, <b>all ticked by default = full localization</b>. Untick whatever you'd rather keep in English (say, node names you already know) — unticking simply doesn't install those files, so the game falls back to its built-in English.</p>
+      <table>
+        <tr><th class="zh">区域</th><th class="zh">覆盖内容</th><th class="en">Area</th><th class="en">Covers</th></tr>
+        <tr><td class="zh">界面词条 <code>words</code></td><td class="zh">菜单、工具栏、状态栏、设置项</td><td class="en">UI strings <code>words</code></td><td class="en">Menus, toolbars, status bar, settings</td></tr>
+        <tr><td class="zh">面板与对话框 <code>ui</code></td><td class="zh">各类面板与弹窗正文</td><td class="en">Panels &amp; dialogs <code>ui</code></td><td class="en">Panel and dialog bodies</td></tr>
+        <tr><td class="zh">节点名称与提示 <code>nodes</code></td><td class="zh">节点名与说明</td><td class="en">Nodes <code>nodes</code></td><td class="en">Node names and tooltips</td></tr>
+        <tr><td class="zh">连接点名称 <code>junctions</code></td><td class="zh">输入/输出端口名</td><td class="en">Junctions <code>junctions</code></td><td class="en">Input / output port names</td></tr>
+        <tr><td class="zh">中文字体 <code>fonts</code></td><td class="zh">随包中文字体（不勾可能显示方块）</td><td class="en">CJK font <code>fonts</code></td><td class="en">Bundled CJK font (needed to render Chinese)</td></tr>
+        <tr><td class="zh">入门指南示例 <code>welcome</code></td><td class="zh">教程页与示例工程里的说明文字</td><td class="en">Getting-started examples <code>welcome</code></td><td class="en">Tutorial pages and sample projects</td></tr>
+      </table>
+      <div class="note">
+        <p class="zh">选择会记录在已安装的 <code>Locale/zh/manifest.json</code> 的 <code>selected</code> 字段里 —— 所以「改了选择」不会被同步逻辑误判成「已是最新」。改完选择请重新点 ① 或 ② 应用。</p>
+        <p class="en">Your selection is recorded in the installed <code>Locale/zh/manifest.json</code> under <code>selected</code>, so changing it is never mistaken for "already up to date". Re-run ①/② to apply.</p>
+      </div>
+    </div>
+  </section>
+
   <!-- USAGE -->
   <section>
     <div class="twocol">
@@ -160,13 +224,15 @@ python patch_tool.py --install  # 命令行安装 / CLI</pre>
         <h2><span class="zh">图形界面按钮</span><span class="en">GUI Buttons</span></h2>
         <table>
           <tr><th class="zh">按钮</th><th class="zh">作用</th><th class="en">Button</th><th class="en">Action</th></tr>
-          <tr><td class="zh">① 一键汉化</td><td class="zh">安装并启用中文</td><td class="en">① Install & enable</td><td class="en">Install + enable Chinese</td></tr>
+          <tr><td class="zh">汉化区域（复选框）</td><td class="zh">六项可勾选，默认全选；点 ①/② 时应用</td><td class="en">Area checkboxes</td><td class="en">Six tickboxes, all on by default; applied on ①/②</td></tr>
+          <tr><td class="zh">① 一键汉化</td><td class="zh">按勾选区域安装并启用中文</td><td class="en">① Install &amp; enable</td><td class="en">Install + enable Chinese for the ticked areas</td></tr>
           <tr><td class="zh">② 同步最新汉化</td><td class="zh">联网从 GitHub 拉取最新成品包（断网回退随附包）</td><td class="en">② Sync latest</td><td class="en">Download latest pack from GitHub (falls back offline)</td></tr>
-          <tr><td class="zh">③ 恢复英文</td><td class="zh">切回英文（保留备份）</td><td class="en">③ Restore EN</td><td class="en">Back to English (backup kept)</td></tr>
+          <tr><td class="zh">③ 恢复英文</td><td class="zh">切回英文，并还原入门指南示例</td><td class="en">③ Restore EN</td><td class="en">Back to English, restores tutorial examples too</td></tr>
           <tr><td class="zh">④ 还原上一版</td><td class="zh">回滚到上次汉化</td><td class="en">④ Rollback</td><td class="en">Roll back to previous pack</td></tr>
-          <tr><td class="zh">⑤ 查看状态</td><td class="zh">显示目录与语言</td><td class="en">⑤ Status</td><td class="en">Show paths & language</td></tr>
+          <tr><td class="zh">⑤ 查看状态</td><td class="zh">显示目录、包版本、语言与已选区域</td><td class="en">⑤ Status</td><td class="en">Paths, pack version, language, selected areas</td></tr>
           <tr><td class="zh">⑥ 汉化工作区标签</td><td class="zh">改名 + 改写 <code>pack/layouts.zip</code> 条目名</td><td class="en">⑥ Localize layout tabs</td><td class="en">Rename files + patch layouts.zip</td></tr>
           <tr><td class="zh">⑦ 还原布局名</td><td class="zh">把布局文件名还原成英文</td><td class="en">⑦ Restore layout names</td><td class="en">Restore original layout file names</td></tr>
+          <tr><td class="zh">⑧ 旧汉化包残留清点</td><td class="zh"><b>只列出</b>旧社区汉化包留下的文件（路径/大小/文件数），<b>不删不移</b></td><td class="en">⑧ Leftover scan</td><td class="en"><b>Lists only</b> what the old community pack left behind (paths / sizes / counts) — <b>nothing is deleted or moved</b></td></tr>
         </table>
         <div class="note">
           <p class="zh"><b>②「同步最新汉化」不在本地做翻译</b>，而是从 GitHub 下载一份<b>已经翻好的成品包</b>：先拉清单 <code>zh/manifest.json</code>（依次尝试 GitHub Pages → jsDelivr CDN → GitHub Raw 三个源），再用 sha256 比对本地，<b>只下载有变化的文件</b>（11 MB 中文字体通常只在首次下载，之后每次一般只有几十 KB 的 json），备份现有 <code>zh</code> 后整包写入两个数据目录。断网或源都不可达时自动回退随附汉化包；已是最新则直接提示「无需更新」。</p>
@@ -177,13 +243,23 @@ python patch_tool.py --install  # 命令行安装 / CLI</pre>
         <h2><span class="zh">命令行参数</span><span class="en">CLI Flags</span></h2>
         <pre>--install           安装并启用中文
 --update / --sync   从 GitHub 同步最新汉化包
---restore           恢复英文
+--restore           恢复英文（含示例还原）
 --rollback          还原上一版汉化
---status            查看状态（含包版本）
+--status            查看状态（平台/目录/包版本/区域）
+--leftovers         旧汉化包残留清点（只列出）
 --layouts           汉化工作区标签
 --layouts-restore   还原布局文件名
+--modules &lt;列表&gt;    只汉化指定区域，逗号分隔
+--install-dir &lt;路径&gt; 手动指定游戏目录
+--list-modules      列出可选汉化区域
 --no-gui            无界面直接安装
 --cli               交互式命令行</pre>
+        <div class="note">
+          <p class="zh">环境变量：<code>PIXELCOMPOSER_DIR</code> 指定游戏目录、<code>STEAM_ROOT</code> 指定 Steam 根目录、<code>PCCN_SOURCE</code> 指定镜像源。</p>
+          <p class="en">Env vars: <code>PIXELCOMPOSER_DIR</code> (game dir), <code>STEAM_ROOT</code> (Steam root), <code>PCCN_SOURCE</code> (mirror).</p>
+          <pre>python patch_tool.py --install --modules words,nodes   # 只汉化界面词条 + 节点
+python patch_tool.py --leftovers                       # 旧包残留清单（只读）</pre>
+        </div>
       </div>
     </div>
   </section>
@@ -256,10 +332,22 @@ python patch_tool.py --install  # 命令行安装 / CLI</pre>
           <td class="en">Markdown docs using a custom layout markup; English-only upstream and <b>not translated yet</b> — the game falls back to English.</td>
         </tr>
         <tr>
+          <td class="zh">入门指南<b>卡片标题</b><br><code>Introduction</code> · <code>Node Shortcuts</code></td>
+          <td class="zh">卡片标题取的是 <code>.pxc</code> 的<b>文件名</b>（去掉数字前缀），程序不查语言表 —— 所以标题保持英文，但<b>点进去以后页面里的说明文字是中文</b>（已实机验证）。本方案按同名覆盖（文件名保持英文），不会出现中英两套重复卡片，也不破坏 Steam 自动更新；想要中文文件名可提 Issue。</td>
+          <td class="en">Getting-started <b>card titles</b></td>
+          <td class="en">Titles come from the <code>.pxc</code> <b>file names</b> (numeric prefix stripped) and never pass through a locale table — so titles stay English while the page you open is fully Chinese (verified in-game). Same-name overwrite keeps Steam updates intact and avoids duplicated card sets.</td>
+        </tr>
+        <tr>
           <td class="zh"><code>2d</code> · <code>3d</code> · <code>CMYK</code> · <code>OKLAB</code> · <code>PXC</code></td>
           <td class="zh">品牌名 / 格式名 / 专有名词，按约定保留英文以免歧义。</td>
           <td class="en">Brands / formats / proper nouns</td>
           <td class="en">Kept in English on purpose to avoid ambiguity.</td>
+        </tr>
+        <tr>
+          <td class="zh">Linux 图形界面<br><code>tkinter</code> 缺失</td>
+          <td class="zh">Debian/Ubuntu 要装 <code>python3-tk</code>、Arch 要 <code>tk</code>；SteamOS / Steam Deck 根分区只读装不上。<b>不用管</b>：<code>install.sh</code> 会自动切到命令行界面，功能完全一致；<code>./install.sh deps</code> 可查缺什么。</td>
+          <td class="en">Linux GUI without <code>tkinter</code></td>
+          <td class="en">Needs <code>python3-tk</code> on Debian/Ubuntu or <code>tk</code> on Arch; SteamOS has a read-only root. <b>Optional</b> — <code>install.sh</code> falls back to an identical CLI. Run <code>./install.sh deps</code> to check.</td>
         </tr>
       </table>
     </div>
@@ -272,15 +360,27 @@ python patch_tool.py --install  # 命令行安装 / CLI</pre>
       <table>
         <tr><th class="zh">对比项</th><th class="zh">旧社区包</th><th class="zh">本方案</th>
             <th class="en">Aspect</th><th class="en">Old pack</th><th class="en">This project</th></tr>
+        <tr><td class="zh">安装方式</td><td class="zh">手动往游戏根目录丢 <code>zh/</code> 和 <code>Welcome files/</code></td><td class="zh kicker">一键装到正确的数据目录（自动双写），教程按同名覆盖</td>
+            <td class="en">Install</td><td class="en">Manually drop folders into the install root</td><td class="en">One click into the right data roots (auto dual-write); tutorials overwritten in place</td></tr>
         <tr><td class="zh">更新速度</td><td class="zh">慢，手动发布</td><td class="zh kicker">维护者定期同步上游，客户端一键取最新</td>
             <td class="en">Updates</td><td class="en">Slow, manual</td><td class="en">Maintainer syncs upstream; clients pull in one click</td></tr>
-        <tr><td class="zh">覆盖率</td><td class="zh">较低</td><td class="zh kicker">词条 98.5%（1888/1916）· 节点 ~93%</td>
-            <td class="en">Coverage</td><td class="en">Lower</td><td class="en">words 98.5% (1888/1916) · nodes ~93%</td></tr>
+        <tr><td class="zh">覆盖率</td><td class="zh">较低</td><td class="zh kicker">词条 98.5%（1888/1916）· 节点 ~93% · 教程页 33/33</td>
+            <td class="en">Coverage</td><td class="en">Lower</td><td class="en">words 98.5% (1888/1916) · nodes ~93% · tutorials 33/33</td></tr>
         <tr><td class="zh">联网需求</td><td class="zh">常需联网</td><td class="zh kicker">装好后离线可用；② 联网只取更新</td>
             <td class="en">Network</td><td class="en">Often online</td><td class="en">Offline-ready; ② only fetches updates</td></tr>
         <tr><td class="zh">可回滚</td><td class="zh">通常不支持</td><td class="zh kicker">备份 + 一键回滚</td>
             <td class="en">Rollback</td><td class="en">Usually no</td><td class="en">Backup + one-click rollback</td></tr>
+        <tr><td class="zh">按区域汉化</td><td class="zh">不支持</td><td class="zh kicker">六个区域可勾选，默认全选</td>
+            <td class="en">Per-area</td><td class="en">No</td><td class="en">Six tickboxes, all on by default</td></tr>
+        <tr><td class="zh">跨平台</td><td class="zh">只有 Windows</td><td class="zh kicker">Windows + Linux（原生/SteamOS/Proton），macOS 路径已适配</td>
+            <td class="en">Platforms</td><td class="en">Windows only</td><td class="en">Windows + Linux (native, SteamOS, Proton); macOS paths handled</td></tr>
+        <tr><td class="zh">残留处理</td><td class="zh">—</td><td class="zh kicker">内置<b>只读</b>清单（⑧），<b>只列不删</b></td>
+            <td class="en">Leftovers</td><td class="en">—</td><td class="en">Built-in <b>read-only</b> inventory (⑧), never deletes</td></tr>
       </table>
+      <div class="note">
+        <p class="zh"><b>装过旧包？</b>旧包会把 <code>zh/</code> 和 <code>Welcome files/</code> 永久留在游戏根目录（实测一台机器上是 10 项 / 约 32.7 MB，含 13.6 MB 的汉化 EXE 与中文名教程文件夹）。点 <b>⑧</b> 或跑 <code>--leftovers</code> 可以得到完整清单 —— <b>本工具不会替你删，确认不需要请自行手动处理</b>。</p>
+        <p class="en"><b>Used the old pack before?</b> It leaves <code>zh/</code> and <code>Welcome files/</code> in the install root forever (10 items / ~32.7 MB on one machine tested, including a 13.6 MB EXE and Chinese-named tutorial folders). Use <b>⑧</b> or <code>--leftovers</code> for a full inventory — <b>this tool never deletes them for you</b>.</p>
+      </div>
     </div>
   </section>
 

@@ -28,12 +28,23 @@
       "version": "1.0.3",            # 汉化包版本
       "game_version": 122000,        # 对应游戏 Locale/version
       "built_at": "2026-09-28 21:30:00 +0800",
-      "counts": {"words": 2096, "UI": 560, "nodes": 942, "junctions": 3},
+      "counts": {"words": 2096, "UI": 560, "nodes": 942, "junctions": 3, "welcome": 33},
       "files": {"words.json": {"size": 78266, "sha256": "..."}, ...}
     }
 
 `files` 不含 manifest.json 自身。客户端按 sha256 只下载有变化的文件：
 11MB 的中文字体只在首次同步时下载一次，之后每次同步通常只拉几个几十 KB 的 json。
+
+仓库里的清单描述**完整包**；安装到本地的清单会多一个 `"selected"` 字段，
+记录用户这次选了哪些模块（"按选中区域汉化"）。该字段不参与哈希比对，
+只用来判断"模块选择是否变了、要不要重装"（见 `installed_signature()`）。
+
+按选中区域汉化
+--------------
+`MODULES` 列出可逐项开关的汉化区域（界面词条 / 面板与对话框 / 节点 / 连接点 /
+中文字体 / 入门指南示例）。**取消勾选 = 不安装对应文件**，游戏需要时会回退到
+内置 en —— 干净、可逆；千万不能改成"写入英文副本"，那样包内字节永远与清单
+对不上，同步会陷入"每次都重下整包"的循环。
 
 ⚠️ 哈希按**原始字节**计算，因此包内文件在「仓库 / 工作区 / 各下载源」上必须是
 同一份字节 —— 这靠仓库根的 `.gitattributes` 保证（文本统一 LF、字体按 binary）。
@@ -42,6 +53,7 @@
 import hashlib
 import json
 import os
+import re
 import shutil
 import datetime
 import urllib.request
@@ -66,6 +78,92 @@ SOURCES = [
 UA = "PixelComposer-CN-Patcher"
 TIMEOUT = 20          # 清单与小文件
 BIG_TIMEOUT = 180     # 字体等大文件
+
+
+# --------------------------------------------------------------------------
+# 汉化模块（"按选中区域汉化"用）
+# --------------------------------------------------------------------------
+#: 用户可以逐项开关的汉化区域。第三项是该模块在 zh 包里的相对路径判定：
+#: 以 "/" 结尾表示"整个目录"，否则是精确文件名。
+#:
+#: 设计要点：**取消勾选 = 不安装该文件**（而不是写入英文）。游戏在需要某个键时
+#: 会回退到内置 en，所以少一个文件是安全且干净的；反过来若写入英文副本，
+#: 包内字节就永远与线上清单对不上，同步会陷入"每次都重下"的循环。
+MODULES = (
+    ("words",     "界面词条",       ("words.json",)),
+    ("ui",        "面板与对话框",   ("UI.json",)),
+    ("nodes",     "节点名称与提示", ("nodes.json",)),
+    ("junctions", "连接点名称",     ("junctions.json",)),
+    ("fonts",     "中文字体",       ("fonts/",)),
+    ("welcome",   "入门指南示例",   ("welcome/",)),
+)
+
+MODULE_IDS = tuple(m[0] for m in MODULES)
+MODULE_LABEL = {m[0]: m[1] for m in MODULES}
+
+#: 无论选了哪些模块都必须安装的文件（游戏读取的配置，不属于任何可选项）
+ALWAYS_FILES = ("config.json",)
+
+
+def rel_module(rel):
+    """返回该相对路径属于哪个模块；不属于任何可选模块时返回 None。"""
+    for mid, _label, patterns in MODULES:
+        for pat in patterns:
+            if pat.endswith("/"):
+                if rel.startswith(pat):
+                    return mid
+            elif rel == pat:
+                return mid
+    return None
+
+
+def resolve_modules(spec=None):
+    """把用户输入解析成模块 id 列表。
+
+    接受 None / "all" / "default" → 全部；
+    也接受 "words,ui" 这样的逗号（或空格）分隔列表；
+    含 None 之外的空列表被视为"全部"，避免误把用户锁在英文界面上。
+    """
+    if spec is None:
+        return list(MODULE_IDS)
+    items = spec
+    if isinstance(items, str):
+        s = items.strip().lower()
+        if s in ("", "all", "default", "full"):
+            return list(MODULE_IDS)
+        if s in ("none", "empty"):
+            return []
+        items = [x for x in re.split(r"[,\s]+", s) if x]
+    out = []
+    for x in items:
+        k = str(x).strip().lower()
+        if k in ("all", "default", "full"):
+            return list(MODULE_IDS)
+        if k not in MODULE_IDS:
+            raise SyncError(f"未知汉化模块：{x}（可选：{', '.join(MODULE_IDS)}）")
+        if k not in out:
+            out.append(k)
+    return out
+
+
+def module_summary(modules):
+    """给日志用的一句话描述，例如 "5/6 模块（未选：中文字体）"."""
+    modules = list(modules)
+    off = [MODULE_LABEL[m] for m in MODULE_IDS if m not in modules]
+    if not off:
+        return f"{len(MODULE_IDS)}/{len(MODULE_IDS)} 模块（全部）"
+    return f"{len(modules)}/{len(MODULE_IDS)} 模块（未选：{'、'.join(off)}）"
+
+
+def keep_rel(rel, modules):
+    """该文件在当前选择下是否应该安装。"""
+    if rel in ALWAYS_FILES:
+        return True
+    m = rel_module(rel)
+    if m is None:
+        # 不认识的文件（例如将来新增的目录）默认保留，宁可多装也别漏
+        return True
+    return m in modules
 
 
 class SyncError(Exception):
@@ -177,6 +275,14 @@ def build_manifest(zh_dir, version, game_version=None, log=None):
         except Exception as e:
             if log:
                 log(f"警告：{name}.json 解析失败（{e}），counts 里跳过")
+    # 入门指南示例：按 .pxc 个数计（这些文件是二进制容器，不是 JSON 词条）
+    welcome = os.path.join(zh_dir, "welcome")
+    if os.path.isdir(welcome):
+        n = 0
+        for _base, _dirs, names in os.walk(welcome):
+            n += sum(1 for x in names if x.lower().endswith(".pxc"))
+        if n:
+            counts["welcome"] = n
     return {
         "schema": SCHEMA,
         "pack": PACK,
@@ -210,6 +316,32 @@ def read_installed_manifest(root):
 
 def installed_version(root):
     return (read_installed_manifest(root) or {}).get("version")
+
+
+def installed_modules(root):
+    """该目录已安装的模块列表；没有记录（旧版工具装的）返回 None。"""
+    man = read_installed_manifest(root)
+    if not man:
+        return None
+    sel = man.get("selected")
+    if not isinstance(sel, list):
+        return None
+    return [m for m in MODULE_IDS if m in sel]
+
+
+def installed_signature(roots):
+    """各数据目录的 (版本, 模块选择) 组合，用于判断"要不要重装"。
+
+    模块选择必须参与判断：用户取消勾选某个模块时，文件数可能一个都没变，
+    只看哈希会误判成"已是最新"，取消就永远不生效。
+    """
+    out = []
+    for r in roots:
+        man = read_installed_manifest(r) or {}
+        sel = man.get("selected")
+        sel = tuple(m for m in MODULE_IDS if m in sel) if isinstance(sel, list) else None
+        out.append((man.get("version"), sel))
+    return out
 
 
 def installed_summary(roots):
@@ -272,10 +404,17 @@ def fetch_manifest(log=None):
 # --------------------------------------------------------------------------
 # 同步
 # --------------------------------------------------------------------------
-def plan_files(man, local_hashes_list):
-    """需要下载的文件：在任一已安装目录中缺失或 sha256 不符。"""
+def plan_files(man, local_hashes_list, only=None):
+    """需要下载的文件：在任一已安装目录中缺失或 sha256 不符。
+
+    ``only`` 给出模块 id 列表时，只考虑这些模块的文件（"按选中区域汉化"用）；
+    未选中的模块既不下载也不算"不一致"，否则每次同步都会误报有更新。
+    """
+    sel = set(MODULE_IDS) if only is None else set(only)
     need = []
     for rel, meta in sorted(man["files"].items()):
+        if not keep_rel(rel, sel):
+            continue
         want = meta.get("sha256")
         if any((h.get(rel) or {}).get("sha256") != want for h in local_hashes_list):
             need.append(rel)
@@ -309,26 +448,34 @@ def _local_copy(rel, local_dirs, dst):
     return False
 
 
-def sync_pack(man, base, local_dirs, dest, log=None):
-    """按需把远端 zh 包重建到 dest（完整包）。
+def sync_pack(man, base, local_dirs, dest, log=None, only=None):
+    """按需把远端 zh 包重建到 dest。
 
     参数
       man         远端清单
       base        首选源 base url
       local_dirs  各数据目录当前 zh 包路径（用于比对 + 复用未变文件）
       dest        输出目录（会被清空重建）
+      only        只同步这些模块（None = 全部）—— 见 plan_files()
 
     返回 (status, n_downloaded)：
       "uptodate" —— 各本地目录都与远端一致，未做任何改动
       "ready"    —— dest 已生成完整包，等待调用方安装
     失败抛 SyncError。
+
+    注意：``only`` 生效时 dest 里**只会有被选中模块的文件** + 必需的配置文件。
+    "未选中 = 不安装"是有意的：游戏缺文件时会回退到内置 en，
+    而写入英文副本会让包内字节永远与清单对不上，同步就会陷进重复下载。
     """
     def say(msg):
         if log:
             log(msg)
 
+    sel = set(MODULE_IDS) if only is None else set(only)
+    wanted = {rel: meta for rel, meta in man["files"].items() if keep_rel(rel, sel)}
+
     local_hashes = [hash_tree(d) for d in local_dirs]
-    need = plan_files(man, local_hashes)
+    need = plan_files(man, local_hashes, only)
     if not need:
         return "uptodate", 0
 
@@ -364,7 +511,7 @@ def sync_pack(man, base, local_dirs, dest, log=None):
         raise SyncError("所有源都无法完整下载汉化包")
 
     # 未变化的文件从本地复用；本地也没有（首次同步）就补下载
-    for rel in man["files"]:
+    for rel in wanted:
         if rel in need:
             continue
         p = os.path.join(dest, *rel.split("/"))

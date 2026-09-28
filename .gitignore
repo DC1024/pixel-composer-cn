@@ -20,6 +20,10 @@ _zh_gen/
 .pyi_dist/
 *.spec
 
+# Linux 发行包同理由 Releases 分发（约 7 MB，且每次都含 11 MB 字体）
+/PixelComposer-CN-Linux.tar.gz
+/.pkg/
+
 # 本地验证截图（临时）
 _verify_*.png
 
