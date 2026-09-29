@@ -244,6 +244,24 @@ git push origin main      →  GitHub（Raw / Pages / jsDelivr 三个下载源�
 汉化包版本记录在 `zh/manifest.json` 的 `version` 字段，随包一起下发；「⑤ 查看状态」会显示当前安装的包版本。若某源不可用，会自动换下一个源（可用环境变量 `PCCN_SOURCE` 指定镜像）。
 The pack version lives in `zh/manifest.json` (`version`) and travels with the pack; "⑤ Status" shows which version is installed. If a source is unavailable it falls back to the next one (set `PCCN_SOURCE` to use a mirror).
 
+### 维护者侧：每周自动同步上游 / Weekly automated upstream sync
+
+维护者机器（装有 Pixel Composer 的那台）可以注册一个每周任务，让「同步上游」全自动：
+AI on the maintainer's machine (the one with Pixel Composer installed) can register a weekly task so upstream syncing is hands-off:
+
+```bat
+powershell -ExecutionPolicy Bypass -File build\install_weekly_task.ps1
+rem 可选 -Day TUE -Time 20:30 指定时间；-Uninstall 卸载
+rem Optional: -Day TUE -Time 20:30 to pick a slot; -Uninstall to remove
+```
+
+两项约定已固化 / Two conventions now baked in：
+
+- **版本号跟上游**：`Locale/version` 前进时，汉化包版本自动 patch +1（`1.2.0 → 1.2.1`）。注意汉化包版本 ≠ 工具版本（`patch_tool.py` 的 `VERSION`）。The pack version auto-bumps when upstream `Locale/version` advances; note it differs from the tool version (`patch_tool.py`'s `VERSION`).
+- **翻不出来的条目不写 "TODO"**：拿不准的条目在该 key 上保持**英文回退**（界面显示英文原文，绝不会冒出 "TODO" 字串），同时列进 `build/todo_report.md` 供人工补录。永久修正请加进 `translate_core.LOCALE_OVERRIDE`，后续同步会自动继承。Untranslated entries stay as **English fallback** (the UI shows the original English — never a literal "TODO") and are listed in `build/todo_report.md` for you to fill in. Fix them permanently in `translate_core.LOCALE_OVERRIDE`; later syncs inherit those.
+
+⚠️ **自动同步覆盖不到的部分**：官方 `pack/locale.zip` 的 `en/` 里只有 `words.json` / `nodes.json` / `junctions.json` / `config.json` / `notes/*.md`，**没有 `UI.json`** —— 面板与对话框词条不在官方语言包里，因此 `zh/UI.json` 无法跟随上游自动同步，需要单独维护。What upstream automation cannot reach: the shipped `en/` folder contains no `UI.json`, so panel/dialog strings (`zh/UI.json`) must be maintained separately.
+
 ---
 
 ## 覆盖率 / Coverage

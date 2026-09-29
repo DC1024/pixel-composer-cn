@@ -32,6 +32,12 @@ _verify_*.png
 /tool/
 /ref/
 
+# 维护者侧同步脚本的本地状态：上次同步时的 en 快照 + 运行日志
+# （build/sync_upstream.py 用 build/cache/en_prev/ 做「英文原文是否被官方改过」的比对基线，
+#   是本机状态，不该入仓；删掉只会退化为「只能检测新增」，不影响正确性）
+/build/cache/
+/build/_sync_logs/
+
 # 系统
 Thumbs.db
 .DS_Store
