@@ -30,7 +30,7 @@
 依赖：仅 Python 标准库（tkinter 做界面，缺失时自动退回命令行）
 配色：与 Pixel Composer 官方 default 主题一致（Themes/default/values.json）
 """
-import os, sys, json, shutil, zipfile, tempfile, datetime, re, glob
+import os, sys, json, shutil, zipfile, tempfile, datetime, re, glob, hashlib
 
 IS_WIN = os.name == "nt"
 IS_MAC = sys.platform == "darwin"
@@ -551,8 +551,25 @@ def install_welcome(root, src, logbox=None, install=None):
     return n_zip + n_dir
 
 
+def _sha256_file(path):
+    """文件 sha256；读不到返回 None（不抛异常，调用方据此跳过比对）。"""
+    try:
+        with open(path, "rb") as f:
+            return hashlib.sha256(f.read()).hexdigest()
+    except Exception:
+        return None
+
+
 def install_welcome_zip(src, install, logbox=None):
-    """用汉化包里的 welcome_files.zip 替换 <install>/pack/welcome_files.zip。"""
+    """用汉化包里的 welcome_files.zip 替换 <install>/pack/welcome_files.zip。
+
+    **幂等**：若 pack/welcome_files.zip 已经和源是同一个中文包（sha256 相同），
+    直接返回、不做任何写入 —— 「② 同步最新汉化」在"已是最新"时也会走到这里，
+    反复复制毫无意义，更糟的是会把一份好的原版备份冲成中文包（2026-09-29 修）。
+
+    备份规则：只在「备份缺失」或「备份已被写成我们的中文包（sha256 == 源）」时
+    （重）备份；**绝不拿中文包覆盖一份真正的原版备份**，否则「③ 恢复英文」会还原出中文。
+    """
     if not install:
         return 0
     src_zip = os.path.join(src, WELCOME_ZIP_NAME)
@@ -563,30 +580,53 @@ def install_welcome_zip(src, install, logbox=None):
         log(f"未找到游戏自带的 {dst_zip}，跳过 zip 替换。", logbox)
         return 0
     bak_zip = dst_zip + WELCOME_ZIP_BAK_SUFFIX
-    # 备份原版（只在 bak 不存在，或 bak 已经是中文包时重新备份）
-    need_bak = not os.path.isfile(bak_zip)
-    if not need_bak:
-        try:
-            import hashlib
-            h_bak = hashlib.sha256(open(bak_zip, "rb").read()).hexdigest()
-            h_src = hashlib.sha256(open(src_zip, "rb").read()).hexdigest()
-            if h_bak == h_src:
-                need_bak = True
-        except Exception:
-            pass
-    if need_bak:
+    h_src = _sha256_file(src_zip)
+    h_dst = _sha256_file(dst_zip)
+    if h_src and h_dst and h_src == h_dst:
+        # 已经是中文包：不复制、不新建/覆盖备份
+        return 0
+    h_bak = _sha256_file(bak_zip)
+    if (h_bak is None) or (h_src and h_bak == h_src):
         try:
             shutil.copy2(dst_zip, bak_zip)
-            log(f"已备份原版 {WELCOME_ZIP_NAME} 到 {bak_zip}", logbox)
+            log(f"已备份原版 {WELCOME_ZIP_NAME} 到 {os.path.basename(bak_zip)}", logbox)
         except Exception as e:
             log(f"备份 {WELCOME_ZIP_NAME} 失败: {e}", logbox)
     try:
         shutil.copy2(src_zip, dst_zip)
-        log(f"已用中文命名 zip 替换 {dst_zip}", logbox)
+        log(f"已用中文命名 zip 替换 pack/{WELCOME_ZIP_NAME}", logbox)
         return 1
     except Exception as e:
         log(f"替换 {dst_zip} 失败: {e}", logbox)
         return 0
+
+
+def reconcile_welcome_zip(roots, install, logbox=None):
+    """把 <install>/pack/welcome_files.zip 对齐到数据目录里已装的中文 welcome_files.zip。
+
+    为什么需要这单独一步：游戏的「入门指南」卡片标题取自 ``pack/welcome_files.zip``
+    里的文件夹/文件名（见 install_welcome 注释），而中文 zip 平时只落在
+    ``<数据目录>/Locale/zh/welcome_files.zip``；两者之间唯一的桥是
+    ``install_welcome_zip``，它只在 ``_install_pack`` 里被调用。而「② 同步最新汉化」
+    一旦判定"数据目录已是最新"就会提前 return，**根本不进 _install_pack** ——
+    于是 pack/ 里的 zip 永远停在英文原版，标题也就一直是英文（2026-09-29 实测即此）。
+    这一步让「② 同步」也能把 pack/welcome_files.zip 送达，且完全幂等、可反复执行。
+
+    返回实际替换的次数（0 = 无需改动/无法改动）。
+    """
+    if not install:
+        return 0
+    dst_zip = os.path.join(install, "pack", WELCOME_ZIP_NAME)
+    if not os.path.isfile(dst_zip):
+        return 0
+    for root in roots:
+        zh = os.path.join(root, "Locale", "zh")
+        if not os.path.isfile(os.path.join(zh, WELCOME_ZIP_NAME)):
+            continue
+        # pack/ 属安装目录级，只需替换一次；成功即停
+        if install_welcome_zip(zh, install, logbox):
+            return 1
+    return 0
 
 
 def install_welcome_dir(root, src, logbox=None, install=None):
@@ -953,6 +993,18 @@ def _snapshot(src):
         log(f"本地包快照失败（{e}），改为直接使用原目录", None)
         return src
 
+def _reconcile_welcome_after_sync(roots, install, modules, logbox=None):
+    """「② 同步」判定"已是最新"时，仍把 pack/welcome_files.zip 对齐一次。
+
+    这一路以前直接 return，导致 pack/ 永远拿不到中文 zip（入门指南标题停在英文）。
+    只在勾选了「入门指南示例」模块（welcome）时做；幂等，可反复执行。
+    """
+    if "welcome" not in set(modules):
+        return
+    if reconcile_welcome_zip(roots, install, logbox):
+        log("入门指南 zip：已对齐到中文包（原版备份为 pack/welcome_files.zip.bak_cn，"
+            "可用「③ 恢复英文」还原）。", logbox)
+
 def do_install(update=False, logbox=None, modules=None):
     modules = resolve_modules(modules)
     install = find_install_dir()
@@ -978,9 +1030,11 @@ def do_install(update=False, logbox=None, modules=None):
                     src = _snapshot(local)
                 else:
                     log("完成：本地汉化已是最新。", logbox)
+                    _reconcile_welcome_after_sync(roots, install, modules, logbox)
                     return True
             else:
                 log("完成：本地汉化已是最新，未做任何改动。", logbox)
+                _reconcile_welcome_after_sync(roots, install, modules, logbox)
                 return True
         elif status == "ready":
             src = synced
@@ -1202,9 +1256,18 @@ def do_status(logbox=None):
         elif os.path.isdir(wd):
             log("    入门指南 : 官方原版（未汉化）", logbox)
     if install:
-        wz_bak = os.path.join(install, "pack", WELCOME_ZIP_NAME + WELCOME_ZIP_BAK_SUFFIX)
-        if os.path.isfile(wz_bak):
-            log(f"    欢迎包 zip: 已汉化（原版备份于 pack/{WELCOME_ZIP_NAME}{WELCOME_ZIP_BAK_SUFFIX}，可用「③ 恢复英文」还原）", logbox)
+        wz = os.path.join(install, "pack", WELCOME_ZIP_NAME)
+        wz_bak = wz + WELCOME_ZIP_BAK_SUFFIX
+        if os.path.isfile(wz):
+            h = _sha256_file(wz)
+            zh_zips = [os.path.join(r, "Locale", "zh", WELCOME_ZIP_NAME) for r in roots]
+            is_cn = any(h and h == _sha256_file(p) for p in zh_zips if os.path.isfile(p))
+            if is_cn:
+                note = (f"原版备份于 pack/{WELCOME_ZIP_NAME}{WELCOME_ZIP_BAK_SUFFIX}"
+                        if os.path.isfile(wz_bak) else "未找到原版备份")
+                log(f"    欢迎包 zip: 已汉化（{note}，可用「③ 恢复英文」还原）", logbox)
+            else:
+                log("    欢迎包 zip: 官方原版（未汉化）—— 点「① 一键汉化」或「② 同步最新汉化」即可送达中文卡片标题", logbox)
     if pv:
         try:
             _v, summary = z.installed_summary(roots)
@@ -1457,7 +1520,7 @@ class PCButton:
     def grid(self, **kw):
         self.cv.grid(**kw)
 
-VERSION = "1.2.1"
+VERSION = "1.2.2"
 
 def _ui_font(size, bold=False, mono=False):
     """按平台挑一个存在的字体。
