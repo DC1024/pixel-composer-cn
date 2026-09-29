@@ -1,6 +1,6 @@
 @echo off
 rem Weekly upstream sync for the Pixel Composer CN pack.
-rem Registered by build\install_weekly_task.ps1 (Windows Task Scheduler).
+rem Registered by build\install_sync_task.ps1 (Windows Task Scheduler).
 rem NOTE: kept ASCII-only on purpose - cmd decodes a BOM-less .bat as ANSI,
 rem       so any CJK comment here would turn into mojibake.
 setlocal

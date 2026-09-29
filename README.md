@@ -244,15 +244,16 @@ git push origin main      →  GitHub（Raw / Pages / jsDelivr 三个下载源�
 汉化包版本记录在 `zh/manifest.json` 的 `version` 字段，随包一起下发；「⑤ 查看状态」会显示当前安装的包版本。若某源不可用，会自动换下一个源（可用环境变量 `PCCN_SOURCE` 指定镜像）。
 The pack version lives in `zh/manifest.json` (`version`) and travels with the pack; "⑤ Status" shows which version is installed. If a source is unavailable it falls back to the next one (set `PCCN_SOURCE` to use a mirror).
 
-### 维护者侧：每周自动同步上游 / Weekly automated upstream sync
+### 维护者侧：每月自动同步上游 / Monthly automated upstream sync
 
-维护者机器（装有 Pixel Composer 的那台）可以注册一个每周任务，让「同步上游」全自动：
-AI on the maintainer's machine (the one with Pixel Composer installed) can register a weekly task so upstream syncing is hands-off:
+维护者机器（装有 Pixel Composer 的那台）可以注册一个每月任务，让「同步上游」全自动：
+AI on the maintainer's machine (the one with Pixel Composer installed) can register a monthly task so upstream syncing is hands-off:
 
 ```bat
-powershell -ExecutionPolicy Bypass -File build\install_weekly_task.ps1
-rem 可选 -Day TUE -Time 20:30 指定时间；-Uninstall 卸载
-rem Optional: -Day TUE -Time 20:30 to pick a slot; -Uninstall to remove
+powershell -ExecutionPolicy Bypass -File build\install_sync_task.ps1
+rem 默认每月 1 号 09:00；-Frequency monthly -DayOfMonth 15 -Time 09:00 可改日期
+rem -Frequency weekly -Day MON -Time 09:00 也可改回每周；-Uninstall 卸载
+rem Default: 1st of each month at 09:00. Tweak with -Frequency/-DayOfMonth/-Time; -Uninstall to remove
 ```
 
 两项约定已固化 / Two conventions now baked in：

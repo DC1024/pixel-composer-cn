@@ -11,11 +11,11 @@
 | 1 | **汉化包版本号跟 `game_version`** | `plan_version()`：上游 `Locale/version` 前进（或本轮有内容更新）→ 自动 patch +1，并在日志里写明原因。可用 `--version` 强制指定。注意**包版本 ≠ 工具版本**（`patch_tool.py` 的 `VERSION`）。 |
 | 2 | **新串不写 "TODO" 标记** | 翻不了的条目在该 key 上保持**英文回退**（游戏显示英文原文），同时写进 `build/todo_report.md` 待办清单。永久修正靠 `translate_core.LOCALE_OVERRIDE`，后续同步自动继承。 |
 | 3 | **直接推送 GitHub，不走 PR** | `--push` 直接提交并推 `main`（先试本机凭据，失败回退 `~/.git-credentials` 里的 PAT 直连）。无变化时跳过提交。 |
-| 4 | **本地定时，每周检测一次** | `build/install_weekly_task.ps1` 注册 Windows 计划任务，`build/run_sync.bat` 每周边跑边写日志。 |
+| 4 | **本地定时，每月检测一次** | `build/install_sync_task.ps1` 注册 Windows 计划任务（默认每月 1 号 09:00，`-Frequency weekly` 可改回每周），`build/run_sync.bat` 到点在本地跑并写日志。 |
 
 > ⚠️ **实施过程中的重要修正**：`build/sync_upstream.py` **本来就已经存在**
 > （用来同步上游、补翻、写清单、`--push`），所以本次不是重写，而是在它之上做增强
-> —— 新增「版本号跟上游」「en 基线快照 + 原文改动检测」「待办清单」「每周定时任务」。
+> —— 新增「版本号跟上游」「en 基线快照 + 原文改动检测」「待办清单」「每月定时任务」。
 > 下文保留原方案结构，凡与实测不符处以 **【实测修正】** 标注。
 
 ---
@@ -238,8 +238,8 @@ python build\sync_upstream.py
 rem 同步并直推 main
 python build\sync_upstream.py --push
 
-rem 注册每周定时任务（默认每周一 09:00）
-powershell -ExecutionPolicy Bypass -File build\install_weekly_task.ps1
+rem 注册每月定时任务（默认每月 1 号 09:00）
+powershell -ExecutionPolicy Bypass -File build\install_sync_task.ps1
 rem 可执行文件位置可在 run_sync.bat 里改 PYTHON；日志落在 build\_sync_logs\sync.log
 ```
 
