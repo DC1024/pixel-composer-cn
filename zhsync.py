@@ -106,7 +106,7 @@ MODULES = (
     ("nodes",     "节点名称与提示", ("nodes.json",)),
     ("junctions", "连接点名称",     ("junctions.json",)),
     ("fonts",     "中文字体",       ("fonts/",)),
-    ("welcome",   "入门指南示例",   ("welcome/",)),
+    ("welcome",   "入门指南示例",   ("welcome/", "welcome_files.zip")),
 )
 
 MODULE_IDS = tuple(m[0] for m in MODULES)

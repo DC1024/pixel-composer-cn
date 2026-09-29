@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """维护者侧：汉化「入门指南」示例文件（Welcome files）。
 
-用户所说的「入门指南里的示例文件」＝ 游戏 ``pack/welcome_files.zip`` 解出来的三组内容：
+用户所说的「入门指南里的示例文件」＝ 游戏 ``pack/welcome_files.zip`` 里的三组内容：
 
 * ``Getting started/``  —— 14 个教程页（控制、节点、粒子、仿真、UV…）
 * ``Sample Projects/`` —— 15 个示例工程
@@ -21,13 +21,15 @@
 
 产出
 ----
-``zh/welcome/<与官方包完全相同的相对路径>.pxc``（只放 .pxc，缩略图 PNG 不动）。
-客户端按**同名覆盖**写进数据目录的 ``Welcome files/``，所以相对路径必须严格一致。
-整个 ``zh/`` 目录会被打包进汉化包并由 ``zhsync`` 的清单覆盖，无需另行注册。
+1. ``zh/welcome/<与官方包完全相同的相对路径>.pxc``（只放 .pxc，缩略图 PNG 不动）。
+   客户端按**同名覆盖**写进数据目录的 ``Welcome files/``。
+2. ``zh/welcome_files.zip`` —— 同时产出的**中文命名**完整 zip。
+   入门指南的卡片标题来自 zip 内的文件夹名 / 文件名，因此必须整体重命名为中文；
+   客户端安装时用它替换游戏原生的 ``pack/welcome_files.zip``。
 
 用法
 ----
-    python build/translate_welcome.py                     # 生成到 zh/welcome/
+    python build/translate_welcome.py                     # 生成到 zh/welcome/ 与 zh/welcome_files.zip
     python build/translate_welcome.py --install "D:\\…"   # 指定安装目录
     python build/translate_welcome.py --report            # 只报告，不写文件
     python build/translate_welcome.py --manifest          # 顺带重建 manifest.json（版本 +1）
@@ -52,6 +54,8 @@ from pxc import Pxc, PxcError, TEXT_NODE_TYPES      # noqa: E402
 
 ZH_WELCOME = os.path.join(ROOT, "zh", "welcome")
 TABLE_PATH = os.path.join(BUILD, "welcome_zh.json")
+RENAME_PATH = os.path.join(BUILD, "welcome_rename.json")
+ZH_ZIP_PATH = os.path.join(ROOT, "zh", "welcome_files.zip")
 TAG = re.compile(r"<[^<>]*>")
 
 
@@ -74,6 +78,39 @@ def check_table(tb):
         if sorted(TAG.findall(en)) != sorted(TAG.findall(zh)):
             bad.append((en, zh))
     return bad
+
+
+def load_rename(path=RENAME_PATH):
+    if not os.path.isfile(path):
+        return {}
+    with open(path, encoding="utf-8") as f:
+        mp = json.load(f)
+    if not isinstance(mp, dict):
+        raise SystemExit(f"[错误] 重命名映射表格式应为 JSON 对象：{path}")
+    # 同时提供大小写不敏感的反向查找
+    casefold = {k.casefold(): v for k, v in mp.items()}
+    return mp, casefold
+
+
+def apply_rename(rel, mp, casefold):
+    """把 zip 内的相对路径按映射表逐段翻译成中文。
+
+    目录/文件名中的数字前缀（如 ``000``）会被保留。
+    只翻译 basename（去掉扩展名），扩展名原样保留；目录项末尾的 ``/`` 也会保留。
+    """
+    is_dir = rel.endswith("/")
+    parts = rel.replace("\\", "/").rstrip("/").split("/")
+    out_parts = []
+    for part in parts:
+        if not part:
+            continue
+        base, ext = os.path.splitext(part)
+        zh = mp.get(base)
+        if zh is None:
+            zh = casefold.get(base.casefold(), base)
+        out_parts.append(zh + ext)
+    out = "/".join(out_parts)
+    return out + "/" if is_dir else out
 
 
 def looks_like_prose(s):
@@ -140,15 +177,19 @@ def main():
             log(f"   译文标签 {sorted(TAG.findall(zh))}")
         return 1
 
+    rmp, rmp_cf = load_rename()
+
     found = find_zip(args.install, args.zip)
     zp, install = found if isinstance(found, tuple) else (found, None)
     log(f"源包: {zp}")
     log(f"对照表: {len(tb)} 条（标签自检通过）")
+    log(f"重名映射: {len(rmp)} 条")
 
     outdir = args.out
     total_files = total_repl = 0
     all_miss = {}
     skipped = []
+    zip_entries = []          # (新路径, 原始字节或翻译后字节)
     with zipfile.ZipFile(zp) as z:
         names = sorted(n for n in z.namelist() if n.endswith(".pxc"))
         if not names:
@@ -163,12 +204,39 @@ def main():
                 all_miss.setdefault(m, []).append(rel)
             total_files += 1
             total_repl += n
+            zh_rel = apply_rename(rel, rmp, rmp_cf)
+            zip_entries.append((zh_rel, data))
             if not args.report:
                 dst = os.path.join(outdir, *rel.split("/"))
                 os.makedirs(os.path.dirname(dst), exist_ok=True)
                 # 二进制，显式 newline 无关；用 to_bytes 已经是确定的字节序列
                 with open(dst, "wb") as f:
                     f.write(data)
+
+    # 把非 .pxc 资源也按中文路径打包进去，保持 zip 完整可用
+    if not args.report:
+        with zipfile.ZipFile(zp) as z:
+            for rel in z.namelist():
+                if rel.endswith(".pxc"):
+                    continue
+                data = z.read(rel)
+                zh_rel = apply_rename(rel, rmp, rmp_cf)
+                zip_entries.append((zh_rel, data))
+        # 写出中文命名的完整 zip
+        os.makedirs(os.path.dirname(ZH_ZIP_PATH), exist_ok=True)
+        seen = set()
+        with zipfile.ZipFile(ZH_ZIP_PATH, "w", zipfile.ZIP_DEFLATED) as out:
+            for zh_rel, data in zip_entries:
+                # 目录项可能因前后顺序重复出现，去重
+                if zh_rel in seen:
+                    continue
+                seen.add(zh_rel)
+                if zh_rel.endswith("/"):
+                    # 目录项：以 / 结尾、内容为空，zipfile 会写入正确的目录属性
+                    out.writestr(zh_rel, b"")
+                else:
+                    out.writestr(zh_rel, data)
+        log(f"已写出中文命名 zip: {ZH_ZIP_PATH}（共 {len(seen)} 个条目）")
 
     log(f"处理 .pxc：{total_files} 个，替换文本 {total_repl} 处")
     if skipped:

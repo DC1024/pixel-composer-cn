@@ -1,9 +1,9 @@
 {
  "schema": 1,
  "pack": "pixel-composer-cn",
- "version": "1.2.0",
+ "version": "1.2.1",
  "game_version": 122000,
- "built_at": "2026-09-28 23:17:07 +0800",
+ "built_at": "2026-09-29 12:53:55 +0800",
  "counts": {
   "words": 2096,
   "UI": 560,
@@ -27,6 +27,10 @@
   "UI.json": {
    "size": 24971,
    "sha256": "e71971d1e8e20df2c0096f6f5b1e57561eab3ece15a2a6bf715d754f2a53e721"
+  },
+  "welcome_files.zip": {
+   "size": 1322929,
+   "sha256": "cb592bf47890a8d9652a63f8c16ae8a27f844122832b49abab363119cef6047a"
   },
   "words.json": {
    "size": 76170,

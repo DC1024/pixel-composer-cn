@@ -47,8 +47,8 @@
 
 ![工具界面 / GUI](assets/screenshot.png)
 
-> 「入门指南」里的教程页也已汉化 —— 下面是游戏内实际效果（欢迎页 → 入门指南 → 基础操作）：
-> The getting-started tutorial pages are localized too — here's how it looks in-game (Welcome → Getting started → Introduction):
+> 「入门指南」里的教程页**卡片标题与内容**均已汉化 —— 下面是游戏内实际效果（欢迎页 → 入门指南 → 基础操作）：
+> The getting-started tutorial pages are fully localized, including card titles and content — here's how it looks in-game (Welcome → Getting started → Introduction):
 >
 > ![游戏内效果 / In-game](assets/ingame.png)
 

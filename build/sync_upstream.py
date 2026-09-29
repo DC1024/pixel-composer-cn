@@ -47,6 +47,7 @@ manifest 里同时记录 `version`（汉化包版本）与 `game_version`（对�
 """
 import argparse
 import datetime
+import hashlib
 import json
 import os
 import re
@@ -65,6 +66,7 @@ ZH = os.path.join(ROOT, "zh")
 CACHE = os.path.join(BUILD, "cache")
 PREV = os.path.join(CACHE, "en_prev")
 TODO = os.path.join(BUILD, "todo_report.md")
+WELCOME_SOURCE_SHA = os.path.join(CACHE, "welcome_source.sha256")
 
 LATIN = re.compile(r"[A-Za-z]{2,}")
 CJK = re.compile(r"[\u4e00-\u9fff]")
@@ -327,6 +329,47 @@ def write_todo_report(sections, gv, log):
 
 
 # --------------------------------------------------------------------------
+# 入门指南 welcome_files.zip 同步
+# --------------------------------------------------------------------------
+def sha256_file(path):
+    h = hashlib.sha256()
+    with open(path, "rb") as f:
+        for chunk in iter(lambda: f.read(1 << 20), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+
+def sync_welcome(install, dry_run=False, log=print):
+    """若游戏 pack/welcome_files.zip 与上次缓存不同，重新生成 zh/welcome_files.zip。
+
+    返回 (changed, msg)。changed=True 表示已重新生成（或应该重新生成）。
+    """
+    src = os.path.join(install, "pack", "welcome_files.zip")
+    if not os.path.isfile(src):
+        return False, "未找到 pack/welcome_files.zip，跳过入门指南同步"
+    cur_sha = sha256_file(src)
+    prev_sha = ""
+    if os.path.isfile(WELCOME_SOURCE_SHA):
+        try:
+            prev_sha = open(WELCOME_SOURCE_SHA, "r", encoding="utf-8").read().strip().split()[0]
+        except Exception:
+            prev_sha = ""
+    if prev_sha == cur_sha:
+        return False, "入门指南源包未变化"
+    if dry_run:
+        return True, f"入门指南源包有变化（sha256 {cur_sha[:16]}...）"
+    # 调用维护者侧脚本生成中文命名 zip 与 zh/welcome/
+    script = os.path.join(BUILD, "translate_welcome.py")
+    r = subprocess.run([sys.executable, script], cwd=ROOT, capture_output=True, text=True)
+    if r.returncode != 0:
+        return True, f"translate_welcome.py 失败：{(r.stderr or r.stdout or '').strip()[:200]}"
+    os.makedirs(CACHE, exist_ok=True)
+    with open(WELCOME_SOURCE_SHA, "w", encoding="utf-8", newline="\n") as f:
+        f.write(cur_sha + "\n")
+    return True, "已重新生成 zh/welcome_files.zip 与 zh/welcome/"
+
+
+# --------------------------------------------------------------------------
 # git 推送（直接推 main，不建 PR）
 # --------------------------------------------------------------------------
 def _git(*a, **kw):
@@ -364,18 +407,28 @@ def push(ver, gv, stat, log):
     rel_todo = os.path.relpath(TODO, ROOT).replace("\\", "/")
     if os.path.isfile(TODO):
         add.append(rel_todo)
+    # 入门指南重命名映射与翻译对照表若更新也一并提交
+    for rel in ("build/welcome_rename.json", "build/welcome_zh.json",
+                "build/translate_welcome.py", "zhsync.py", "patch_tool.py"):
+        p = os.path.join(ROOT, rel)
+        if os.path.isfile(p):
+            add.append(rel.replace("\\", "/"))
     st = _git("add", *add)
     st = _git("status", "--porcelain", *add)
     if not st.stdout.strip():
         log("git：没有变化，跳过提交")
         return
+    welcome_note = ""
+    if stat.get("welcome_changed"):
+        welcome_note = "入门指南 welcome_files.zip 已更新\n"
     msg = (
         f"汉化包 v{ver}：同步上游 Locale v{gv}\n"
         f"\n"
         f"新增词条 {stat['added']} / 补翻残留 {stat['retrans']} / 新增节点 {stat['nodes']}\n"
         f"待处理清单 {stat['todo']} 条\n"
+        f"{welcome_note}"
         f"\n"
-        f"由 build/sync_upstream.py 自动生成（每周定时同步）"
+        f"由 build/sync_upstream.py 自动生成（每月定时同步）"
     )
     r = subprocess.run(
         ["git", "-c", "user.name=DC1024", "-c", "user.email=DC1024@users.noreply.github.com",
@@ -442,6 +495,10 @@ def main():
     cur_ver, cur_gv = load_manifest_version()
     log(f"仓库清单：version={cur_ver} game_version={cur_gv}")
 
+    # 同步入门指南 welcome_files.zip（独立于 locale）
+    welcome_changed, welcome_msg = sync_welcome(install, args.dry_run, log=log)
+    log(f"入门指南：{welcome_msg}")
+
     prev_words = load_prev("words.json")
     prev_nodes = load_prev("nodes.json")
     if prev_words is None:
@@ -499,7 +556,7 @@ def main():
     if changed_nodes[:5]:
         log(f"   节点定义变动：{', '.join(changed_nodes[:5])}")
 
-    content_changed = bool(added or retrans or new_nodes)
+    content_changed = bool(added or retrans or new_nodes) or welcome_changed
     review_needed = bool(changed_words or changed_nodes)
     upstream_advanced = cur_gv is not None and gv is not None and str(cur_gv) != str(gv)
     if upstream_advanced:
@@ -567,7 +624,7 @@ def main():
         log(f"已写入清单 v{ver}：{man['counts']}，共 {len(man['files'])} 个文件")
     else:
         ver = cur_ver
-        log(f"仅待复核变化，版本号保持 v{ver}，未重写清单")
+        log(f"仅待复核变化（含入门指南），版本号保持 v{ver}，未重写清单")
 
     # 8) 覆盖率报告
     tr = sum(1 for k, v in en_words.items() if isinstance(v, str) and zh_words.get(k) not in (None, v))
@@ -579,7 +636,8 @@ def main():
 
     if args.push:
         push(ver, gv, {"added": len(added), "retrans": len(retrans),
-                       "nodes": len(new_nodes), "todo": todo_total}, log)
+                       "nodes": len(new_nodes), "todo": todo_total,
+                       "welcome_changed": welcome_changed}, log)
     else:
         log("未推送（加 --push 可自动 commit & push 到 main）")
     return 0

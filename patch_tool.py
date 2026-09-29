@@ -387,10 +387,12 @@ FALLBACK_MODULES = (
     ("nodes",     "节点名称与提示", ("nodes.json",)),
     ("junctions", "连接点名称",     ("junctions.json",)),
     ("fonts",     "中文字体",       ("fonts/",)),
-    ("welcome",   "入门指南示例",   ("welcome/",)),
+    ("welcome",   "入门指南示例",   ("welcome/", "welcome_files.zip")),
 )
 
 WELCOME_DIRNAME = "Welcome files"
+WELCOME_ZIP_NAME = "welcome_files.zip"
+WELCOME_ZIP_BAK_SUFFIX = ".bak_cn"
 
 
 def _zhsync():
@@ -533,6 +535,61 @@ def mark_selection(zh_dir, modules):
 
 
 def install_welcome(root, src, logbox=None, install=None):
+    """安装入门指南模块：同时处理 Welcome files/ 解压目录与 pack/welcome_files.zip。
+
+    游戏「入门指南」标签页直接读取 ``pack/welcome_files.zip``，卡片标题来自 zip 内的
+    文件夹名 / 文件名，因此必须替换整个 zip（中文命名 + 已翻译 .pxc）。
+    同时仍把 ``welcome/**.pxc`` 按同名覆盖到 ``<root>/Welcome files/``（兼容其它可能
+    读取解压目录的界面）。
+
+    替换 pack/welcome_files.zip 前先备份原版到 welcome_files.zip.bak_cn；
+    覆盖 Welcome files/ 前先备份原版到 Welcome files.bak_cn/。
+    两个备份都可在「③ 恢复英文」时还原。
+    """
+    n_zip = install_welcome_zip(src, install, logbox)
+    n_dir = install_welcome_dir(root, src, logbox, install)
+    return n_zip + n_dir
+
+
+def install_welcome_zip(src, install, logbox=None):
+    """用汉化包里的 welcome_files.zip 替换 <install>/pack/welcome_files.zip。"""
+    if not install:
+        return 0
+    src_zip = os.path.join(src, WELCOME_ZIP_NAME)
+    if not os.path.isfile(src_zip):
+        return 0
+    dst_zip = os.path.join(install, "pack", WELCOME_ZIP_NAME)
+    if not os.path.isfile(dst_zip):
+        log(f"未找到游戏自带的 {dst_zip}，跳过 zip 替换。", logbox)
+        return 0
+    bak_zip = dst_zip + WELCOME_ZIP_BAK_SUFFIX
+    # 备份原版（只在 bak 不存在，或 bak 已经是中文包时重新备份）
+    need_bak = not os.path.isfile(bak_zip)
+    if not need_bak:
+        try:
+            import hashlib
+            h_bak = hashlib.sha256(open(bak_zip, "rb").read()).hexdigest()
+            h_src = hashlib.sha256(open(src_zip, "rb").read()).hexdigest()
+            if h_bak == h_src:
+                need_bak = True
+        except Exception:
+            pass
+    if need_bak:
+        try:
+            shutil.copy2(dst_zip, bak_zip)
+            log(f"已备份原版 {WELCOME_ZIP_NAME} 到 {bak_zip}", logbox)
+        except Exception as e:
+            log(f"备份 {WELCOME_ZIP_NAME} 失败: {e}", logbox)
+    try:
+        shutil.copy2(src_zip, dst_zip)
+        log(f"已用中文命名 zip 替换 {dst_zip}", logbox)
+        return 1
+    except Exception as e:
+        log(f"替换 {dst_zip} 失败: {e}", logbox)
+        return 0
+
+
+def install_welcome_dir(root, src, logbox=None, install=None):
     """把汉化包里的 welcome/**.pxc **按同名覆盖**到 <root>/Welcome files/。
 
     为什么原地覆盖同名文件、而不是整目录替换：
@@ -641,7 +698,14 @@ def install_welcome(root, src, logbox=None, install=None):
     return n
 
 
-def restore_welcome(root, logbox=None):
+def restore_welcome(root, logbox=None, install=None):
+    """从 bak_cn 还原原版入门指南文件，同时还原 pack/welcome_files.zip。"""
+    n = restore_welcome_dir(root, logbox)
+    n += restore_welcome_zip(install, logbox)
+    return n
+
+
+def restore_welcome_dir(root, logbox=None):
     """从 <root>/Welcome files.bak_cn/ 还原原版入门指南文件。"""
     bakroot = os.path.join(root, WELCOME_DIRNAME + ".bak_cn")
     if not os.path.isdir(bakroot):
@@ -662,6 +726,23 @@ def restore_welcome(root, logbox=None):
     if n:
         log(f"已还原 {n} 个原版入门指南文件", logbox)
     return n
+
+
+def restore_welcome_zip(install, logbox=None):
+    """从 <install>/pack/welcome_files.zip.bak_cn 还原原版 zip。"""
+    if not install:
+        return 0
+    dst_zip = os.path.join(install, "pack", WELCOME_ZIP_NAME)
+    bak_zip = dst_zip + WELCOME_ZIP_BAK_SUFFIX
+    if not os.path.isfile(bak_zip):
+        return 0
+    try:
+        shutil.copy2(bak_zip, dst_zip)
+        log(f"已还原原版 {WELCOME_ZIP_NAME}", logbox)
+        return 1
+    except Exception as e:
+        log(f"还原 {WELCOME_ZIP_NAME} 失败: {e}", logbox)
+        return 0
 
 
 def selection_changed(roots, modules):
@@ -794,7 +875,7 @@ def _install_pack(src, roots, install, logbox=None, modules=None):
             install_welcome(root, src, logbox, install)
         else:
             # 取消勾选要把示例还原成英文原版 —— 否则"取消"看着像没生效
-            restore_welcome(root, logbox)
+            restore_welcome(root, logbox, install)
     return True
 
 def sync_from_github(roots, logbox=None, modules=None):
@@ -918,7 +999,7 @@ def do_restore(logbox=None):
     install = find_install_dir()
     for root in find_all_data_roots(install):
         set_language("en", root, logbox)
-        restore_welcome(root, logbox)
+        restore_welcome(root, logbox, install)
     log("已恢复英文，重启软件生效。", logbox)
 
 # ------------------- 工作区标签（布局文件名）--------------------
@@ -1120,6 +1201,10 @@ def do_status(logbox=None):
             log(f"    入门指南 : 已汉化（原文件备份于 {os.path.basename(wb)}/，可用「③ 恢复英文」还原）", logbox)
         elif os.path.isdir(wd):
             log("    入门指南 : 官方原版（未汉化）", logbox)
+    if install:
+        wz_bak = os.path.join(install, "pack", WELCOME_ZIP_NAME + WELCOME_ZIP_BAK_SUFFIX)
+        if os.path.isfile(wz_bak):
+            log(f"    欢迎包 zip: 已汉化（原版备份于 pack/{WELCOME_ZIP_NAME}{WELCOME_ZIP_BAK_SUFFIX}，可用「③ 恢复英文」还原）", logbox)
     if pv:
         try:
             _v, summary = z.installed_summary(roots)
@@ -1204,6 +1289,8 @@ def scan_leftovers(install=None, roots=None, sample=3):
     if install and os.path.isdir(install):
         add(os.path.join(install, "zh"), "旧包汉化目录",
             "本工具只写 <数据目录>/Locale/zh，安装根目录下的 zh/ 属旧包")
+        add(os.path.join(install, "pack", WELCOME_ZIP_NAME + WELCOME_ZIP_BAK_SUFFIX),
+            "原版欢迎包备份", "可用「③ 恢复英文」还原")
         scan_welcome_tree(os.path.join(install, "Welcome files"), "旧包教程目录")
         try:
             top = sorted(os.listdir(install))
