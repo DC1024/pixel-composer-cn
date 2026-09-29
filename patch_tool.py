@@ -636,22 +636,19 @@ def reconcile_welcome_zip(roots, install, logbox=None):
 
 
 def install_welcome_dir(root, src, logbox=None, install=None):
-    """把**中文命名**的入门指南装进 <root>/Welcome files/（整目录替换）。
+    """把中文命名的入门指南装进 <root>/Welcome files/（**顶层目录保留英文**）。
 
-    为什么必须换目录内容、同名覆盖不行（2026-09-29 二次修正，v1.3.1/v1.3.2 都没治好）：
-    从游戏主程序（GameMaker 数据段）里抠出的格式串证实——
-      * `{0}Welcome files/Getting started`  ：页面读的是**数据目录里解压出的目录**
-      * `{0}pack/welcome_files.zip` + `{0}/version`：version 一致时**不会**重新解压
-    「入门指南」的卡片标题取自 Welcome files/ 里的**文件夹名/文件名**；
-    同名覆盖只换了 .pxc 内文，文件名（=标题）仍是英文，所以标题纹丝不动。
-    旧社区汉化包正是直接把目录换成中文名才生效的 —— 本函数做同样的事，但可逆：
-
-      1. 首次执行时把当前 Welcome files/ 整体备份到 Welcome files.bak_cn/；
-      2. 官方三个英文顶层目录移入备份（备份里已有则直接移除，避免中英两套重复卡片）；
-      3. 旧社区包的中文目录（A开始入门 等）也移入备份 —— 它们会与新目录重复显示；
-      4. 把中文 welcome_files.zip（含 36 张缩略图 png）解压进来 —— **不会丢缩略图**；
-      5. `Welcome files/version` 保留不动：游戏靠它判断要不要重新解压，留着它
-         就不会在下次启动时用 pack zip 把英文盖回来。
+    机制（2026-09-29 两次实测 + 游戏主程序格式串证实）：
+      * `{0}Welcome files/Getting started`、`{0}/Sample Projects`——**三个顶层目录名
+        被游戏硬编码成英文**，换中文名页面直接空白（v1.3.3 首版踩坑，用户截图实锤）；
+      * 卡片标题取自目录里的**文件名**，子分类名取自**子目录名** —— 这两级用中文有效；
+      * `{0}pack/welcome_files.zip` + `{0}/version`：version 一致时游戏不重新解压。
+    因此正确布局 = 顶层 `Getting started / Sample Projects / Templates`（英文、硬编码）
+    + 子目录/文件名中文。做法：
+      1. 首次执行把当前 Welcome files/ 整体备份到 Welcome files.bak_cn/；
+      2. 官方英文顶层目录、我们曾装入的中文顶层目录、旧社区包目录 → 一律移入备份；
+      3. 解压中文 zip，**仅把顶层目录名映射回英文**（开始入门→Getting started 等），
+         子目录与文件名保持中文；`Welcome files/version` 保留不动。
     """
     src_zip = os.path.join(src, WELCOME_ZIP_NAME)
     if not os.path.isfile(src_zip):
@@ -688,21 +685,22 @@ def install_welcome_dir(root, src, logbox=None, install=None):
             return False
 
     acted = False
-    # 2) 官方英文目录让位（防中英两套重复卡片）
-    for top in WELCOME_OFFICIAL_TOPS:
+    # 2) 让位：官方英文目录 + 我们旧版装入的中文顶层目录 + 旧社区包目录
+    for top in WELCOME_OFFICIAL_TOPS + WELCOME_CN_TOPS + tuple(OLD_PACK_DIRNAMES):
         acted |= stash(top)
-    # 3) 旧社区包的中文名目录（A开始入门 等）也会重复显示，一并移入备份
-    for name in OLD_PACK_DIRNAMES:
-        acted |= stash(name)
 
-    # 4) 解压中文 zip（跳过目录条目；version 文件不受影响）
+    # 3) 解压中文 zip：仅顶层目录名映射回英文（游戏硬编码），其余保持中文
+    remap = dict(zip(WELCOME_CN_TOPS, WELCOME_OFFICIAL_TOPS))
     n = 0
     try:
         with zipfile.ZipFile(src_zip) as zf:
             for info in zf.infolist():
                 if info.is_dir():
                     continue
-                t = os.path.join(dstroot, *info.filename.split("/"))
+                parts = info.filename.split("/")
+                if parts[0] in remap:
+                    parts[0] = remap[parts[0]]
+                t = os.path.join(dstroot, *parts)
                 os.makedirs(os.path.dirname(t), exist_ok=True)
                 with open(t, "wb") as f:
                     f.write(zf.read(info))
@@ -711,8 +709,8 @@ def install_welcome_dir(root, src, logbox=None, install=None):
         log(f"解压 {WELCOME_ZIP_NAME} 失败: {e}", logbox)
         return n
     if n:
-        log(f"入门指南示例：已换成中文目录（{n} 个文件，含缩略图；"
-            f"原目录在 {os.path.basename(bakroot)}/，可用「③ 恢复英文」还原）", logbox)
+        log(f"入门指南示例：已换成中文卡片（{n} 个文件，含缩略图；分类目录保留英文"
+            f"——游戏硬编码；原目录在 {os.path.basename(bakroot)}/，可用「③ 恢复英文」还原）", logbox)
     else:
         log("入门指南示例：zip 里没有可写入的文件。", logbox)
     return n + (1 if acted else 0)
@@ -1625,7 +1623,7 @@ class PCButton:
 
 #: 工具版本 —— 自 v1.3.3 起与 GitHub 发行版标签保持一致（v1.3.2 及之前工具版本
 #: 独立编号 1.2.x，用户反复混淆"发行版标签 vs 程序版本"，故对齐）。
-VERSION = "1.3.3"
+VERSION = "1.3.4"
 
 def _ui_font(size, bold=False, mono=False):
     """按平台挑一个存在的字体。
