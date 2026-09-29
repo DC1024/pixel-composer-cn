@@ -19,6 +19,8 @@
                   也换成中文（原地覆盖同名 .pxc，文件名保持英文，可一键还原）
  10) 残留清点   : 列出旧社区汉化包（zh/ + Welcome files/ + 汉化 EXE）在安装目录里留下的
                   文件清单（路径 / 大小 / 文件数）。**只列出，不删除、不移动**。
+ 11) 程序自更新 : 从 GitHub 检查并更新**本工具自身**（tool.json 报版本，Release 下载资产，
+                  sha256 校验；Windows 运行中的 EXE 先改名再替换，重启生效）。
 
 平台说明：
   Windows  数据目录 %LOCALAPPDATA%\\PixelComposer（或 persistPreference.json 重定向处）
@@ -393,6 +395,10 @@ FALLBACK_MODULES = (
 WELCOME_DIRNAME = "Welcome files"
 WELCOME_ZIP_NAME = "welcome_files.zip"
 WELCOME_ZIP_BAK_SUFFIX = ".bak_cn"
+#: 官方 welcome zip 的三个顶层目录（英文）；游戏「入门指南」页只认这三个分类。
+WELCOME_OFFICIAL_TOPS = ("Getting started", "Sample Projects", "Templates")
+#: 我们中文 zip 的三个顶层目录；**必须与 build/welcome_rename.json 里的组名一致**。
+WELCOME_CN_TOPS = ("开始入门", "示例项目", "模板")
 
 
 def _zhsync():
@@ -630,22 +636,93 @@ def reconcile_welcome_zip(roots, install, logbox=None):
 
 
 def install_welcome_dir(root, src, logbox=None, install=None):
-    """把汉化包里的 welcome/**.pxc **按同名覆盖**到 <root>/Welcome files/。
+    """把**中文命名**的入门指南装进 <root>/Welcome files/（整目录替换）。
 
-    为什么原地覆盖同名文件、而不是整目录替换：
-      * 官方 welcome_files.zip 每个教程页还配了 256×192 缩略图 PNG，
-        整目录替换会把缩略图一起丢掉；
-      * 文件名保持英文原名，游戏看到的仍是标准目录结构，不会出现中英两套重复项。
-    被覆盖的原文件先备份到 <root>/Welcome files.bak_cn/（保持相对路径），
-    可用「③ 恢复英文」一键还原。
+    为什么必须换目录内容、同名覆盖不行（2026-09-29 二次修正，v1.3.1/v1.3.2 都没治好）：
+    从游戏主程序（GameMaker 数据段）里抠出的格式串证实——
+      * `{0}Welcome files/Getting started`  ：页面读的是**数据目录里解压出的目录**
+      * `{0}pack/welcome_files.zip` + `{0}/version`：version 一致时**不会**重新解压
+    「入门指南」的卡片标题取自 Welcome files/ 里的**文件夹名/文件名**；
+    同名覆盖只换了 .pxc 内文，文件名（=标题）仍是英文，所以标题纹丝不动。
+    旧社区汉化包正是直接把目录换成中文名才生效的 —— 本函数做同样的事，但可逆：
 
-    备份的来源是**游戏自带的 pack/welcome_files.zip**，而不是"当前文件"：
-    第二次安装时当前文件已经是我们自己的中文版，若照抄当前文件，
-    备份里存的就成了中文，「恢复英文」会还原出中文（实测踩过）。
-    从官方 zip 取原版更权威，而且能顺带自愈已经存错的旧备份。
+      1. 首次执行时把当前 Welcome files/ 整体备份到 Welcome files.bak_cn/；
+      2. 官方三个英文顶层目录移入备份（备份里已有则直接移除，避免中英两套重复卡片）；
+      3. 旧社区包的中文目录（A开始入门 等）也移入备份 —— 它们会与新目录重复显示；
+      4. 把中文 welcome_files.zip（含 36 张缩略图 png）解压进来 —— **不会丢缩略图**；
+      5. `Welcome files/version` 保留不动：游戏靠它判断要不要重新解压，留着它
+         就不会在下次启动时用 pack zip 把英文盖回来。
+    """
+    src_zip = os.path.join(src, WELCOME_ZIP_NAME)
+    if not os.path.isfile(src_zip):
+        # 源里没有 zip（很老的包结构）→ 退回"同名覆盖"老逻辑
+        return _install_welcome_dir_legacy(root, src, logbox, install)
+    dstroot = os.path.join(root, WELCOME_DIRNAME)
+    bakroot = os.path.join(root, WELCOME_DIRNAME + ".bak_cn")
+    os.makedirs(dstroot, exist_ok=True)
 
-    另外：若目标目录缺配套缩略图（例如该数据目录只被解压过一部分），
-    也会从同一个 zip 里补一份，让目录保持自洽。
+    # 1) 首次备份：备份目录一旦存在绝不覆盖（里面存的是真正的英文原版）
+    if not os.path.isdir(bakroot):
+        try:
+            shutil.copytree(dstroot, bakroot)
+            log(f"已备份原入门指南目录到 {os.path.basename(bakroot)}/", logbox)
+        except Exception as e:
+            log(f"备份入门指南目录失败（继续安装）: {e}", logbox)
+
+    def stash(top):
+        """把 dstroot/<top> 移入备份；备份里已有同名则直接移除。返回 True=有动作。"""
+        d = os.path.join(dstroot, top)
+        if not os.path.isdir(d):
+            return False
+        b = os.path.join(bakroot, top)
+        try:
+            if os.path.isdir(b):
+                shutil.rmtree(d, ignore_errors=True)
+                log(f"已移除 {WELCOME_DIRNAME}/{top}（备份中已有原件）", logbox)
+            else:
+                shutil.move(d, b)
+                log(f"已把 {WELCOME_DIRNAME}/{top} 移入备份", logbox)
+            return True
+        except Exception as e:
+            log(f"处理 {top} 失败: {e}", logbox)
+            return False
+
+    acted = False
+    # 2) 官方英文目录让位（防中英两套重复卡片）
+    for top in WELCOME_OFFICIAL_TOPS:
+        acted |= stash(top)
+    # 3) 旧社区包的中文名目录（A开始入门 等）也会重复显示，一并移入备份
+    for name in OLD_PACK_DIRNAMES:
+        acted |= stash(name)
+
+    # 4) 解压中文 zip（跳过目录条目；version 文件不受影响）
+    n = 0
+    try:
+        with zipfile.ZipFile(src_zip) as zf:
+            for info in zf.infolist():
+                if info.is_dir():
+                    continue
+                t = os.path.join(dstroot, *info.filename.split("/"))
+                os.makedirs(os.path.dirname(t), exist_ok=True)
+                with open(t, "wb") as f:
+                    f.write(zf.read(info))
+                n += 1
+    except Exception as e:
+        log(f"解压 {WELCOME_ZIP_NAME} 失败: {e}", logbox)
+        return n
+    if n:
+        log(f"入门指南示例：已换成中文目录（{n} 个文件，含缩略图；"
+            f"原目录在 {os.path.basename(bakroot)}/，可用「③ 恢复英文」还原）", logbox)
+    else:
+        log("入门指南示例：zip 里没有可写入的文件。", logbox)
+    return n + (1 if acted else 0)
+
+
+def _install_welcome_dir_legacy(root, src, logbox=None, install=None):
+    """老版逻辑：把 welcome/**.pxc **按同名覆盖**到 <root>/Welcome files/。
+
+    仅当汉化包里没有 welcome_files.zip（极老的包结构）时才会走到。
+    保留原因：不丢这个兼容路径；且它的备份自愈逻辑仍是 ③ 还原的依据之一。
     """
     wsrc = os.path.join(src, "welcome")
     if not os.path.isdir(wsrc):
@@ -746,11 +823,33 @@ def restore_welcome(root, logbox=None, install=None):
 
 
 def restore_welcome_dir(root, logbox=None):
-    """从 <root>/Welcome files.bak_cn/ 还原原版入门指南文件。"""
+    """从 <root>/Welcome files.bak_cn/ 还原原版入门指南目录。
+
+    除把备份文件复制回去外，还要：
+      * 移除本工具装入的中文顶层目录（判定：备份里没有的顶层目录；version 文件不动）；
+      * 把安装时移入备份的旧社区包目录（A开始入门 等）放回原位。
+    """
     bakroot = os.path.join(root, WELCOME_DIRNAME + ".bak_cn")
     if not os.path.isdir(bakroot):
         return 0
     dstroot = os.path.join(root, WELCOME_DIRNAME)
+    if os.path.isdir(dstroot):
+        for top in os.listdir(dstroot):
+            p = os.path.join(dstroot, top)
+            if not os.path.isdir(p) or top == "version":
+                continue
+            if not os.path.isdir(os.path.join(bakroot, top)):
+                shutil.rmtree(p, ignore_errors=True)
+                log(f"已移除 {WELCOME_DIRNAME}/{top}（本工具装入的中文目录）", logbox)
+    for name in OLD_PACK_DIRNAMES:
+        b = os.path.join(bakroot, name)
+        d = os.path.join(dstroot, name)
+        if os.path.isdir(b) and not os.path.isdir(d):
+            try:
+                shutil.move(b, d)
+                log(f"已把旧汉化包目录 {name} 移回 {WELCOME_DIRNAME}/", logbox)
+            except Exception:
+                pass
     n = 0
     for base, _dirs, names in os.walk(bakroot):
         for nm in names:
@@ -1251,10 +1350,14 @@ def do_status(logbox=None):
             log(f"    汉化区域 : {module_summary(sel)}", logbox)
         wb = os.path.join(root, WELCOME_DIRNAME + ".bak_cn")
         wd = os.path.join(root, WELCOME_DIRNAME)
-        if os.path.isdir(wb) and os.listdir(wb):
-            log(f"    入门指南 : 已汉化（原文件备份于 {os.path.basename(wb)}/，可用「③ 恢复英文」还原）", logbox)
-        elif os.path.isdir(wd):
-            log("    入门指南 : 官方原版（未汉化）", logbox)
+        if os.path.isdir(wd):
+            tops = [t for t in os.listdir(wd) if os.path.isdir(os.path.join(wd, t))]
+            if any(t in WELCOME_CN_TOPS for t in tops):
+                note = (f"原目录备份于 {os.path.basename(wb)}/，可用「③ 恢复英文」还原"
+                        if os.path.isdir(wb) else "未找到原目录备份")
+                log(f"    入门指南 : 已汉化（卡片标题中文；{note}）", logbox)
+            else:
+                log("    入门指南 : 官方原版（卡片标题英文）—— 点「① 一键汉化」或「② 同步最新汉化」即可汉化", logbox)
     if install:
         wz = os.path.join(install, "pack", WELCOME_ZIP_NAME)
         wz_bak = wz + WELCOME_ZIP_BAK_SUFFIX
@@ -1520,7 +1623,9 @@ class PCButton:
     def grid(self, **kw):
         self.cv.grid(**kw)
 
-VERSION = "1.2.2"
+#: 工具版本 —— 自 v1.3.3 起与 GitHub 发行版标签保持一致（v1.3.2 及之前工具版本
+#: 独立编号 1.2.x，用户反复混淆"发行版标签 vs 程序版本"，故对齐）。
+VERSION = "1.3.3"
 
 def _ui_font(size, bold=False, mono=False):
     """按平台挑一个存在的字体。
@@ -1558,8 +1663,8 @@ def gui():
     root = tk.Tk()
     root.title(f"Pixel Composer 汉化工具 v{VERSION}  ·  按区域汉化 / 在线同步")
     root.configure(bg=PC_BG)
-    root.geometry("620x944")
-    root.minsize(560, 820)
+    root.geometry("620x996")
+    root.minsize(560, 870)
     try:
         if is_frozen():
             root.iconbitmap(os.path.join(resource_dir(), "app_icon.ico"))
@@ -1646,11 +1751,15 @@ def gui():
     row4 = tk.Frame(root, bg=PC_BG); row4.pack(padx=22, pady=(0, 8))
     PCButton(row4, "⑧  旧汉化包残留清点（只列出，不删除）", lambda: do_leftovers(box),
              width=576, height=42, font=F_BTN).pack()
+    row5 = tk.Frame(root, bg=PC_BG); row5.pack(padx=22, pady=(0, 8))
+    PCButton(row5, "⑨  检查程序更新（更新工具本身，非汉化包）", lambda: do_self_update(box),
+             width=576, height=42, font=F_BTN).pack()
     tk.Label(root, text="① 按上面勾选的「汉化区域」安装；② 从 GitHub 下载维护者已同步好的成品包"
                       "（断网自动回退随附包）；\n"
                       "③ 同时把入门指南示例还原成英文原版；⑥ 连 pack/layouts.zip 一起改名"
                       "（只改文件名会被游戏解回英文）；\n"
-                      "⑧ 只生成旧社区汉化包的残留清单（路径 / 大小 / 文件数），不会移动或删除任何文件。",
+                      "⑧ 只生成旧社区汉化包的残留清单（路径 / 大小 / 文件数），不会移动或删除任何文件；\n"
+                      "⑨ 更新的是**汉化工具程序本身**（自动替换 EXE，重启生效）；汉化数据走 ②。",
              font=F_SUB, bg=PC_BG, fg=PC_GREY, wraplength=572,
              justify="left").pack(padx=22, pady=(0, 8), anchor="w")
 
@@ -1673,9 +1782,152 @@ def gui():
     do_status(box)
     root.mainloop()
 
+# ------------------------- 程序自更新 -------------------------
+REPO = "DC1024/pixel-composer-cn"
+RELEASES_URL = f"https://github.com/{REPO}/releases/latest"
+#: 平台 → 程序资产名（与 tool.json 的 files 键对应）
+PROGRAM_ASSETS = (("windows", "PixelComposer-CN-Patcher.exe"),
+                  ("linux",   "PixelComposer-CN-Linux.tar.gz"))
+
+
+def _exe_path():
+    """当前程序文件路径：打包 EXE = EXE 自身；源码运行 = patch_tool.py。"""
+    if is_frozen():
+        return os.path.abspath(sys.executable)
+    return os.path.abspath(__file__)
+
+
+def _cleanup_stale_updates():
+    """启动时清掉上次自更新残留的 .old / .new（失败静默——可能仍被占用）。"""
+    if not (is_frozen() and IS_WIN):
+        return
+    exe = _exe_path()
+    for suffix in (".old", ".new"):
+        p = exe + suffix
+        if os.path.isfile(p):
+            try:
+                os.remove(p)
+            except Exception:
+                pass
+
+
+def _open_releases_page():
+    try:
+        import webbrowser
+        return bool(webbrowser.open(RELEASES_URL))
+    except Exception:
+        return False
+
+
+def do_self_update(logbox=None):
+    """检查并更新**程序本身**（不是汉化数据 —— 汉化数据走「② 同步」）。
+
+    版本来源是仓库根目录的 tool.json（与汉化清单同一组源：Pages → jsDelivr → Raw），
+    资产从 GitHub Release 下载并做 sha256 校验。
+
+    Windows 打包 EXE 运行中无法被覆盖，但**可以被改名**：先把旧 EXE 改成 .old，
+    再把新 EXE 放回原路径，重启即完成升级；旧 EXE 在下次启动时自动清除。
+    下载失败（GitHub 不可达等）会自动打开发布页，可手动下载覆盖。
+    """
+    log(f"当前程序版本 v{VERSION}", logbox)
+    z = _zhsync()
+    fetch = getattr(z, "fetch_tool_meta", None)
+    meta = fetch(lambda m: log(m, logbox)) if fetch else None
+    if not meta:
+        log("无法获取线上程序版本（网络不可用）。", logbox)
+        if _open_releases_page():
+            log("已打开发布页，可手动查看 / 下载最新版。", logbox)
+        return False
+    latest = str(meta.get("version") or "")
+    if z.version_key(latest) <= z.version_key(VERSION):
+        log(f"已是最新程序 v{VERSION}。", logbox)
+        return True
+    tag = str(meta.get("tag") or ("v" + latest))
+    files = meta.get("files") or {}
+    plat = "windows" if IS_WIN else ("macos" if IS_MAC else "linux")
+    name = info = None
+    for key, fname in PROGRAM_ASSETS:
+        if key == plat and fname in files:
+            name, info = fname, files[fname]
+            break
+    if not name:
+        log(f"线上 v{latest} 没有适用于当前平台的程序包，请到发布页手动下载。", logbox)
+        _open_releases_page()
+        return False
+    url = f"https://github.com/{REPO}/releases/download/{tag}/{name}"
+    log(f"发现新版本 v{latest}（当前 v{VERSION}），开始下载 {name} …", logbox)
+    try:
+        data = z._get(url, z.BIG_TIMEOUT)
+    except Exception as e:
+        log(f"下载失败（{getattr(e, 'code', None) or type(e).__name__}）。", logbox)
+        if _open_releases_page():
+            log("已打开发布页，请手动下载后覆盖本程序。", logbox)
+        return False
+    want = (info or {}).get("sha256")
+    if want and hashlib.sha256(data).hexdigest() != want:
+        log("下载内容与 tool.json 的 sha256 不符，已放弃安装（本地文件未改动）。", logbox)
+        return False
+    log(f"已下载 {name}（{len(data)} 字节）并校验通过。", logbox)
+
+    exe = _exe_path()
+    if is_frozen() and IS_WIN:
+        new, old = exe + ".new", exe + ".old"
+        try:
+            with open(new, "wb") as f:
+                f.write(data)
+        except Exception as e:
+            log(f"写入 {os.path.basename(new)} 失败: {e}", logbox)
+            return False
+        try:
+            if os.path.isfile(old):
+                os.remove(old)
+        except Exception:
+            pass
+        try:
+            os.replace(exe, old)      # 运行中的 EXE 不能覆盖/删除，但可以改名
+            os.replace(new, exe)
+        except Exception as e:
+            log(f"替换程序文件失败: {e}", logbox)
+            return False
+        log(f"程序已更新到 v{latest}。请关闭本程序后重新打开即可生效"
+            f"（旧版在 {os.path.basename(old)}，下次启动自动清除）。", logbox)
+        return True
+
+    # 源码 / Linux：把新包里的程序文件 + zh/ 覆盖到当前脚本目录
+    import tarfile
+    tgz = exe + ".new.tgz"
+    here = os.path.dirname(exe)
+    try:
+        with open(tgz, "wb") as f:
+            f.write(data)
+        with tarfile.open(tgz, "r:gz") as tf:
+            tf.extractall(scratch_dir())
+        inner = os.path.join(scratch_dir(), "PixelComposer-CN-Linux")
+        for fn in ("patch_tool.py", "zhsync.py", "translate_core.py", "install.sh"):
+            s = os.path.join(inner, fn)
+            if os.path.isfile(s):
+                shutil.copy2(s, os.path.join(here, fn))
+        zh_new = os.path.join(inner, "zh")
+        zh_dst = os.path.join(here, "zh")
+        if os.path.isdir(zh_new):
+            if os.path.isdir(zh_dst):
+                shutil.rmtree(zh_dst, ignore_errors=True)
+            shutil.copytree(zh_new, zh_dst)
+        try:
+            os.remove(tgz)
+        except Exception:
+            pass
+        log(f"程序文件已更新到 v{latest}，重新运行本工具即可生效。", logbox)
+        return True
+    except Exception as e:
+        log(f"更新程序文件失败: {e}", logbox)
+        return False
+
+
 # ------------------------- 命令行 -------------------------
 MODES = ("install", "update", "sync", "restore", "rollback", "status",
-         "layouts", "layouts-restore", "no-gui", "cli", "modules", "leftovers")
+         "layouts", "layouts-restore", "no-gui", "cli", "modules", "leftovers",
+         "self-update")
 
 def parse_args(argv):
     """极简参数解析：支持 --flag 与 --key value / --key=value。
@@ -1700,6 +1952,7 @@ def parse_args(argv):
 def main():
     _bootstrap_paths()
     _setup_stdio()
+    _cleanup_stale_updates()
     opts, rest = parse_args(sys.argv[1:])
     if opts.get("install_dir"):
         os.environ["PIXELCOMPOSER_DIR"] = opts["install_dir"]
@@ -1734,6 +1987,7 @@ def main():
         elif mode == "layouts": do_layouts(False)
         elif mode == "layouts-restore": do_layouts(True)
         elif mode == "leftovers": do_leftovers()
+        elif mode in ("self-update", "upgrade"): do_self_update()
         return
     # 尝试 GUI，否则 CLI
     if "--cli" in rest or mode == "cli":
@@ -1755,7 +2009,8 @@ def cli_loop(modules=None):
     print(f"当前汉化区域: {module_summary(modules)}")
     while True:
         print("\n1) 一键汉化  2) 同步最新汉化(联网)  3) 恢复英文  4) 还原上一版汉化  5) 查看状态")
-        print("6) 汉化工作区标签  7) 还原布局名  8) 选择汉化区域  9) 旧汉化包残留清点  0) 退出")
+        print("6) 汉化工作区标签  7) 还原布局名  8) 选择汉化区域  9) 旧汉化包残留清点  10) 检查程序更新")
+        print("0) 退出")
         try:
             c = input("选择> ").strip()
         except EOFError:
@@ -1779,6 +2034,7 @@ def cli_loop(modules=None):
             except Exception as e:
                 print(f"[错误] {e}")
         elif c == "9": do_leftovers()
+        elif c == "10": do_self_update()
         elif c == "0": break
         else: print("无效输入")
 

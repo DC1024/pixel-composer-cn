@@ -64,7 +64,7 @@
 | 离线可用 Offline-ready | 随附完整 `zh` 汉化包，安装后全程无需联网；② 联网只是「取更新」，断网会自动回退随附包。 Ships with a complete `zh` pack — no network needed after install; ② only fetches updates and falls back to the bundled pack. |
 | 持续更新 Actively synced | 维护者定期同步官方语言包 → 补翻校正 → 推送本仓库 → 客户端一键同步成品包，无需重装工具。 Maintainer syncs the official locale, retranslates, pushes; clients pull the finished pack in one click — no reinstall. |
 | **按区域汉化 Per-area choice** | 六个区域可逐项勾选（界面词条 / 面板与对话框 / 节点 / 连接点 / 中文字体 / 入门指南示例），**默认全部汉化**；取消勾选 = 该区域保留官方英文，方便习惯英文的用户只汉化一部分。 Six toggleable areas (UI strings / panels & dialogs / nodes / junctions / CJK font / getting-started examples), **all on by default**; unticking keeps that area in official English. |
-| **入门指南也汉化 Tutorials too** | 「入门指南」里的教程页与示例工程（`Getting started` / `Sample Projects` / `Templates`）说明文字与**卡片标题**均已换成中文（v1.3.2 起连 `pack/welcome_files.zip` 的卡片标题一起换成中文命名），原文件自动备份可一键还原。 The tutorial pages, sample projects and **card titles** under `Getting started` / `Sample Projects` / `Templates` are translated (since v1.3.2 including the Chinese-named `pack/welcome_files.zip`), with automatic backup and one-click revert. |
+| **入门指南也汉化 Tutorials too** | 「入门指南」的教程页、示例工程与**卡片标题**全部中文（v1.3.3 起：把数据目录里 `Welcome files/` 整目录换成中文命名 —— 游戏页面读的就是这个目录；v1.3.2 及之前只同名覆盖 .pxc 内文，标题仍是英文，是当时的实现缺陷）。原目录整体备份到 `Welcome files.bak_cn/`，可一键还原。 Getting-started tutorial pages, sample projects **and card titles** are all Chinese (since v1.3.3 the tool replaces the extracted `Welcome files/` directory with Chinese-named content — that directory is what the page actually reads; v1.3.2 and earlier only overwrote the `.pxc` prose and kept English file names, which is why titles stayed English). The original directory is backed up to `Welcome files.bak_cn/` with one-click revert. |
 | **跨平台 Cross-platform** | Windows / Linux（原生 + SteamOS + Proton）完整支持，macOS 路径已适配。 Full support on Windows and Linux (native, SteamOS, Proton); macOS paths handled. |
 | 一键 One-click | EXE / Linux 一键脚本 / 图形界面 / 命令行四种方式任选。 EXE, Linux `install.sh`, GUI, or CLI — your choice. |
 | 配色一致 Themed | 界面配色与 Pixel Composer 官方主题一致。 GUI palette matches Pixel Composer's official theme. |
@@ -160,6 +160,7 @@ python patch_tool.py --list-modules                    # 列出可选区域
 | ⑥ 汉化工作区标签 Localize layout tabs | 把自带布局改名为中文：**同时**改写 `layouts/*.json` 文件名与游戏自带 `pack/layouts.zip` 里的条目名（原 zip 备份为 `layouts.zip.bak_cn`）。 Renames the layout files **and** the entries inside the game's own `pack/layouts.zip` (the original zip is backed up as `layouts.zip.bak_cn`). |
 | ⑦ 还原布局名 Restore layout names | 把布局文件名还原成英文。 Restore the original English layout file names. |
 | ⑧ 旧汉化包残留清点 Leftover scan | **只列出**旧社区汉化包在安装目录里留下的东西（`zh/`、`Welcome files/A开始入门`、汉化 EXE、说明 txt…），带路径 / 大小 / 文件数。**不会移动或删除任何文件**。 **Lists only** what the old community pack left behind (`zh/`, `Welcome files/A开始入门`, its EXE and `.txt` docs…), with paths / sizes / file counts. **Nothing is moved or deleted.** |
+| ⑨ 检查程序更新 Self-update | 更新的是**汉化工具程序本身**（不是汉化数据）：读仓库根目录的 `tool.json` 报版本（与汉化清单同一组三源），有新版就从 GitHub Release 下载并做 sha256 校验；Windows 打包 EXE 运行中不能覆盖但可以改名 —— 旧 EXE 改名 `.old`、新 EXE 落回原路径，重启程序即完成升级，`.old` 下次启动自动清除。下载失败会自动打开发布页供手动下载。 Updates the **tool itself** (not the translation data): version comes from `tool.json` at the repo root (same three sources as the manifest), the asset is downloaded from GitHub Releases and sha256-verified. A running Windows EXE can't be overwritten but can be renamed — the old EXE becomes `.old`, the new one takes its place; restart to finish (`.old` is cleaned up on next start). On download failure the releases page opens automatically. |
 
 > **②「同步最新汉化」到底做了什么？ / What does ② actually do?**
 > 它**不在你的电脑上做翻译**，而是从 GitHub 下载一份**已经翻好的成品包**（`zh/`）。步骤是：① 依次尝试三个源拉取清单 `zh/manifest.json`（GitHub Pages → jsDelivr CDN → GitHub Raw）；② 用 sha256 比对本地已装的包，**只下载有变化的文件**（11 MB 的中文字体通常只在首次下载，之后每次一般只有几十 KB 的 json）；③ 备份现有 `zh` 后整包写入两个数据目录并保持中文。断网或源全部不可达时，会自动改用随附的汉化包，不会让汉化"变空"。若本地已是最新，会直接提示"无需更新"——**但仍会把 `pack/welcome_files.zip` 对齐到中文包**（游戏「入门指南」卡片标题读的是这个 zip，此前这条路径会让它一直停在英文，v1.3.2 修复）。
@@ -186,6 +187,7 @@ python patch_tool.py --list-modules                    # 列出可选区域
 --rollback          还原上一版汉化
 --status            查看当前状态（平台 / 目录 / 包版本 / 已选区域）
 --leftovers         旧汉化包残留清点（只列出，不删除）
+--self-update       检查并更新**程序本身**（tool.json 报版本，Release 下载，sha256 校验）
 --layouts           汉化工作区标签（重命名布局文件）
 --layouts-restore   还原布局文件名
 --modules <列表>    只汉化指定区域，逗号分隔（words,ui,nodes,junctions,fonts,welcome）
@@ -202,6 +204,7 @@ python patch_tool.py --status            # 查看状态
 python patch_tool.py --install --modules words,nodes   # 只汉化界面词条 + 节点
 python patch_tool.py --leftovers         # 旧汉化包残留清单（只读）
 python patch_tool.py --layouts           # 工作区标签改中文
+python patch_tool.py --self-update       # 检查并更新工具自身
 python patch_tool.py --no-gui            # 脚本中静默安装
 ```
 
@@ -306,11 +309,11 @@ LocalAppData/PixelComposer/Locale/zh/...      ← 写入点 1 / root 1
 | **浮动面板标题**（`Toolbar`、`Collections` 等） | 这些标题由主程序内部维护的**面板注册表**直接绘制，**不走语言包**。已实测 20 余种候选键名（`panel_toolbar`、`panel_collections`、`Toolbar Panel`、原始字符串 `Toolbar` / `Collections` 等）全部无效。 | 无需处理：**打开面板的入口在「面板菜单」里，条目已全部汉化**（显示为「工具栏」「集合」「图表」等），不影响日常使用。 |
 | **工作区布局标签**（`Horizontal` / `Vertical` / `Preview` / `Drawing` / `Side menu`） | 标签显示的是 `layouts/*.json` 的**文件名**，本身不查语言表（已确认布局名不存在于任何语言包或偏好设置中，程序按目录枚举文件）。⚠️ 只改文件名**会被还原**：实测改完名启动一次，游戏就从 `pack/layouts.zip` 把 5 个英文名重新解了出来，变成中英两套重复标签。 | 点 **⑥ 汉化工作区标签** —— 它会**同时改写 `pack/layouts.zip` 里的条目名**（原 zip 备份为 `layouts.zip.bak_cn`），改完启动实测**只剩中文名、英文名不再回来**；不满意点 **⑦ 还原布局名**。注意：执行 ⑥ 会触发游戏按 zip 重新解出一次内置布局，若你改过这 5 个内置布局的内容会被还原（你自建的布局不受影响）；`__default.json` 与 `layouts/version` 永不被改动。 |
 | **内置参考文档 `notes/`**（`Blend modes reference` / `Lindenmayer system reference` / `MK Panels reference`） | 这三篇是带专用排版标记（`{g}`、`<x20>`、`<x128>` 等）的 Markdown 参考文档，官方语言包中只有英文版，当前**未翻译**（游戏会回退显示英文原文）。 | 待补。翻译它们需要保留排版标记，属于独立的校对工作；需要的话可提 Issue。 |
-| **入门指南卡片标题已汉化（v1.3.2）** | 欢迎页上每张卡的标题取的是 `pack/welcome_files.zip` 里的**文件夹/文件名**（去掉数字前缀），程序不查任何语言表。v1.3.2 起改用**中文命名的 `welcome_files.zip`**（原版备份为 `welcome_files.zip.bak_cn`），卡片标题与页面内容全中文，且不会出现中英两套重复卡片。 | 「① 一键汉化」或「② 同步最新汉化」都会送达；②在"已是最新"时也会自动把 `pack/welcome_files.zip` 对齐到中文包。不满意可「③ 恢复英文」。 |
+| **入门指南卡片标题已汉化（v1.3.3）** | 欢迎页每张卡的标题取的是**数据目录里 `Welcome files/` 的文件夹/文件名**（从游戏主程序格式串 `{0}Welcome files/Getting started` 证实），程序不查任何语言表。v1.3.3 起「①/②」把该目录整目录换成中文命名（含缩略图；`pack/welcome_files.zip` 同步换成中文 zip，供游戏版本变更时重新解压）。 | 自动完成；官方英文目录与旧包目录移入 `Welcome files.bak_cn/` 备份，`Welcome files/version` 保留以防游戏回写英文；不满意可「③ 恢复英文」。 |
 | `2d` / `3d` / `CMYK` / `OKLAB` / `PXC` 等 | 品牌名 / 格式名 / 专有名词。 | 按约定保留英文，避免歧义。 |
 | **Linux 图形界面** | `tkinter` 通常不在系统 Python 里（Debian/Ubuntu 要 `python3-tk`，Arch 要 `tk`）；SteamOS / Steam Deck 根分区只读，装不上。 | 不用管：`install.sh` 会自动切到命令行界面，**功能完全一致**（六个区域、同步、还原、清点都在）。`./install.sh deps` 可查缺什么。 |
 
-**English** — Floating panel titles (`Toolbar`, `Collections`, …) are drawn by the executable's internal panel registry and **never pass through the locale tables** — 20+ candidate key forms were tested and none had any effect. The panel *menu* entries (the way you actually open these panels) are fully translated, so this is cosmetic. Workspace layout tabs show `layouts/*.json` **file names**, which the locale tables cannot touch — use button ⑥ to rename them (⑦ reverts); `__default.json` and `layouts/version` are never modified. The three built-in reference documents under `notes/` are Markdown files using a custom layout markup (`{g}`, `<x20>`, …) and ship in English only — they are **not translated yet** and fall back to English. Getting-started **card titles** come from the file/folder **names inside `pack/welcome_files.zip`** (numeric prefix stripped) and never pass through a locale table; since v1.3.2 the tool swaps in a **Chinese-named `welcome_files.zip`** (original backed up as `welcome_files.zip.bak_cn`), so titles are Chinese too — never a duplicated English/Chinese card set. Both ① install and ② sync deliver it, and ② aligns the pack zip even when the data directories are already up to date. On Linux, `tkinter` is often missing (`python3-tk` on Debian/Ubuntu, `tk` on Arch) and SteamOS has a read-only root — `install.sh` then falls back to an interactive CLI with identical functionality.
+**English** — Floating panel titles (`Toolbar`, `Collections`, …) are drawn by the executable's internal panel registry and **never pass through the locale tables** — 20+ candidate key forms were tested and none had any effect. The panel *menu* entries (the way you actually open these panels) are fully translated, so this is cosmetic. Workspace layout tabs show `layouts/*.json` **file names**, which the locale tables cannot touch — use button ⑥ to rename them (⑦ reverts); `__default.json` and `layouts/version` are never modified. The three built-in reference documents under `notes/` are Markdown files using a custom layout markup (`{g}`, `<x20>`, …) and ship in English only — they are **not translated yet** and fall back to English. Getting-started **card titles** come from the file/folder **names inside the extracted `Welcome files/` directory of the data root** — confirmed by the game binary's format strings (`{0}Welcome files/Getting started`) — and never pass through a locale table; since v1.3.3 the tool replaces that directory with Chinese-named content (thumbnails included; `pack/welcome_files.zip` is swapped to the Chinese zip as well, for the game's version-gated re-extraction). The original directory is backed up to `Welcome files.bak_cn/`, and `Welcome files/version` is left untouched so the game won't write English back. On Linux, `tkinter` is often missing (`python3-tk` on Debian/Ubuntu, `tk` on Arch) and SteamOS has a read-only root — `install.sh` then falls back to an interactive CLI with identical functionality.
 
 ---
 
@@ -318,7 +321,7 @@ LocalAppData/PixelComposer/Locale/zh/...      ← 写入点 1 / root 1
 
 | 对比项 / Aspect | 旧社区汉化包 Old pack | 本方案 This project |
 |---|---|---|
-| 安装方式 Install | 手动把 `zh/` 与 `Welcome files/` 复制进游戏根目录，教程整包换成中文名文件夹 | 一键安装到正确的数据目录（自动双写），教程按同名覆盖 |
+| 安装方式 Install | 手动把 `zh/` 与 `Welcome files/` 复制进游戏根目录，教程整包换成中文名文件夹 | 一键安装到正确的数据目录（自动双写），教程同样换成中文目录，但整体备份、可一键还原 |
 | 更新速度 Updates | 慢，依赖作者手动发布 / slow, manual | 维护者定期同步上游，客户端一键取最新包 / maintainer syncs upstream, clients pull in one click |
 | 覆盖率 Coverage | 较低 / lower | 词条 98.5%（1888/1916）· 节点 ~93% · 教程页 33/33 |
 | 联网需求 Network | 常需联网取包 / often online | 装好后离线可用；② 联网只取更新，断网自动回退 / offline-ready; ② only fetches updates and falls back offline |
@@ -397,6 +400,7 @@ PixelComposer-CN-Linux/
 - `build/pxc.py` — `.pxc` 工程容器编解码（`PXCX` 文件头 + `THMB`/`META` 分块 + zlib 主数据），用于改教程文字而不破坏工程。
 - `build/welcome_zh.json` — 入门指南说明文字的英中对照表（302 条）。
 - `build/translate_welcome.py` — **入门指南汉化脚本**：从官方 `pack/welcome_files.zip` 抽取教程 → 替换文本节点 → 写 `zh/welcome/`；内置标签多重集自检（`<node …>` / `<bt …>` 是查找键，翻错会导致游戏找不到图标，脚本会直接拒绝生成）。
+- `build/make_tool_meta.py` — **程序自更新元数据**：发版时跑 `python build/make_tool_meta.py --tag v1.3.3`，读取工具 VERSION + 两个发行资产的 size/sha256，生成仓库根目录的 `tool.json`（客户端「⑨ 检查程序更新」按它判断新版本与下载地址）。
 - `zhsync.py` — **客户端同步模块**：拉清单、比对 sha256、按需下载并安装（`patch_tool.py` 的 ② 即调用它）。
 - `build/en_*.json` — 从游戏原始 `en` 语言包抽取的源数据。
 - `build/zh_*_seed.json` — 人工校对的中文种子。

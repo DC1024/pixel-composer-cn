@@ -551,6 +551,48 @@ def _download(base, rel, meta, bases=None, log=None, order=None):
 _LAST_SOURCE_USED = []
 
 
+#: 程序自更新的元数据文件：放在**仓库根目录**（不在 zh/ 包里），与汉化清单共用
+#: 同一组下载源（Pages → jsDelivr → Raw）。维护者每次发新版时随仓库一起更新，
+#: 内容形如：
+#:   {"version": "1.3.3", "tag": "v1.3.3", "updated": "...",
+#:    "releases_url": "https://github.com/DC1024/pixel-composer-cn/releases/latest",
+#:    "files": {"PixelComposer-CN-Patcher.exe": {"platform": "windows",
+#:              "size": 21528123, "sha256": "..."}, ...}}
+TOOL_META_NAME = "tool.json"
+
+
+def tool_meta_sources():
+    """程序元数据的源列表：与 SOURCES 同一组站点，只是去掉 /zh/ 回到仓库根。"""
+    out = []
+    for name, base in sources():
+        root = base[:-3] if base.endswith("/zh/") else base
+        out.append((name, root))
+    return out
+
+
+def fetch_tool_meta(log=None):
+    """拉取线上程序版本元数据（tool.json）；全部源失败返回 None。
+
+    与 fetch_manifest 一样逐源回退；对 JSON 做最小校验（必须是带 version 的 dict），
+    防止把 CDN 的错误页当成清单。
+    """
+    last = None
+    for name, base in tool_meta_sources():
+        try:
+            meta = json.loads(_get(_url(base, TOOL_META_NAME), TIMEOUT).decode("utf-8"))
+            if isinstance(meta, dict) and meta.get("version"):
+                return meta
+            last = SyncError("tool.json 内容不是预期的对象")
+        except Exception as e:
+            last = e
+            if log:
+                log(f"  {name} 取不到 {TOOL_META_NAME}"
+                    f"（{getattr(e, 'code', None) or type(e).__name__}），换下一个源…")
+    if log and last:
+        log(f"无法获取线上程序版本：{last}")
+    return None
+
+
 def _local_copy(rel, local_dirs, dst):
     """从任一已安装目录拷贝未变化的文件（其 sha256 已与远端一致）。"""
     for d in local_dirs:

@@ -1,0 +1,19 @@
+{
+  "name": "pixel-composer-cn-tool",
+  "version": "1.3.3",
+  "tag": "v1.3.3",
+  "updated": "2026-09-29 16:59:37 +0800",
+  "releases_url": "https://github.com/DC1024/pixel-composer-cn/releases/latest",
+  "files": {
+    "PixelComposer-CN-Patcher.exe": {
+      "platform": "windows",
+      "size": 21683617,
+      "sha256": "e89ba3ec59fa0525a5342b5e9fbbd14cdba9cc23147a835fcf3d7c15506a0d06"
+    },
+    "PixelComposer-CN-Linux.tar.gz": {
+      "platform": "linux",
+      "size": 8925728,
+      "sha256": "7f2ced7ae511fb616954032e63519426e254d8c8eacdb2620d22a1ca1aa179d7"
+    }
+  }
+}
