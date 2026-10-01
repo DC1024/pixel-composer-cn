@@ -1,184 +1,316 @@
 {
-  "schema": 1,
-  "pack": "pixel-composer-cn",
-  "version": "1.2.2",
-  "game_version": null,
-  "built_at": "2026-09-29 17:13:40 +0800",
-  "counts": {
-    "words": 2096,
-    "UI": 560,
-    "nodes": 942,
-    "junctions": 3,
-    "welcome": 33
+ "schema": 1,
+ "pack": "pixel-composer-cn",
+ "version": "1.2.3",
+ "game_version": 122000,
+ "built_at": "2026-10-01 09:13:32 +0800",
+ "counts": {
+  "words": 2096,
+  "UI": 560,
+  "nodes": 942,
+  "junctions": 3,
+  "welcome": 66
+ },
+ "files": {
+  "config.json": {
+   "size": 37,
+   "sha256": "5e52d187b98c6a82e0dc1f740c76a173272f12f0973eee51f8e3430d35c410e8"
   },
-  "files": {
-    "config.json": {
-      "size": 37,
-      "sha256": "5e52d187b98c6a82e0dc1f740c76a173272f12f0973eee51f8e3430d35c410e8"
-    },
-    "junctions.json": {
-      "size": 330,
-      "sha256": "683b7f070bbd7900cf1cd124ecb0471502dd080331487564f255eb7875277e46"
-    },
-    "nodes.json": {
-      "size": 585901,
-      "sha256": "97f79edd5e7a37218b3c4a319510613df24676a2ea90268a931f5e853c958ab7"
-    },
-    "UI.json": {
-      "size": 24971,
-      "sha256": "e71971d1e8e20df2c0096f6f5b1e57561eab3ece15a2a6bf715d754f2a53e721"
-    },
-    "welcome_files.zip": {
-      "size": 1325103,
-      "sha256": "9d35046c357023ac1540dad126bc318503a77180cf3228f0448266b3da73e8f8"
-    },
-    "words.json": {
-      "size": 76170,
-      "sha256": "66c7882b6296b1c1f391e72aa99299cfa98b294119c279af8f2f2f9d9583dfb0"
-    },
-    "fonts/fonts.json": {
-      "size": 1357,
-      "sha256": "b3f2208e1bb1a120c95f1c0c5e8f54a2efb0e99a56a3f554284ad64f7dac6be1"
-    },
-    "fonts/JetBrainsMono-Medium.ttf": {
-      "size": 273860,
-      "sha256": "31c92d01a8a08528b718a43addf0ad3df0af2ca4b7b3290a452f70f358e14d3d"
-    },
-    "fonts/LXGWWenKaiMonoLite-Bold.ttf": {
-      "size": 11047984,
-      "sha256": "730f6f0fc2b0c83271a25af00520d2f44fcf40b1b3615f7851a56dc70c5f3907"
-    },
-    "welcome/Getting started/000 UI/000 Introduction.pxc": {
-      "size": 7982,
-      "sha256": "c2585e0ba8833c104207ac0ed97408c03165c876b7105bd153b7c499fa57525e"
-    },
-    "welcome/Getting started/000 UI/005 Node Shortcuts.pxc": {
-      "size": 10856,
-      "sha256": "2a49504cc61e9162e5a8ba54c7e0efb715c3874d0563b76ea73ee6f34c7e23b4"
-    },
-    "welcome/Getting started/000 UI/100 Organization.pxc": {
-      "size": 12885,
-      "sha256": "89c3372112c232cdd467179a759a9748d4d84afb3ba278bf74861a99195452f3"
-    },
-    "welcome/Getting started/100 Nodes/010 Image import.pxc": {
-      "size": 7286,
-      "sha256": "86149aa8cabb994fccccd92721e79e6cff52a6c3f9382d0a8d43402de15d9e55"
-    },
-    "welcome/Getting started/100 Nodes/020 Animation.pxc": {
-      "size": 6247,
-      "sha256": "8bc56a9fca07b094a1ff122c30df957cfd3ecb27c0460829d3df6952550af087"
-    },
-    "welcome/Getting started/100 Nodes/030 Group.pxc": {
-      "size": 8347,
-      "sha256": "30eb9a4a45bd827aae9b42a0afbeeaa63dc290ea4f98e16c5513c582e953f3a7"
-    },
-    "welcome/Getting started/100 Nodes/040 Loop.pxc": {
-      "size": 8109,
-      "sha256": "50b096a34b7bbe6db6d4db67f47a2ae4411ed951b2f104062fef62d525b44a39"
-    },
-    "welcome/Getting started/100 Nodes/070 Composing.pxc": {
-      "size": 9807,
-      "sha256": "40bfefe6baff49791f8ac404e7a8bce6ee71892d21832df996f22e63ea0ba65a"
-    },
-    "welcome/Getting started/100 Nodes/080 Path.pxc": {
-      "size": 12219,
-      "sha256": "9a836fdcbab8884a236915dc0e3045e305df30a809066247fc0e484312239d7b"
-    },
-    "welcome/Getting started/300 Particle/050 Particles.pxc": {
-      "size": 16761,
-      "sha256": "b0f387880312ddfc0b822fa05004cc49134affbdcb1ac3ac7a3f59c3b482d723"
-    },
-    "welcome/Getting started/300 Particle/060 Particle System.pxc": {
-      "size": 13022,
-      "sha256": "21ce694cea5930f3fcb1773e807c18d7cbcf15b9e460a3b15261a9648fe3ac9b"
-    },
-    "welcome/Getting started/800 Simulation/100 Rigidsim.pxc": {
-      "size": 10590,
-      "sha256": "3eecc05664dce1d1cb753a78793cee66bb210655c9a310d93e62de33126a47e4"
-    },
-    "welcome/Getting started/800 Simulation/200 Smokesim.pxc": {
-      "size": 8968,
-      "sha256": "286da74c12a926f6b1bbc0ebabfc7ba5af3ac28e7ad599bb1dc3c6ac457ba660"
-    },
-    "welcome/Getting started/800 Simulation/300 FLIP Fluid.pxc": {
-      "size": 8525,
-      "sha256": "d6af10596bf14ef8a2e2f5f28160d016e298670e52533b76ae5b3424355d9deb"
-    },
-    "welcome/Getting started/800 Simulation/400 Strandsim.pxc": {
-      "size": 9642,
-      "sha256": "154a83442096527d4f09afc8af93fe77a337daea63c19b4eb4d22a460a6a116c"
-    },
-    "welcome/Getting started/900 Advances/090 Expression.pxc": {
-      "size": 6806,
-      "sha256": "9ab6ab8d10a20d876970810cbcf6b3bb8cb47a31418438fb434c90d665550632"
-    },
-    "welcome/Getting started/900 Advances/120 UV Workflow.pxc": {
-      "size": 10397,
-      "sha256": "6c4e45855ef153f46e761095438ea1cf1574c25ef8028bf7fdc07ca634ffb836"
-    },
-    "welcome/Sample Projects/Box Explode 3D.pxc": {
-      "size": 11977,
-      "sha256": "4c970bd8217135ab55b18acfa36ad87dc7003e157782ab6054ad78730508132a"
-    },
-    "welcome/Sample Projects/Castle.pxc": {
-      "size": 14232,
-      "sha256": "de836e630013528a933e22a73158d486515f4d909dd095eaa3c3cc413e4f716c"
-    },
-    "welcome/Sample Projects/Cogwheels.pxc": {
-      "size": 11407,
-      "sha256": "d7ab97347123962f8d42403a406c8583fa6a272b42e76640742b4faa49bd4e34"
-    },
-    "welcome/Sample Projects/Cyber Frame.pxc": {
-      "size": 28976,
-      "sha256": "488b2e46120740d9c24b73687ab6cb5a95d42f7ed430c991472449e5c5c892af"
-    },
-    "welcome/Sample Projects/Grass Block.pxc": {
-      "size": 20066,
-      "sha256": "9461cc6ac4593602c4b58d137250a2e042f744478e250d31b23c40f4fa56fc08"
-    },
-    "welcome/Sample Projects/Magic Circle.pxc": {
-      "size": 97092,
-      "sha256": "f0f184f17c3d2b7ab605117e61e44079492d4911ba5f594f238079299018188f"
-    },
-    "welcome/Sample Projects/Ornate circle.pxc": {
-      "size": 103601,
-      "sha256": "284b99c985a4f78332e4b32735160d3de2c72c42436278877cf8addce1538b74"
-    },
-    "welcome/Sample Projects/Random Shape Processor.pxc": {
-      "size": 12169,
-      "sha256": "95732902d2a901a95e7a4a9fbff7488c2b2cd4f27f402e105797eac1830f9b84"
-    },
-    "welcome/Sample Projects/Sci-fi Hex Hole.pxc": {
-      "size": 35838,
-      "sha256": "1d6e1dca2d74d52133dd1329850252abf571c854210e40485fd9807929dadf99"
-    },
-    "welcome/Sample Projects/Smoke Explosion.pxc": {
-      "size": 13081,
-      "sha256": "1370155130ab80d11545dde960ecb7a901fb25baf8294d8cde7d0199c17cb70d"
-    },
-    "welcome/Sample Projects/Spiral.pxc": {
-      "size": 18638,
-      "sha256": "3c9f270f0c1d8956a3d2296f592513f0deadb7829331fc72ddca402092a0c40d"
-    },
-    "welcome/Sample Projects/Star Collapse.pxc": {
-      "size": 107294,
-      "sha256": "7b220cd2346d71b5749afdfb02ef1d243feece0b107e100883e14755c0f387b8"
-    },
-    "welcome/Sample Projects/Tree.pxc": {
-      "size": 13327,
-      "sha256": "892f5052c231f91be266b872594c6e782e87d45e4baeea3ee78df87ce58787f6"
-    },
-    "welcome/Sample Projects/Wavy Spiral.pxc": {
-      "size": 51572,
-      "sha256": "dbe19fe1c1c0d6ee6f16a56e38d3e83a1b6567752d9b0855d1da43978bd7a6e4"
-    },
-    "welcome/Sample Projects/Wood Floor.pxc": {
-      "size": 7996,
-      "sha256": "8fcac5a6e46eb0a0f83859f5d125807981b0973f9c68fda96eafbfd8f1efbf2f"
-    },
-    "welcome/Templates/Canvas.pxc": {
-      "size": 3395,
-      "sha256": "363b662920ae8468004b54b8bc2bbcc6c14d2c8d5e5b548cf798557be53e3a7a"
-    }
+  "junctions.json": {
+   "size": 330,
+   "sha256": "683b7f070bbd7900cf1cd124ecb0471502dd080331487564f255eb7875277e46"
+  },
+  "nodes.json": {
+   "size": 585901,
+   "sha256": "97f79edd5e7a37218b3c4a319510613df24676a2ea90268a931f5e853c958ab7"
+  },
+  "UI.json": {
+   "size": 24971,
+   "sha256": "e71971d1e8e20df2c0096f6f5b1e57561eab3ece15a2a6bf715d754f2a53e721"
+  },
+  "welcome_files.zip": {
+   "size": 1323403,
+   "sha256": "c2f5f9a3167fc860bc0941e804e3ef56e02ce8adf5ad2f9b210100769581e1fb"
+  },
+  "words.json": {
+   "size": 76170,
+   "sha256": "66c7882b6296b1c1f391e72aa99299cfa98b294119c279af8f2f2f9d9583dfb0"
+  },
+  "fonts/fonts.json": {
+   "size": 1357,
+   "sha256": "b3f2208e1bb1a120c95f1c0c5e8f54a2efb0e99a56a3f554284ad64f7dac6be1"
+  },
+  "fonts/JetBrainsMono-Medium.ttf": {
+   "size": 273860,
+   "sha256": "31c92d01a8a08528b718a43addf0ad3df0af2ca4b7b3290a452f70f358e14d3d"
+  },
+  "fonts/LXGWWenKaiMonoLite-Bold.ttf": {
+   "size": 11047984,
+   "sha256": "730f6f0fc2b0c83271a25af00520d2f44fcf40b1b3615f7851a56dc70c5f3907"
+  },
+  "welcome/Getting started/000 UI/000 Introduction.pxc": {
+   "size": 7982,
+   "sha256": "c2585e0ba8833c104207ac0ed97408c03165c876b7105bd153b7c499fa57525e"
+  },
+  "welcome/Getting started/000 UI/005 Node Shortcuts.pxc": {
+   "size": 10856,
+   "sha256": "2a49504cc61e9162e5a8ba54c7e0efb715c3874d0563b76ea73ee6f34c7e23b4"
+  },
+  "welcome/Getting started/000 UI/100 Organization.pxc": {
+   "size": 12885,
+   "sha256": "89c3372112c232cdd467179a759a9748d4d84afb3ba278bf74861a99195452f3"
+  },
+  "welcome/Getting started/000 用户界面/000 简介.pxc": {
+   "size": 7982,
+   "sha256": "c2585e0ba8833c104207ac0ed97408c03165c876b7105bd153b7c499fa57525e"
+  },
+  "welcome/Getting started/000 用户界面/005 节点快捷键.pxc": {
+   "size": 10856,
+   "sha256": "2a49504cc61e9162e5a8ba54c7e0efb715c3874d0563b76ea73ee6f34c7e23b4"
+  },
+  "welcome/Getting started/000 用户界面/100 项目组织.pxc": {
+   "size": 12885,
+   "sha256": "89c3372112c232cdd467179a759a9748d4d84afb3ba278bf74861a99195452f3"
+  },
+  "welcome/Getting started/100 Nodes/010 Image import.pxc": {
+   "size": 7286,
+   "sha256": "86149aa8cabb994fccccd92721e79e6cff52a6c3f9382d0a8d43402de15d9e55"
+  },
+  "welcome/Getting started/100 Nodes/020 Animation.pxc": {
+   "size": 6247,
+   "sha256": "8bc56a9fca07b094a1ff122c30df957cfd3ecb27c0460829d3df6952550af087"
+  },
+  "welcome/Getting started/100 Nodes/030 Group.pxc": {
+   "size": 8347,
+   "sha256": "30eb9a4a45bd827aae9b42a0afbeeaa63dc290ea4f98e16c5513c582e953f3a7"
+  },
+  "welcome/Getting started/100 Nodes/040 Loop.pxc": {
+   "size": 8109,
+   "sha256": "50b096a34b7bbe6db6d4db67f47a2ae4411ed951b2f104062fef62d525b44a39"
+  },
+  "welcome/Getting started/100 Nodes/070 Composing.pxc": {
+   "size": 9807,
+   "sha256": "40bfefe6baff49791f8ac404e7a8bce6ee71892d21832df996f22e63ea0ba65a"
+  },
+  "welcome/Getting started/100 Nodes/080 Path.pxc": {
+   "size": 12219,
+   "sha256": "9a836fdcbab8884a236915dc0e3045e305df30a809066247fc0e484312239d7b"
+  },
+  "welcome/Getting started/100 节点/010 图像导入.pxc": {
+   "size": 7286,
+   "sha256": "86149aa8cabb994fccccd92721e79e6cff52a6c3f9382d0a8d43402de15d9e55"
+  },
+  "welcome/Getting started/100 节点/020 动画.pxc": {
+   "size": 6247,
+   "sha256": "8bc56a9fca07b094a1ff122c30df957cfd3ecb27c0460829d3df6952550af087"
+  },
+  "welcome/Getting started/100 节点/030 编组.pxc": {
+   "size": 8347,
+   "sha256": "30eb9a4a45bd827aae9b42a0afbeeaa63dc290ea4f98e16c5513c582e953f3a7"
+  },
+  "welcome/Getting started/100 节点/040 循环.pxc": {
+   "size": 8109,
+   "sha256": "50b096a34b7bbe6db6d4db67f47a2ae4411ed951b2f104062fef62d525b44a39"
+  },
+  "welcome/Getting started/100 节点/070 合成.pxc": {
+   "size": 9807,
+   "sha256": "40bfefe6baff49791f8ac404e7a8bce6ee71892d21832df996f22e63ea0ba65a"
+  },
+  "welcome/Getting started/100 节点/080 路径.pxc": {
+   "size": 12219,
+   "sha256": "9a836fdcbab8884a236915dc0e3045e305df30a809066247fc0e484312239d7b"
+  },
+  "welcome/Getting started/300 Particle/050 Particles.pxc": {
+   "size": 16761,
+   "sha256": "b0f387880312ddfc0b822fa05004cc49134affbdcb1ac3ac7a3f59c3b482d723"
+  },
+  "welcome/Getting started/300 Particle/060 Particle System.pxc": {
+   "size": 13022,
+   "sha256": "21ce694cea5930f3fcb1773e807c18d7cbcf15b9e460a3b15261a9648fe3ac9b"
+  },
+  "welcome/Getting started/300 粒子/050 粒子.pxc": {
+   "size": 16761,
+   "sha256": "b0f387880312ddfc0b822fa05004cc49134affbdcb1ac3ac7a3f59c3b482d723"
+  },
+  "welcome/Getting started/300 粒子/060 粒子系统.pxc": {
+   "size": 13022,
+   "sha256": "21ce694cea5930f3fcb1773e807c18d7cbcf15b9e460a3b15261a9648fe3ac9b"
+  },
+  "welcome/Getting started/800 Simulation/100 Rigidsim.pxc": {
+   "size": 10590,
+   "sha256": "3eecc05664dce1d1cb753a78793cee66bb210655c9a310d93e62de33126a47e4"
+  },
+  "welcome/Getting started/800 Simulation/200 Smokesim.pxc": {
+   "size": 8968,
+   "sha256": "286da74c12a926f6b1bbc0ebabfc7ba5af3ac28e7ad599bb1dc3c6ac457ba660"
+  },
+  "welcome/Getting started/800 Simulation/300 FLIP Fluid.pxc": {
+   "size": 8525,
+   "sha256": "d6af10596bf14ef8a2e2f5f28160d016e298670e52533b76ae5b3424355d9deb"
+  },
+  "welcome/Getting started/800 Simulation/400 Strandsim.pxc": {
+   "size": 9642,
+   "sha256": "154a83442096527d4f09afc8af93fe77a337daea63c19b4eb4d22a460a6a116c"
+  },
+  "welcome/Getting started/800 仿真模拟/100 刚体仿真.pxc": {
+   "size": 10590,
+   "sha256": "3eecc05664dce1d1cb753a78793cee66bb210655c9a310d93e62de33126a47e4"
+  },
+  "welcome/Getting started/800 仿真模拟/200 烟雾仿真.pxc": {
+   "size": 8968,
+   "sha256": "286da74c12a926f6b1bbc0ebabfc7ba5af3ac28e7ad599bb1dc3c6ac457ba660"
+  },
+  "welcome/Getting started/800 仿真模拟/300 FLIP 流体.pxc": {
+   "size": 8525,
+   "sha256": "d6af10596bf14ef8a2e2f5f28160d016e298670e52533b76ae5b3424355d9deb"
+  },
+  "welcome/Getting started/800 仿真模拟/400 发丝仿真.pxc": {
+   "size": 9642,
+   "sha256": "154a83442096527d4f09afc8af93fe77a337daea63c19b4eb4d22a460a6a116c"
+  },
+  "welcome/Getting started/900 Advances/090 Expression.pxc": {
+   "size": 6806,
+   "sha256": "9ab6ab8d10a20d876970810cbcf6b3bb8cb47a31418438fb434c90d665550632"
+  },
+  "welcome/Getting started/900 Advances/120 UV Workflow.pxc": {
+   "size": 10397,
+   "sha256": "6c4e45855ef153f46e761095438ea1cf1574c25ef8028bf7fdc07ca634ffb836"
+  },
+  "welcome/Getting started/900 进阶/090 表达式.pxc": {
+   "size": 6806,
+   "sha256": "9ab6ab8d10a20d876970810cbcf6b3bb8cb47a31418438fb434c90d665550632"
+  },
+  "welcome/Getting started/900 进阶/120 UV 工作流.pxc": {
+   "size": 10397,
+   "sha256": "6c4e45855ef153f46e761095438ea1cf1574c25ef8028bf7fdc07ca634ffb836"
+  },
+  "welcome/Sample Projects/3D 盒子爆炸.pxc": {
+   "size": 11977,
+   "sha256": "4c970bd8217135ab55b18acfa36ad87dc7003e157782ab6054ad78730508132a"
+  },
+  "welcome/Sample Projects/Box Explode 3D.pxc": {
+   "size": 11977,
+   "sha256": "4c970bd8217135ab55b18acfa36ad87dc7003e157782ab6054ad78730508132a"
+  },
+  "welcome/Sample Projects/Castle.pxc": {
+   "size": 14232,
+   "sha256": "de836e630013528a933e22a73158d486515f4d909dd095eaa3c3cc413e4f716c"
+  },
+  "welcome/Sample Projects/Cogwheels.pxc": {
+   "size": 11407,
+   "sha256": "d7ab97347123962f8d42403a406c8583fa6a272b42e76640742b4faa49bd4e34"
+  },
+  "welcome/Sample Projects/Cyber Frame.pxc": {
+   "size": 28976,
+   "sha256": "488b2e46120740d9c24b73687ab6cb5a95d42f7ed430c991472449e5c5c892af"
+  },
+  "welcome/Sample Projects/Grass Block.pxc": {
+   "size": 20066,
+   "sha256": "9461cc6ac4593602c4b58d137250a2e042f744478e250d31b23c40f4fa56fc08"
+  },
+  "welcome/Sample Projects/Magic Circle.pxc": {
+   "size": 97092,
+   "sha256": "f0f184f17c3d2b7ab605117e61e44079492d4911ba5f594f238079299018188f"
+  },
+  "welcome/Sample Projects/Ornate circle.pxc": {
+   "size": 103601,
+   "sha256": "284b99c985a4f78332e4b32735160d3de2c72c42436278877cf8addce1538b74"
+  },
+  "welcome/Sample Projects/Random Shape Processor.pxc": {
+   "size": 12169,
+   "sha256": "95732902d2a901a95e7a4a9fbff7488c2b2cd4f27f402e105797eac1830f9b84"
+  },
+  "welcome/Sample Projects/Sci-fi Hex Hole.pxc": {
+   "size": 35838,
+   "sha256": "1d6e1dca2d74d52133dd1329850252abf571c854210e40485fd9807929dadf99"
+  },
+  "welcome/Sample Projects/Smoke Explosion.pxc": {
+   "size": 13081,
+   "sha256": "1370155130ab80d11545dde960ecb7a901fb25baf8294d8cde7d0199c17cb70d"
+  },
+  "welcome/Sample Projects/Spiral.pxc": {
+   "size": 18638,
+   "sha256": "3c9f270f0c1d8956a3d2296f592513f0deadb7829331fc72ddca402092a0c40d"
+  },
+  "welcome/Sample Projects/Star Collapse.pxc": {
+   "size": 107294,
+   "sha256": "7b220cd2346d71b5749afdfb02ef1d243feece0b107e100883e14755c0f387b8"
+  },
+  "welcome/Sample Projects/Tree.pxc": {
+   "size": 13327,
+   "sha256": "892f5052c231f91be266b872594c6e782e87d45e4baeea3ee78df87ce58787f6"
+  },
+  "welcome/Sample Projects/Wavy Spiral.pxc": {
+   "size": 51572,
+   "sha256": "dbe19fe1c1c0d6ee6f16a56e38d3e83a1b6567752d9b0855d1da43978bd7a6e4"
+  },
+  "welcome/Sample Projects/Wood Floor.pxc": {
+   "size": 7996,
+   "sha256": "8fcac5a6e46eb0a0f83859f5d125807981b0973f9c68fda96eafbfd8f1efbf2f"
+  },
+  "welcome/Sample Projects/华丽圆环.pxc": {
+   "size": 103601,
+   "sha256": "284b99c985a4f78332e4b32735160d3de2c72c42436278877cf8addce1538b74"
+  },
+  "welcome/Sample Projects/城堡.pxc": {
+   "size": 14232,
+   "sha256": "de836e630013528a933e22a73158d486515f4d909dd095eaa3c3cc413e4f716c"
+  },
+  "welcome/Sample Projects/星体坍缩.pxc": {
+   "size": 107294,
+   "sha256": "7b220cd2346d71b5749afdfb02ef1d243feece0b107e100883e14755c0f387b8"
+  },
+  "welcome/Sample Projects/木地板.pxc": {
+   "size": 7996,
+   "sha256": "8fcac5a6e46eb0a0f83859f5d125807981b0973f9c68fda96eafbfd8f1efbf2f"
+  },
+  "welcome/Sample Projects/树.pxc": {
+   "size": 13327,
+   "sha256": "892f5052c231f91be266b872594c6e782e87d45e4baeea3ee78df87ce58787f6"
+  },
+  "welcome/Sample Projects/波浪螺旋.pxc": {
+   "size": 51572,
+   "sha256": "dbe19fe1c1c0d6ee6f16a56e38d3e83a1b6567752d9b0855d1da43978bd7a6e4"
+  },
+  "welcome/Sample Projects/烟雾爆炸.pxc": {
+   "size": 13081,
+   "sha256": "1370155130ab80d11545dde960ecb7a901fb25baf8294d8cde7d0199c17cb70d"
+  },
+  "welcome/Sample Projects/科幻六边形孔.pxc": {
+   "size": 35838,
+   "sha256": "1d6e1dca2d74d52133dd1329850252abf571c854210e40485fd9807929dadf99"
+  },
+  "welcome/Sample Projects/草方块.pxc": {
+   "size": 20066,
+   "sha256": "9461cc6ac4593602c4b58d137250a2e042f744478e250d31b23c40f4fa56fc08"
+  },
+  "welcome/Sample Projects/螺旋.pxc": {
+   "size": 18638,
+   "sha256": "3c9f270f0c1d8956a3d2296f592513f0deadb7829331fc72ddca402092a0c40d"
+  },
+  "welcome/Sample Projects/赛博框架.pxc": {
+   "size": 28976,
+   "sha256": "488b2e46120740d9c24b73687ab6cb5a95d42f7ed430c991472449e5c5c892af"
+  },
+  "welcome/Sample Projects/随机形状处理.pxc": {
+   "size": 12169,
+   "sha256": "95732902d2a901a95e7a4a9fbff7488c2b2cd4f27f402e105797eac1830f9b84"
+  },
+  "welcome/Sample Projects/魔法阵.pxc": {
+   "size": 97092,
+   "sha256": "f0f184f17c3d2b7ab605117e61e44079492d4911ba5f594f238079299018188f"
+  },
+  "welcome/Sample Projects/齿轮.pxc": {
+   "size": 11407,
+   "sha256": "d7ab97347123962f8d42403a406c8583fa6a272b42e76640742b4faa49bd4e34"
+  },
+  "welcome/Templates/Canvas.pxc": {
+   "size": 3395,
+   "sha256": "363b662920ae8468004b54b8bc2bbcc6c14d2c8d5e5b548cf798557be53e3a7a"
+  },
+  "welcome/Templates/画布.pxc": {
+   "size": 3395,
+   "sha256": "363b662920ae8468004b54b8bc2bbcc6c14d2c8d5e5b548cf798557be53e3a7a"
   }
+ }
 }
